@@ -27,6 +27,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 <img src="images/icyyolo.png" width="200px">
 
 [[github](https://github.com/icyyolo)]
+[[portfolio](team/icyyolo.md)]
 
 * Role: Deliverables and deadlines
 * Responsibilities: Model
@@ -40,22 +41,12 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Developer, Testing
 * Responsibilities: Storage
 
-### Jean Doe
+### Shermaine
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/shermainepeh08.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/jolenechong.md)]
+[[github](http://github.com/ShermainePeh08)]
+[[portfolio](team/shermaine.md)]
 
-* Role: Developer
-* Responsibilities: Dev Ops + Threading
-
-### James Doe
-
-<img src="images/johndoe.png" width="200px">
-
-[[github](http://github.com/johndoe)]
-[[portfolio](team/jolenechong.md)]
-
-* Role: Developer
+* Role: Documentation
 * Responsibilities: UI
