@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.Messages.MESSAGE_ALL_PREFIXES_MISSING;
 import static seedu.address.logic.Messages.MESSAGE_MISSING_FIELD_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_MISSING_PREFIX;
 import static seedu.address.logic.Messages.MESSAGE_NON_PREFIX_BEFORE_PREFIX;
@@ -14,7 +15,10 @@ import static seedu.address.logic.parser.ParserConstants.FIELD_EMAIL;
 import static seedu.address.logic.parser.ParserConstants.FIELD_NAME;
 import static seedu.address.logic.parser.ParserConstants.FIELD_PHONE;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -50,7 +54,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         );
 
         if (!argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(MESSAGE_NON_PREFIX_BEFORE_PREFIX);
+            throw new ParseException(MESSAGE_NON_PREFIX_BEFORE_PREFIX + AddCommand.MESSAGE_USAGE);
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
@@ -71,19 +75,27 @@ public class AddCommandParser implements Parser<AddCommand> {
      */
     private static void requirePrefixes(ArgumentMultimap map,
                                         RequiredField... requiredFields) throws ParseException {
-        StringBuilder missing = new StringBuilder();
 
-        for (RequiredField field : requiredFields) {
-            if (map.getValue(field.prefix).isEmpty()) {
-                if (!missing.isEmpty()) {
-                    missing.append(COMMA_SEPARATOR);
-                }
-                missing.append(String.format(MESSAGE_MISSING_FIELD_FORMAT, field.prefix, field.name));
-            }
+        List<RequiredField> missingFields = Arrays.stream(requiredFields)
+                .filter(field -> map.getValue(field.prefix).isEmpty())
+                .toList();
+
+        if (missingFields.isEmpty()) {
+            return;
         }
-        if (!missing.isEmpty()) {
-            throw new ParseException(MESSAGE_MISSING_PREFIX + missing);
+
+        if (missingFields.size() == requiredFields.length) {
+            throw new ParseException(MESSAGE_ALL_PREFIXES_MISSING + AddCommand.MESSAGE_USAGE);
         }
+
+        String missingMessage = missingFields.stream()
+                .map(field -> String.format(
+                        MESSAGE_MISSING_FIELD_FORMAT,
+                        field.prefix,
+                        field.name))
+                .collect(Collectors.joining(COMMA_SEPARATOR));
+
+        throw new ParseException(MESSAGE_MISSING_PREFIX + missingMessage);
 
     }
 
