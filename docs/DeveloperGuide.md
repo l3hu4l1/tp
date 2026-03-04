@@ -321,6 +321,7 @@ See our full list on [GitHub](https://github.com/AY2526S2-CS2103T-W08-2/user-sto
 4. VV requests for confirmation.
 5. User confirms.
 6. VV adds contact and displays a list of vendor contacts.
+
 Use case ends.
 
 **Extensions**
@@ -329,40 +330,41 @@ Use case ends.
   * 3a1. VV requests for the correct data.
   * 3a2. User enters new data.
 
-    Steps 3a1-3a2 are repeated until all fields are correct.
+  Steps 3a1-3a2 are repeated until all fields are correct.
 
-    Use case resumes from step 4.
+  Use case resumes from step 4.
 
 * 3b. VV detects duplicate vendor contact.
   * 3b1. VV requests for correct data that’s not a duplicate.
   * 3b2. User enters new data.
 
-  Steps 3a1-3a2 are repeated until all fields are correct.
+  Steps 3b1-3b2 are repeated until all fields are correct.
 
   Use case resumes from step 4.
+
 * *a. At any time, User chooses to cancel adding the contact.
-    * *a1. VV requests to confirm cancellation.
+  * *a1. VV requests to confirm cancellation.
   * *a2. User confirms cancellation.
 
   Use case ends.
 
 **Use Case: UC2 - View Vendor Contact**
 
-Preconditions: Application is running, user is at main screen
+**Preconditions: Application is running, user is on the main screen**
 
 **MSS**
 
 1. User chooses to view vendor contact.
 2. VV shows the contact information for all vendors
 
+Use case ends.
+
 **Extensions**
 
 * 2a. VV detects there is no contact found.
+  * 2a1. VV will create a new contact file with preloaded information.
 
-    * 2a1. VV will create a new contact file with preloaded information.
-
-      Use case resumes from step 2.
-
+  Use case resumes from step 2.
 
 **Use case: UC3 - Delete Vendor Contact**
 
@@ -380,13 +382,13 @@ Use case ends.
 **Extensions**
 
 * 2a. User decides not to delete the contact, rejecting deletion.
-    * 2a1. VV displays a list of current vendor contacts.
-      Use case ends.
-
+  * 2a1. VV displays a list of current vendor contacts.
+  
+  Use case ends.
 
 **Use Case: UC4 - Add Stock Item**
 
-Preconditions: Application is running, user is at main screen.
+**Preconditions: Application is running, user is on the main screen.**
 
 **MSS**
 
@@ -399,40 +401,47 @@ Preconditions: Application is running, user is at main screen.
 7. VV saves the updated inventory to storage.
 8. VV displays a success message.
 
+Use case ends.
+
 **Extensions**
 
 * 3a. VV detects error in entered data (e.g. missing compulsory fields, invalid data format).
   * 3a1. VV displays an appropriate error message indicating the invalid or missing field.
   * 3a2. User re-enters the corrected data.
+  
   Steps 3a1–3a2 are repeated until all fields are valid.
+  
   Use case resumes from step 4.
 
 * 4a. VV detects duplicate product.
   * 4a1. VV displays an error indicating that the ID must be unique.
   * 4a2. User re-enters the corrected data.
+  
   Steps 4a1–4a2 are repeated until a unique ID is provided.
+  
   Use case resumes from step 5.
 
 * 7a. Storage file cannot be written or accessed.
   * 7a1. VV displays a failure message indicating inventory could not be saved.
+  
   Use case ends.
 
 **Use Case: UC 5 - View Stock**
 
-Preconditions: Application is running, user is at main screen
+**Preconditions: Application is running, user is on the main screen**
 
 **MSS**
 1. User chooses to view stock count.
 2. VV shows the stock count for all stocks.
 
+Use case ends.
+
 **Extensions**
 
-* 2a. VV detects there is no stocks found
+* 2a. VV detects there are no stocks found.
+  * 2a1. VV will create a new file with preloaded stocks information.
 
-    * 2a1. VV will create a new file with preloaded stocks information.
-
-      Use case resumes from step 2.
-
+  Use case resumes from step 2.
 
 **Use case: UC6 - Delete Stock**
 
@@ -450,8 +459,9 @@ Use case ends.
 **Extensions**
 
 * 2a. User decides not to delete the stock, rejecting deletion.
-    * 2a1. VV displays a list of current stock.
-      Use case ends.
+  * 2a1. VV displays a list of current stock.
+  
+  Use case ends.
 
 
 ### Non-Functional Requirements
