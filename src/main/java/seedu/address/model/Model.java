@@ -86,8 +86,25 @@ public interface Model {
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
 
+    /**
+     * Pushes the given command to the stack of executed commands for undo functionality.
+     *
+     * @param cmd the command to be pushed onto the stack of executed commands
+     */
     void pushExecutedCommand(Command cmd);
+
+    /**
+     * Pops the most recently executed command from the stack of executed commands and returns it for undo functionality.
+     *
+     * @return the most recently executed command, or null if there are no commands to undo
+     */
     Command popExecutedCommand();
+
+    /**
+     * Returns true if there are commands that can be undone, false otherwise.
+     *
+     * @return true if there are commands that can be undone, false otherwise
+     */
     boolean canUndo();
 
 }
