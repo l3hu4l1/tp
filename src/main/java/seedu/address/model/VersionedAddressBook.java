@@ -8,7 +8,7 @@ import seedu.address.logic.commands.UndoCommand;
 /**
  * Represents a VendorVault that keeps track AddressBook version history.
  */
-public class VersionedVendorVault {
+public class VersionedAddressBook {
 
     private final List<AddressBook> vaultStateList;
     private int currentStatePointer;
@@ -18,7 +18,7 @@ public class VersionedVendorVault {
      *
      * @param initial Initial state of the VendorVault.
      */
-    public VersionedVendorVault(ReadOnlyAddressBook initial) {
+    public VersionedAddressBook(ReadOnlyAddressBook initial) {
         this.vaultStateList = new ArrayList<>();
         this.vaultStateList.add(new AddressBook(initial));
         this.currentStatePointer = 0;
