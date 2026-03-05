@@ -157,6 +157,22 @@ public class AddCommandTest {
         public void updateFilteredPersonList(Predicate<Person> predicate) {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public void commitVendorVault() {
+            // stub method
+        }
+
+        @Override
+        public void undoVendorVault() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean canUndoVendorVault() {
+            throw new AssertionError("This method should not be called.");
+        }
+
     }
 
     /**

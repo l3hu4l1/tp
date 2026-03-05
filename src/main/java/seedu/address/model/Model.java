@@ -84,4 +84,24 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+
+    //=========== AddressBookVersioning ========================================================================
+    /**
+     * Commits the current state of vendor vault. This should be called after any operation
+     * that modifies vendor vault, such as adding, deleting, or editing a person (same as vendor).
+     */
+    void commitVendorVault();
+
+    /**
+     * Undoes the last committed state in vendor vault, reverting to the previous state.
+     */
+    void undoVendorVault();
+
+    /**
+     * Returns true if there are states in vendor vault that can be undone.
+     *
+     * @return true if there are states in  vendor vault that can be undone, false otherwise.
+     */
+    boolean canUndoVendorVault();
+
 }
