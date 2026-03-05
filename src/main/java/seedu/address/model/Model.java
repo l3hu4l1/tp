@@ -97,24 +97,10 @@ public interface Model {
     void undoAddressBook();
 
     /**
-     * Redoes the last undone state in the vendor vault, restoring the address book to the state before the undo.
-     * TODO: TO BE IMPLEMENTED AFTER UNDO FUNCTIONALITY IS IMPLEMENTED
-     */
-    void redoAddressBook();
-
-    /**
      * Returns true if there are states in the vendor vault that can be undone.
      *
      * @return true if there are states in the vendor vault that can be undone, false otherwise.
      */
     boolean canUndoAddressBook();
-
-    /**
-     * Returns true if there are states in the vendor vault that can be redone.
-     * TODO: TO BE IMPLEMENTED AFTER UNDO FUNCTIONALITY IS IMPLEMENTED
-     *
-     * @return true if there are states in the vendor vault that can be redone, false otherwise.
-     */
-    boolean canRedoAddressBook();
 
 }

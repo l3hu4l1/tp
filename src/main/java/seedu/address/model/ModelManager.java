@@ -143,18 +143,8 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void redoAddressBook() {
-        versionedVendorVault.redo(addressBook);
-    }
-
-    @Override
     public boolean canUndoAddressBook() {
         return versionedVendorVault.canUndo();
-    }
-
-    @Override
-    public boolean canRedoAddressBook() {
-        return versionedVendorVault.canRedo();
     }
 
     @Override
