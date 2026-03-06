@@ -27,6 +27,21 @@ public class ParserUtilTest {
     private static final String INVALID_EMAIL = " ";
     private static final String INVALID_TAG = "#friend";
 
+    private static final String INVALID_SHORT_PHONE = "12 ";
+    private static final String INVALID_LONG_NAME = "This name is way too long and exceeds the "
+            + "maximum length allowed for a name in the vendor vault application. "
+            + "This name is way too long and exceeds the maximum length allowed for"
+            + "a name in the vendor vault application. This name is way too long "
+            + "and exceeds the maximum length allowed for a name in the vendor vault application.";
+    private static final String INVALID_LONG_ADDRESS = "This address is way too long and exceeds the"
+            + "maximum length allowed for an address in the vendor vault application. This "
+            + "address is way too long and exceeds the maximum length allowed for an "
+            + "address in the vendor vault application. This address is way too long "
+            + "and exceeds the maximum length allowed for an address in the vendor vault "
+            + "application. This address is way too long and exceeds the maximum length "
+            + "allowed for an address in the vendor vault application. This address is"
+            + "way too long and exceeds the maximum length allowed for an address in the vendor vault application. ";
+
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "123456";
     private static final String VALID_ADDRESS = "123 Main Street #0505";
@@ -80,6 +95,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseName_invalidLongName_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseName(INVALID_LONG_NAME));
+    }
+
+    @Test
     public void parsePhone_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parsePhone((String) null));
     }
@@ -103,6 +123,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parsePhone_invalidShortPhone_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parsePhone(INVALID_SHORT_PHONE));
+    }
+
+    @Test
     public void parseAddress_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseAddress((String) null));
     }
@@ -123,6 +148,11 @@ public class ParserUtilTest {
         String addressWithWhitespace = WHITESPACE + VALID_ADDRESS + WHITESPACE;
         Address expectedAddress = new Address(VALID_ADDRESS);
         assertEquals(expectedAddress, ParserUtil.parseAddress(addressWithWhitespace));
+    }
+
+    @Test
+    public void parseAddress_invalidLongAddress_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseAddress(INVALID_LONG_ADDRESS));
     }
 
     @Test

@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.logic.Messages.MESSAGE_ALL_PREFIXES_MISSING;
 import static seedu.address.logic.Messages.MESSAGE_MISSING_FIELD_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_MISSING_PREFIX;
@@ -43,6 +44,7 @@ import static seedu.address.logic.parser.ParserUtil.FIELD_ADDRESS;
 import static seedu.address.logic.parser.ParserUtil.FIELD_EMAIL;
 import static seedu.address.logic.parser.ParserUtil.FIELD_NAME;
 import static seedu.address.logic.parser.ParserUtil.FIELD_PHONE;
+import static seedu.address.logic.parser.ParserUtil.NEWLINE;
 import static seedu.address.testutil.TypicalPersons.AMY;
 import static seedu.address.testutil.TypicalPersons.BOB;
 
@@ -50,6 +52,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -213,7 +216,8 @@ public class AddCommandParserTest {
     }
 
     @Test
-    public void parse_softValidationWarnings_success() {
+    public void parse_softValidationWarnings_success() throws ParseException {
+        // invalid name, phone and email that trigger warnings but are still accepted by the parser
         Person expectedPerson = new PersonBuilder()
                 .withName(INVALID_NAME_WARN)
                 .withPhone(INVALID_PHONE_WARN)
@@ -228,6 +232,16 @@ public class AddCommandParserTest {
                 + INVALID_EMAIL_DESC_WARN
                 + ADDRESS_DESC_BOB;
 
-        assertParseSuccess(parser, input, expectedCommand);
+        AddCommand result = parser.parse(input);
+
+        assertEquals(expectedCommand, result);
+
+        String expectedWarnings =
+                Name.MESSAGE_WARN + NEWLINE
+                        + Phone.MESSAGE_WARN + NEWLINE
+                        + Email.MESSAGE_WARN;
+
+        assertEquals(expectedWarnings, result.getWarnings());
+
     }
 }

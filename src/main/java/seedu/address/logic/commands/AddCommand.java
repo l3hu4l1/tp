@@ -72,11 +72,20 @@ public class AddCommand extends Command {
 
         model.commitVendorVault();
 
-        if (!warnings.isEmpty()) {
-            warnings = NEWLINE + warnings;
-        }
+        String formattedWarnings = warnings.isEmpty() ? "" : NEWLINE + warnings;
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS + warnings, Messages.format(toAdd)));
+        return new CommandResult(
+                String.format(MESSAGE_SUCCESS + formattedWarnings, Messages.format(toAdd)));
+
+    }
+
+    /**
+     * Returns the warnings to show after successfully adding the person.
+     *
+     * @return the warnings to show
+     */
+    public String getWarnings() {
+        return warnings;
     }
 
     @Override

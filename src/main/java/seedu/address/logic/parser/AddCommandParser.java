@@ -39,6 +39,22 @@ public class AddCommandParser implements Parser<AddCommand> {
     private record RequiredField(Prefix prefix, String name) {}
 
     /**
+     * Throws a ParseException if any of the required prefixes are not present in the given
+     * {@code ArgumentMultimap} or non-empty preamble.
+     */
+    private void requireAddCommandPrefixes(ArgumentMultimap argMultimap) throws ParseException {
+        requirePrefixes(argMultimap,
+                new RequiredField(PREFIX_NAME, FIELD_NAME),
+                new RequiredField(PREFIX_PHONE, FIELD_PHONE),
+                new RequiredField(PREFIX_EMAIL, FIELD_EMAIL),
+                new RequiredField(PREFIX_ADDRESS, FIELD_ADDRESS)
+        );
+        if (!argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(MESSAGE_NON_PREFIX_BEFORE_PREFIX + AddCommand.MESSAGE_USAGE);
+        }
+    }
+
+    /**
      * Parses the given {@code String} of arguments in the context of the AddCommand
      * and returns an AddCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
@@ -47,21 +63,11 @@ public class AddCommandParser implements Parser<AddCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
 
-        requirePrefixes(argMultimap,
-                new RequiredField(PREFIX_NAME, FIELD_NAME),
-                new RequiredField(PREFIX_PHONE, FIELD_PHONE),
-                new RequiredField(PREFIX_EMAIL, FIELD_EMAIL),
-                new RequiredField(PREFIX_ADDRESS, FIELD_ADDRESS)
-        );
-
-        if (!argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(MESSAGE_NON_PREFIX_BEFORE_PREFIX + AddCommand.MESSAGE_USAGE);
-        }
+        requireAddCommandPrefixes(argMultimap);
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
 
         StringBuilder warnings = new StringBuilder();
-
         ParseResult<Name> nameResult = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         ParseResult<Phone> phoneResult = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         ParseResult<Email> email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
@@ -81,6 +87,10 @@ public class AddCommandParser implements Parser<AddCommand> {
         return new AddCommand(person);
     }
 
+    /**
+     * Appends the warning to the warnings StringBuilder if the warning is present.
+     * Each warning will be separated by a new line.
+     */
     private static void appendWarning(StringBuilder warnings, Optional<String> warning) {
         warning.ifPresent(w -> {
             if (!warnings.isEmpty()) {

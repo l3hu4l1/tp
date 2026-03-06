@@ -17,12 +17,8 @@ public class Name {
     public static final String MESSAGE_WARN =
             "⚠ Warning: Name contains unusual symbols, is this intentional?";
 
-    /*
-     * The first character of the address must not be a whitespace,
-     * otherwise " " (a blank string) becomes a valid input.
-     */
     public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} ]*";
-    public static final String SOFT_VALIDATION_REGEX = ".*\\S.*";
+    public static final String SOFT_VALIDATION_REGEX = "[^\\s].{0,255}";
 
     public final String fullName;
 

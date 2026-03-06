@@ -23,10 +23,20 @@ public class ParseResult<T> {
         this.warning = warning;
     }
 
+    /**
+     * Returns the parsed value of type T.
+     *
+     * @return the parsed value.
+     */
     public T getValue() {
         return value;
     }
 
+    /**
+     * Returns an optional string containing any warnings related to the parsing process.
+     *
+     * @return an optional warning string.
+     */
     public Optional<String> getWarning() {
         return warning;
     }
