@@ -21,11 +21,26 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
 public class ParserUtilTest {
-    private static final String INVALID_NAME = "R@chel";
-    private static final String INVALID_PHONE = "+651234";
+    private static final String INVALID_NAME = " ";
+    private static final String INVALID_PHONE = " ";
     private static final String INVALID_ADDRESS = " ";
-    private static final String INVALID_EMAIL = "example.com";
+    private static final String INVALID_EMAIL = " ";
     private static final String INVALID_TAG = "#friend";
+
+    private static final String INVALID_SHORT_PHONE = "12 ";
+    private static final String INVALID_LONG_NAME = "This name is way too long and exceeds the "
+            + "maximum length allowed for a name in the vendor vault application. "
+            + "This name is way too long and exceeds the maximum length allowed for"
+            + "a name in the vendor vault application. This name is way too long "
+            + "and exceeds the maximum length allowed for a name in the vendor vault application.";
+    private static final String INVALID_LONG_ADDRESS = "This address is way too long and exceeds the"
+            + "maximum length allowed for an address in the vendor vault application. This "
+            + "address is way too long and exceeds the maximum length allowed for an "
+            + "address in the vendor vault application. This address is way too long "
+            + "and exceeds the maximum length allowed for an address in the vendor vault "
+            + "application. This address is way too long and exceeds the maximum length "
+            + "allowed for an address in the vendor vault application. This address is"
+            + "way too long and exceeds the maximum length allowed for an address in the vendor vault application. ";
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "123456";
@@ -69,14 +84,19 @@ public class ParserUtilTest {
     @Test
     public void parseName_validValueWithoutWhitespace_returnsName() throws Exception {
         Name expectedName = new Name(VALID_NAME);
-        assertEquals(expectedName, ParserUtil.parseName(VALID_NAME));
+        assertEquals(expectedName, ParserUtil.parseName(VALID_NAME).getValue());
     }
 
     @Test
     public void parseName_validValueWithWhitespace_returnsTrimmedName() throws Exception {
         String nameWithWhitespace = WHITESPACE + VALID_NAME + WHITESPACE;
         Name expectedName = new Name(VALID_NAME);
-        assertEquals(expectedName, ParserUtil.parseName(nameWithWhitespace));
+        assertEquals(expectedName, ParserUtil.parseName(nameWithWhitespace).getValue());
+    }
+
+    @Test
+    public void parseName_invalidLongName_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseName(INVALID_LONG_NAME));
     }
 
     @Test
@@ -92,14 +112,19 @@ public class ParserUtilTest {
     @Test
     public void parsePhone_validValueWithoutWhitespace_returnsPhone() throws Exception {
         Phone expectedPhone = new Phone(VALID_PHONE);
-        assertEquals(expectedPhone, ParserUtil.parsePhone(VALID_PHONE));
+        assertEquals(expectedPhone, ParserUtil.parsePhone(VALID_PHONE).getValue());
     }
 
     @Test
     public void parsePhone_validValueWithWhitespace_returnsTrimmedPhone() throws Exception {
         String phoneWithWhitespace = WHITESPACE + VALID_PHONE + WHITESPACE;
         Phone expectedPhone = new Phone(VALID_PHONE);
-        assertEquals(expectedPhone, ParserUtil.parsePhone(phoneWithWhitespace));
+        assertEquals(expectedPhone, ParserUtil.parsePhone(phoneWithWhitespace).getValue());
+    }
+
+    @Test
+    public void parsePhone_invalidShortPhone_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parsePhone(INVALID_SHORT_PHONE));
     }
 
     @Test
@@ -126,6 +151,21 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseAddress_blankAddress_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseAddress("   "));
+    }
+
+    @Test
+    public void parseAddress_emptyString_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseAddress(""));
+    }
+
+    @Test
+    public void parseAddress_invalidLongAddress_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseAddress(INVALID_LONG_ADDRESS));
+    }
+
+    @Test
     public void parseEmail_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseEmail((String) null));
     }
@@ -138,14 +178,14 @@ public class ParserUtilTest {
     @Test
     public void parseEmail_validValueWithoutWhitespace_returnsEmail() throws Exception {
         Email expectedEmail = new Email(VALID_EMAIL);
-        assertEquals(expectedEmail, ParserUtil.parseEmail(VALID_EMAIL));
+        assertEquals(expectedEmail, ParserUtil.parseEmail(VALID_EMAIL).getValue());
     }
 
     @Test
     public void parseEmail_validValueWithWhitespace_returnsTrimmedEmail() throws Exception {
         String emailWithWhitespace = WHITESPACE + VALID_EMAIL + WHITESPACE;
         Email expectedEmail = new Email(VALID_EMAIL);
-        assertEquals(expectedEmail, ParserUtil.parseEmail(emailWithWhitespace));
+        assertEquals(expectedEmail, ParserUtil.parseEmail(emailWithWhitespace).getValue());
     }
 
     @Test

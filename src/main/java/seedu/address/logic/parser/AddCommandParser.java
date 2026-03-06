@@ -17,6 +17,7 @@ import static seedu.address.logic.parser.ParserUtil.FIELD_PHONE;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,22 @@ public class AddCommandParser implements Parser<AddCommand> {
     private record RequiredField(Prefix prefix, String name) {}
 
     /**
+     * Throws a ParseException if any of the required prefixes are not present in the given
+     * {@code ArgumentMultimap} or non-empty preamble.
+     */
+    private void requireAddCommandPrefixes(ArgumentMultimap argMultimap) throws ParseException {
+        requirePrefixes(argMultimap,
+                new RequiredField(PREFIX_NAME, FIELD_NAME),
+                new RequiredField(PREFIX_PHONE, FIELD_PHONE),
+                new RequiredField(PREFIX_EMAIL, FIELD_EMAIL),
+                new RequiredField(PREFIX_ADDRESS, FIELD_ADDRESS)
+        );
+        if (!argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(MESSAGE_NON_PREFIX_BEFORE_PREFIX + AddCommand.MESSAGE_USAGE);
+        }
+    }
+
+    /**
      * Parses the given {@code String} of arguments in the context of the AddCommand
      * and returns an AddCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
@@ -46,27 +63,41 @@ public class AddCommandParser implements Parser<AddCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
 
-        requirePrefixes(argMultimap,
-                new RequiredField(PREFIX_NAME, FIELD_NAME),
-                new RequiredField(PREFIX_PHONE, FIELD_PHONE),
-                new RequiredField(PREFIX_EMAIL, FIELD_EMAIL),
-                new RequiredField(PREFIX_ADDRESS, FIELD_ADDRESS)
-        );
-
-        if (!argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(MESSAGE_NON_PREFIX_BEFORE_PREFIX + AddCommand.MESSAGE_USAGE);
-        }
+        requireAddCommandPrefixes(argMultimap);
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
-        Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
-        Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
-        Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
+
+        StringBuilder warnings = new StringBuilder();
+        ParseResult<Name> nameResult = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
+        ParseResult<Phone> phoneResult = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
+        ParseResult<Email> email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-        Person person = new Person(name, phone, email, address, tagList);
+        Person person = new Person(
+                nameResult.getValue(), phoneResult.getValue(), email.getValue(), address, tagList);
+        appendWarning(warnings, nameResult.getWarning());
+        appendWarning(warnings, phoneResult.getWarning());
+        appendWarning(warnings, email.getWarning());
+
+        if (!warnings.isEmpty()) {
+            return new AddCommand(person, warnings.toString());
+        }
 
         return new AddCommand(person);
+    }
+
+    /**
+     * Appends the warning to the warnings StringBuilder if the warning is present.
+     * Each warning will be separated by a new line.
+     */
+    private static void appendWarning(StringBuilder warnings, Optional<String> warning) {
+        warning.ifPresent(w -> {
+            if (!warnings.isEmpty()) {
+                warnings.append("\n");
+            }
+            warnings.append(w);
+        });
     }
 
     /**
