@@ -1,8 +1,10 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
+import java.util.Optional;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
@@ -33,7 +35,9 @@ public class DeleteCommand extends Command {
     public static final String CONFIRMATION_DELETE_PERSON_MESSAGE =
             "Confirm (y) you want to delete the following person shown below:";
 
-    private static final boolean needConfirmation = true;
+    public static final String MESSAGE_DELETE_FAILURE = "Did not delete person";
+
+    private PendingConfirmation pendingConfirmation = new PendingConfirmation();
 
     private final Index targetIndex;
 
@@ -59,6 +63,22 @@ public class DeleteCommand extends Command {
         }
 
         Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
+
+        this.pendingConfirmation = new PendingConfirmation(() -> {
+            model.deletePerson(personToDelete);
+
+            model.commitVendorVault();
+            model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+            return Optional.of(new CommandResult(
+                    String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete))));
+        }, () -> {
+            model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+            return Optional.of(new CommandResult(
+                            String.format(MESSAGE_DELETE_FAILURE)
+            ));
+        }
+        );
+
         NameEqualsKeywordsPredicate predicate = new NameEqualsKeywordsPredicate(personToDelete);
         model.updateFilteredPersonList(predicate);
         return new CommandResult(CONFIRMATION_DELETE_PERSON_MESSAGE);
@@ -70,6 +90,11 @@ public class DeleteCommand extends Command {
         //
         //        return new CommandResult(
         //              String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
+    }
+
+    @Override
+    public PendingConfirmation getPendingConfirmation() {
+        return this.pendingConfirmation;
     }
 
     @Override
@@ -85,11 +110,6 @@ public class DeleteCommand extends Command {
 
         DeleteCommand otherDeleteCommand = (DeleteCommand) other;
         return targetIndex.equals(otherDeleteCommand.targetIndex);
-    }
-
-    @Override
-    public boolean needConfirmation() {
-        return needConfirmation;
     }
 
     @Override

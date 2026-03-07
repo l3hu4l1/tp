@@ -31,8 +31,6 @@ public class ArchiveCommand extends Command {
     public static final String MESSAGE_ARCHIVE_SUCCESS =
             "Archived Vendor: %1$s";
 
-    private static final boolean needConfirmation = false;
-
     private final Index targetIndex;
 
     /**
@@ -69,7 +67,7 @@ public class ArchiveCommand extends Command {
     }
 
     @Override
-    public boolean needConfirmation() {
-        return needConfirmation;
+    public PendingConfirmation getPendingConfirmation() {
+        return new PendingConfirmation();
     }
 }
