@@ -14,8 +14,6 @@ public class ListCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Listed all persons";
 
-    private static final boolean needConfirmation = false;
-
 
     @Override
     public CommandResult execute(Model model) {
@@ -25,7 +23,7 @@ public class ListCommand extends Command {
     }
 
     @Override
-    public boolean needConfirmation() {
-        return needConfirmation;
+    public PendingConfirmation getPendingConfirmation() {
+        return new PendingConfirmation();
     }
 }

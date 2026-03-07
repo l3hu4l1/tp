@@ -11,8 +11,6 @@ public class UndoCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Undo successful!";
     public static final String MESSAGE_FAILURE = "Nothing to undo.";
 
-    private static final boolean needConfirmation = false;
-
     @Override
     public CommandResult execute(Model model) throws CommandException {
         if (!model.canUndoVendorVault()) {
@@ -23,7 +21,7 @@ public class UndoCommand extends Command {
     }
 
     @Override
-    public boolean needConfirmation() {
-        return needConfirmation;
+    public PendingConfirmation getPendingConfirmation() {
+        return new PendingConfirmation();
     }
 }
