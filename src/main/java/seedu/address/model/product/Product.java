@@ -1,16 +1,13 @@
-package seedu.address.model.product.exceptions;
+package seedu.address.model.product;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Objects;
 
 import seedu.address.commons.util.ToStringBuilder;
-import seedu.address.model.product.Identifier;
-import seedu.address.model.product.Name;
-import seedu.address.model.product.Quantity;
 
 /**
- * Represents a Product in the address book.
+ * Represents a Product in the inventory.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Product {
@@ -45,7 +42,7 @@ public class Product {
     }
 
     /**
-     * Returns true if both products have the same name.
+     * Returns true if both products have the same identifier.
      * This defines a weaker notion of equality between two products.
      */
     public boolean isSameProduct(Product otherProduct) {
@@ -54,11 +51,11 @@ public class Product {
         }
 
         return otherProduct != null
-                && otherProduct.getName().equals(getName());
+                && otherProduct.getIdentifier().equals(getIdentifier());
     }
 
     /**
-     * Returns true if both products have the same identifier.
+     * Returns true if both products have the same identity and data fields.
      * This defines a stronger notion of equality between two products.
      */
     @Override
@@ -68,11 +65,14 @@ public class Product {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof Product otherProduct)) {
+        if (!(other instanceof Product)) {
             return false;
         }
 
-        return identifier.equals(otherProduct.identifier);
+        Product otherProduct = (Product) other;
+        return identifier.equals(otherProduct.identifier)
+                && name.equals(otherProduct.name)
+                && quantity.equals(otherProduct.quantity);
     }
 
     @Override
