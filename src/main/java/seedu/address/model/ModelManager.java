@@ -24,6 +24,7 @@ public class ModelManager implements Model {
     private final Inventory inventory;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
+    private final FilteredList<Product> filteredProducts;
     private final VersionedVendorVault versionedVendorVault;
 
 
@@ -40,6 +41,8 @@ public class ModelManager implements Model {
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersons.setPredicate(Model.PREDICATE_SHOW_ACTIVE_PERSONS);
+        filteredProducts = new FilteredList<>(this.inventory.getProductList());
+        filteredProducts.setPredicate(Model.PREDICATE_SHOW_ALL_PRODUCTS);
         versionedVendorVault = new VersionedVendorVault(addressBook);
     }
 
@@ -207,7 +210,21 @@ public class ModelManager implements Model {
         filteredPersons.setPredicate(predicate);
     }
 
-    //=========== VendorVaultVersionControl  ===================================================================
+    // =========== Filtered Product List Accessors =============================================================
+
+    @Override
+    public ObservableList<Product> getFilteredProductList() {
+        return filteredProducts;
+    }
+
+    @Override
+    public void updateFilteredProductList(Predicate<Product> predicate) {
+        requireNonNull(predicate);
+        filteredProducts.setPredicate(predicate);
+    }
+
+    // =========== VendorVaultVersionControl ===================================================================
+
     @Override
     public void commitVendorVault() {
         versionedVendorVault.commit(addressBook);
@@ -238,7 +255,8 @@ public class ModelManager implements Model {
         return addressBook.equals(otherModelManager.addressBook)
                 && inventory.equals(otherModelManager.inventory)
                 && userPrefs.equals(otherModelManager.userPrefs)
-                && filteredPersons.equals(otherModelManager.filteredPersons);
+                && filteredPersons.equals(otherModelManager.filteredPersons)
+                && filteredProducts.equals(otherModelManager.filteredProducts);
     }
 
 }
