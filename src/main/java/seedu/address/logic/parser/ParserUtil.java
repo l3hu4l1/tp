@@ -72,7 +72,7 @@ public class ParserUtil {
     }
 
     private static Optional<String> getPhoneWarning(String phone) throws ParseException {
-        if (phone.isBlank() || phone.length() < 3) {
+        if (phone.isBlank() || !Phone.isValidPhone(phone)) {
             throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
         }
 

@@ -82,6 +82,9 @@ Adds a person to the address book.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
 
+A person can have multiple phone numbers. To add multiple phone numbers, use:
+`add n/NAME p/PHONE_NUMBER_1 [([SPECIFICATIONS)], p/PHONE_NUMBER_2 [(SPECIFICATIONS)] e/EMAIL a/ADDRESS [t/TAG]…​`<br>
+
 <box type="tip" seamless>
 
 **Tip:** A person can have any number of tags (including 0)
@@ -89,6 +92,7 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
+* `add n/CompanyName p/61234567 (Office), 87654321 (HP) e/contact@company.com a/123, Clementi Rd, 1234665 t/business`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
 ### Listing all persons : `list`
