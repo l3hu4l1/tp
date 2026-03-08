@@ -25,7 +25,7 @@
 
         <Label text="QUANTITY"
                prefWidth="80"
-               alignment="CENTER_RIGHT"
+               alignment="CENTER_LEFT"
                style="-fx-text-fill: white;" />
 
     </HBox>

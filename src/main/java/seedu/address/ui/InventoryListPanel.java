@@ -9,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 
@@ -31,7 +30,7 @@ public class InventoryListPanel extends UiPart<Region> {
         super(FXML);
 
         ObservableList<String> fakeInventory = FXCollections.observableArrayList(
-                "Product A:001:25",
+                "Product AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:001:25",
                 "Product B:002:5000",
                 "Product C:003:999999",
                 "Product D:004:3"
@@ -84,12 +83,11 @@ public class InventoryListPanel extends UiPart<Region> {
                 Label qtyLabel = new Label(String.valueOf(qty));
 
                 idLabel.setPrefWidth(80);
-                nameLabel.setPrefWidth(200);
+                nameLabel.setPrefWidth(400);
 
                 nameLabel.setTextFill(Color.WHITE);
                 idLabel.setTextFill(Color.LIGHTGRAY);
 
-                // quantity pill sizing
                 qtyLabel.setAlignment(Pos.CENTER);
                 qtyLabel.setMinWidth(40);
                 qtyLabel.setPrefWidth(Region.USE_COMPUTED_SIZE);
@@ -111,10 +109,7 @@ public class InventoryListPanel extends UiPart<Region> {
                     );
                 }
 
-                Region spacer = new Region();
-                HBox.setHgrow(spacer, Priority.ALWAYS);
-
-                HBox row = new HBox(idLabel, nameLabel, spacer, qtyLabel);
+                HBox row = new HBox(idLabel, nameLabel, qtyLabel);
                 row.setSpacing(20);
                 row.setStyle("-fx-padding: 10 20 10 20;");
                 row.setAlignment(Pos.CENTER_LEFT);
