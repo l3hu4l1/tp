@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PRODUCTS;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
@@ -124,6 +125,22 @@ public class ModelManagerTest {
         modelManager.addProduct(OIL);
         assertTrue(modelManager.hasProduct(OIL));
     }
+
+    @Test
+    public void updateFilteredProductList_filtersProductList() {
+        modelManager.addProduct(OIL);
+        modelManager.addProduct(RICE);
+        modelManager.updateFilteredProductList(product -> product.getIdentifier().equals(OIL.getIdentifier()));
+
+        assertEquals(1, modelManager.getFilteredProductList().size());
+        assertEquals(OIL, modelManager.getFilteredProductList().get(0));
+    }
+
+    @Test
+    public void getFilteredProductList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> modelManager.getFilteredProductList().remove(0));
+    }
+
     @Test
     public void equals() {
         AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
@@ -164,5 +181,17 @@ public class ModelManagerTest {
         ModelManager modelManagerWithProduct = new ModelManager(addressBook, userPrefs);
         modelManagerWithProduct.addProduct(OIL);
         assertFalse(modelManager.equals(modelManagerWithProduct));
+
+        // different filteredProductList -> returns false
+        ModelManager modelManagerWithFilteredProducts = new ModelManager(addressBook, userPrefs);
+        modelManagerWithFilteredProducts.addProduct(OIL);
+        modelManagerWithFilteredProducts.addProduct(RICE);
+        modelManagerWithFilteredProducts.updateFilteredProductList(
+            product -> product.getIdentifier().equals(OIL.getIdentifier()));
+        ModelManager modelManagerWithAllProductsShown = new ModelManager(addressBook, userPrefs);
+        modelManagerWithAllProductsShown.addProduct(OIL);
+        modelManagerWithAllProductsShown.addProduct(RICE);
+        modelManagerWithAllProductsShown.updateFilteredProductList(PREDICATE_SHOW_ALL_PRODUCTS);
+        assertFalse(modelManagerWithFilteredProducts.equals(modelManagerWithAllProductsShown));
     }
 }
