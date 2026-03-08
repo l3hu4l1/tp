@@ -9,6 +9,8 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_WARN;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_WARN;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.parser.ParserUtil.NEWLINE;
+import static seedu.address.model.person.warnings.DuplicatePersonWarning.MESSAGE_SIMILAR_ADDRESS;
+import static seedu.address.model.person.warnings.DuplicatePersonWarning.MESSAGE_SIMILAR_NAME;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 
@@ -30,7 +32,6 @@ import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
 import seedu.address.testutil.PersonBuilder;
 
 public class AddCommandTest {
@@ -68,6 +69,7 @@ public class AddCommandTest {
 
         Person validPersonWithWarnings = new PersonBuilder()
                 .withName(INVALID_NAME_WARN)
+                .withPhone(INVALID_PHONE_WARN)
                 .withEmail(INVALID_EMAIL_WARN)
                 .withAddress(VALID_ADDRESS_BOB)
                 .build();
@@ -98,7 +100,7 @@ public class AddCommandTest {
 
         // Try to add a person with similar name (different case/spacing)
         Person newPerson = new PersonBuilder()
-                .withName("john  doe")  // different spacing and case
+                .withName("john  doe")
                 .withEmail("different@example.com")
                 .withPhone("99999999")
                 .build();
@@ -106,7 +108,7 @@ public class AddCommandTest {
 
         CommandResult result = addCommand.execute(modelStub);
 
-        assertTrue(result.getFeedbackToUser().contains(AddCommand.MESSAGE_SIMILAR_NAME));
+        assertTrue(result.getFeedbackToUser().contains(String.format(MESSAGE_SIMILAR_NAME, existingPerson.getName())));
         assertEquals(CommandResult.FEEDBACK_TYPE_WARN, result.getFeedbackType());
     }
 
@@ -120,7 +122,7 @@ public class AddCommandTest {
 
         // Try to add a person with partial name match
         Person newPerson = new PersonBuilder()
-                .withName("John Doe")  // substring of existing name
+                .withName("John Doe")
                 .withEmail("different@example.com")
                 .withPhone("99999999")
                 .build();
@@ -128,7 +130,7 @@ public class AddCommandTest {
 
         CommandResult result = addCommand.execute(modelStub);
 
-        assertTrue(result.getFeedbackToUser().contains(AddCommand.MESSAGE_SIMILAR_NAME));
+        assertTrue(result.getFeedbackToUser().contains(String.format(MESSAGE_SIMILAR_NAME, existingPerson.getName())));
         assertEquals(CommandResult.FEEDBACK_TYPE_WARN, result.getFeedbackType());
     }
 
@@ -136,7 +138,6 @@ public class AddCommandTest {
     public void execute_similarAddress_warningShown() throws Exception {
         ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
 
-        // Add a person first
         Person existingPerson = new PersonBuilder()
                 .withAddress("123 Main Street Block A")
                 .build();
@@ -147,13 +148,14 @@ public class AddCommandTest {
                 .withName("Different Name")
                 .withEmail("different@example.com")
                 .withPhone("99999999")
-                .withAddress("123 Main Street")  // partial match
+                .withAddress("123 Main Street")
                 .build();
         AddCommand addCommand = new AddCommand(newPerson);
 
         CommandResult result = addCommand.execute(modelStub);
 
-        assertTrue(result.getFeedbackToUser().contains(AddCommand.MESSAGE_SIMILAR_ADDRESS));
+        assertTrue(result.getFeedbackToUser().contains(String.format(
+                MESSAGE_SIMILAR_ADDRESS, existingPerson.getName(), existingPerson.getAddress())));
         assertEquals(CommandResult.FEEDBACK_TYPE_WARN, result.getFeedbackType());
     }
 
