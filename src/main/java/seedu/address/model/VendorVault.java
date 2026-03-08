@@ -2,6 +2,8 @@ package seedu.address.model;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
+
 import javafx.collections.ObservableList;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.person.Person;
@@ -99,6 +101,6 @@ public class VendorVault implements ReadOnlyVendorVault {
 
     @Override
     public int hashCode() {
-        return addressBook.hashCode() * 31 + inventory.hashCode();
+        return Objects.hash(addressBook, inventory);
     }
 }
