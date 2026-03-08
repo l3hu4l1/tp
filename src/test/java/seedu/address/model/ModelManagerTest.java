@@ -7,6 +7,7 @@ import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
+import static seedu.address.testutil.TypicalProducts.getTypicalInventory;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,6 +28,7 @@ public class ModelManagerTest {
         assertEquals(new UserPrefs(), modelManager.getUserPrefs());
         assertEquals(new GuiSettings(), modelManager.getGuiSettings());
         assertEquals(new AddressBook(), new AddressBook(modelManager.getAddressBook()));
+        assertEquals(new Inventory(), new Inventory(modelManager.getInventory()));
     }
 
     @Test
@@ -70,6 +72,18 @@ public class ModelManagerTest {
         Path path = Paths.get("address/book/file/path");
         modelManager.setAddressBookFilePath(path);
         assertEquals(path, modelManager.getAddressBookFilePath());
+    }
+
+    @Test
+    public void setInventory_nullInventory_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.setInventory(null));
+    }
+
+    @Test
+    public void setInventory_validInventory_replacesInventoryData() {
+        Inventory inventory = getTypicalInventory();
+        modelManager.setInventory(inventory);
+        assertEquals(inventory, new Inventory(modelManager.getInventory()));
     }
 
     @Test
@@ -128,5 +142,10 @@ public class ModelManagerTest {
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setAddressBookFilePath(Paths.get("differentFilePath"));
         assertFalse(modelManager.equals(new ModelManager(addressBook, differentUserPrefs)));
+
+        // different inventory -> returns false
+        ModelManager modelManagerWithProduct = new ModelManager(addressBook, userPrefs);
+        modelManagerWithProduct.addProduct(OIL);
+        assertFalse(modelManager.equals(modelManagerWithProduct));
     }
 }
