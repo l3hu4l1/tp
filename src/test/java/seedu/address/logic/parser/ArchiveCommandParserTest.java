@@ -14,7 +14,7 @@ public class ArchiveCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsArchiveCommand() throws Exception {
-        ArchiveCommand command = parser.parse("vendor 1");
+        ArchiveCommand command = parser.parse("1");
         assertTrue(command instanceof ArchiveCommand);
     }
 
@@ -25,6 +25,6 @@ public class ArchiveCommandParserTest {
 
     @Test
     public void parse_invalidIndex_throwsParseException() {
-        assertThrows(ParseException.class, () -> parser.parse("vendor a"));
+        assertThrows(ParseException.class, () -> parser.parse("a"));
     }
 }
