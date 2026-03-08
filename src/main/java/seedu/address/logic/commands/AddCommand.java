@@ -7,12 +7,15 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.ParserUtil.NEWLINE;
+import static seedu.address.model.person.warnings.DuplicatePersonWarning.MESSAGE_SIMILAR_ADDRESS;
+import static seedu.address.model.person.warnings.DuplicatePersonWarning.MESSAGE_SIMILAR_NAME;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.warnings.DuplicatePersonWarning;
 
 /**
  * Adds a person to the address book.
@@ -69,12 +72,14 @@ public class AddCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
-        model.addPerson(toAdd);
+        StringBuilder allWarnings = new StringBuilder(warnings);
+        checkForSimilarContacts(model, allWarnings);
 
+        model.addPerson(toAdd);
         model.commitVendorVault();
 
-        String formattedWarnings = warnings.isEmpty() ? "" : NEWLINE + warnings;
-        String feedbackType = warnings.isEmpty()
+        String formattedWarnings = allWarnings.isEmpty() ? "" : NEWLINE + allWarnings;
+        String feedbackType = allWarnings.isEmpty()
                 ? CommandResult.FEEDBACK_TYPE_SUCCESS
                 : CommandResult.FEEDBACK_TYPE_WARN;
 
@@ -82,6 +87,46 @@ public class AddCommand extends Command {
                 String.format(MESSAGE_SUCCESS + formattedWarnings, Messages.format(toAdd)),
                 feedbackType);
 
+    }
+
+    /**
+     * Checks for similar contacts in the model and appends warnings if found.
+     */
+    private void checkForSimilarContacts(Model model, StringBuilder warnings) {
+        boolean hasSimilarName = false;
+        boolean hasSimilarAddress = false;
+
+        for (Person existingPerson : model.getFilteredPersonList()) {
+            DuplicatePersonWarning duplicateWarning = toAdd.isSamePersonWarn(existingPerson);
+
+            if (!duplicateWarning.getValue()) {
+                continue;
+            }
+
+            String warning = duplicateWarning.getWarning();
+            if (warning.equals(MESSAGE_SIMILAR_NAME) && !hasSimilarName) {
+                appendWarning(warnings, String.format(MESSAGE_SIMILAR_NAME, existingPerson.getName()));
+                hasSimilarName = true;
+
+            } else if (warning.equals(MESSAGE_SIMILAR_ADDRESS) && !hasSimilarAddress) {
+                appendWarning(warnings, String.format(
+                        MESSAGE_SIMILAR_ADDRESS,
+                        existingPerson.getName(),
+                        existingPerson.getAddress()));
+                hasSimilarAddress = true;
+            }
+
+            if (hasSimilarName && hasSimilarAddress) {
+                break;
+            }
+        }
+    }
+
+    private void appendWarning(StringBuilder warnings, String message) {
+        if (warnings.length() > 0) {
+            warnings.append(NEWLINE);
+        }
+        warnings.append(message);
     }
 
     @Override

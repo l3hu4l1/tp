@@ -68,14 +68,12 @@ public class AddCommandTest {
 
         Person validPersonWithWarnings = new PersonBuilder()
                 .withName(INVALID_NAME_WARN)
-                .withPhone(INVALID_PHONE_WARN)
                 .withEmail(INVALID_EMAIL_WARN)
                 .withAddress(VALID_ADDRESS_BOB)
                 .build();
 
         String warnings =
                 Name.MESSAGE_WARN + NEWLINE
-                        + Phone.MESSAGE_WARN + NEWLINE
                         + Email.MESSAGE_WARN;
         AddCommand addCommand = new AddCommand(validPersonWithWarnings, warnings);
 
@@ -87,6 +85,75 @@ public class AddCommandTest {
                 Messages.format(validPersonWithWarnings));
 
         assertEquals(expectedMessage, result.getFeedbackToUser());
+        assertEquals(CommandResult.FEEDBACK_TYPE_WARN, result.getFeedbackType());
+    }
+
+    @Test
+    public void execute_similarName_warningShown() throws Exception {
+        ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
+
+        // Add a person first
+        Person existingPerson = new PersonBuilder().withName("John Doe").build();
+        modelStub.addPerson(existingPerson);
+
+        // Try to add a person with similar name (different case/spacing)
+        Person newPerson = new PersonBuilder()
+                .withName("john  doe")  // different spacing and case
+                .withEmail("different@example.com")
+                .withPhone("99999999")
+                .build();
+        AddCommand addCommand = new AddCommand(newPerson);
+
+        CommandResult result = addCommand.execute(modelStub);
+
+        assertTrue(result.getFeedbackToUser().contains(AddCommand.MESSAGE_SIMILAR_NAME));
+        assertEquals(CommandResult.FEEDBACK_TYPE_WARN, result.getFeedbackType());
+    }
+
+    @Test
+    public void execute_partialNameMatch_warningShown() throws Exception {
+        ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
+
+        // Add a person first
+        Person existingPerson = new PersonBuilder().withName("John Doe Smith").build();
+        modelStub.addPerson(existingPerson);
+
+        // Try to add a person with partial name match
+        Person newPerson = new PersonBuilder()
+                .withName("John Doe")  // substring of existing name
+                .withEmail("different@example.com")
+                .withPhone("99999999")
+                .build();
+        AddCommand addCommand = new AddCommand(newPerson);
+
+        CommandResult result = addCommand.execute(modelStub);
+
+        assertTrue(result.getFeedbackToUser().contains(AddCommand.MESSAGE_SIMILAR_NAME));
+        assertEquals(CommandResult.FEEDBACK_TYPE_WARN, result.getFeedbackType());
+    }
+
+    @Test
+    public void execute_similarAddress_warningShown() throws Exception {
+        ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
+
+        // Add a person first
+        Person existingPerson = new PersonBuilder()
+                .withAddress("123 Main Street Block A")
+                .build();
+        modelStub.addPerson(existingPerson);
+
+        // Try to add a person with similar address (partial match)
+        Person newPerson = new PersonBuilder()
+                .withName("Different Name")
+                .withEmail("different@example.com")
+                .withPhone("99999999")
+                .withAddress("123 Main Street")  // partial match
+                .build();
+        AddCommand addCommand = new AddCommand(newPerson);
+
+        CommandResult result = addCommand.execute(modelStub);
+
+        assertTrue(result.getFeedbackToUser().contains(AddCommand.MESSAGE_SIMILAR_ADDRESS));
         assertEquals(CommandResult.FEEDBACK_TYPE_WARN, result.getFeedbackType());
     }
 
@@ -265,6 +332,11 @@ public class AddCommandTest {
         public void addPerson(Person person) {
             requireNonNull(person);
             personsAdded.add(person);
+        }
+
+        @Override
+        public ObservableList<Person> getFilteredPersonList() {
+            return javafx.collections.FXCollections.observableArrayList(personsAdded);
         }
 
         @Override

@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.logic.parser.ParserUtil;
+import seedu.address.model.person.warnings.DuplicatePersonWarning;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -17,6 +19,9 @@ import seedu.address.model.tag.Tag;
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Person {
+
+    private static final String PHONE_SPECIFICATIONS_SEPARATOR = "(";
+    private static final String WHITESPACE_REGEX = "\\s+";
 
     // Identity fields
     private final Name name;
@@ -86,7 +91,7 @@ public class Person {
     }
 
     private static Set<String> getNormalizedPhoneEntries(String phoneValue) {
-        return Arrays.stream(phoneValue.split(","))
+        return Arrays.stream(phoneValue.split(ParserUtil.COMMA_SEPARATOR))
                 .map(String::trim)
                 .filter(entry -> !entry.isEmpty())
                 .map(Person::extractPhoneNumberPart)
@@ -94,11 +99,60 @@ public class Person {
     }
 
     private static String extractPhoneNumberPart(String phoneEntry) {
-        int specificationStart = phoneEntry.indexOf('(');
+        int specificationStart = phoneEntry.indexOf(PHONE_SPECIFICATIONS_SEPARATOR);
         if (specificationStart == -1) {
             return phoneEntry;
         }
         return phoneEntry.substring(0, specificationStart).trim();
+    }
+
+    /**
+     * Returns true if both contacts have similar characteristics that warrant a warning.
+     * Checks for:
+     * 1. Similar names (case-insensitive or normalized whitespace match or overlapping name parts)
+     * 2. Similar addresses (partial substring match)
+     */
+    public DuplicatePersonWarning isSamePersonWarn(Person otherPerson) {
+        if (hasSimilarName(otherPerson)) {
+            return new DuplicatePersonWarning(true, DuplicatePersonWarning.MESSAGE_SIMILAR_NAME);
+        }
+
+        return new DuplicatePersonWarning(
+                hasSimilarAddress(otherPerson),
+                DuplicatePersonWarning.MESSAGE_SIMILAR_ADDRESS);
+    }
+
+    private boolean hasSimilarName(Person otherPerson) {
+        String thisName = normalizeName(this.name.fullName);
+        String otherName = normalizeName(otherPerson.getName().fullName);
+
+        if (thisName.equals(otherName)) {
+            return true;
+        }
+
+        String[] thisParts = thisName.split(ParserUtil.SPACE_SEPARATOR);
+        String[] otherParts = otherName.split(ParserUtil.SPACE_SEPARATOR);
+
+        Set<String> nameParts = new HashSet<>(Arrays.asList(thisParts));
+
+        for (String part : otherParts) {
+            if (nameParts.contains(part)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static String normalizeName(String name) {
+        return name.toLowerCase().trim().replaceAll(WHITESPACE_REGEX, " ");
+    }
+
+    private boolean hasSimilarAddress(Person otherPerson) {
+        String thisAddress = this.address.value.toLowerCase().trim();
+        String otherAddress = otherPerson.getAddress().value.toLowerCase().trim();
+
+        return thisAddress.contains(otherAddress) || otherAddress.contains(thisAddress);
     }
 
     /**

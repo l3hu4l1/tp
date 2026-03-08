@@ -26,6 +26,7 @@ public class ParserUtil {
     public static final String FIELD_EMAIL = "email";
     public static final String FIELD_ADDRESS = "address";
     public static final String COMMA_SEPARATOR = ", ";
+    public static final String SPACE_SEPARATOR = " ";
     public static final String NEWLINE = "\n";
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
 
