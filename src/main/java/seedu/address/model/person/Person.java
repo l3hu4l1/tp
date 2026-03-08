@@ -2,10 +2,12 @@ package seedu.address.model.person;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Tag;
@@ -63,8 +65,9 @@ public class Person {
 
     /**
      * Returns true if both contacts are considered the same
-     * Returns true if both persons have the same name.
-     * This defines a weaker notion of equality between two persons.
+     * 1. They have the same email
+     * 2. They have the same phone number or same as at least one of comma-separated phone numbers
+     * Note: The (specification) part of the phone number is ignored when comparing phone numbers.
      */
     public boolean isSamePerson(Person otherPerson) {
         if (otherPerson == this) {
@@ -72,7 +75,30 @@ public class Person {
         }
 
         return otherPerson != null
-                && otherPerson.getName().equals(getName());
+                && (otherPerson.getEmail().equals(getEmail())
+                || hasOverlappingPhoneEntry(otherPerson));
+    }
+
+    private boolean hasOverlappingPhoneEntry(Person otherPerson) {
+        Set<String> currentPhoneEntries = getNormalizedPhoneEntries(phone.value);
+        Set<String> otherPhoneEntries = getNormalizedPhoneEntries(otherPerson.getPhone().value);
+        return currentPhoneEntries.stream().anyMatch(otherPhoneEntries::contains);
+    }
+
+    private static Set<String> getNormalizedPhoneEntries(String phoneValue) {
+        return Arrays.stream(phoneValue.split(","))
+                .map(String::trim)
+                .filter(entry -> !entry.isEmpty())
+                .map(Person::extractPhoneNumberPart)
+                .collect(Collectors.toSet());
+    }
+
+    private static String extractPhoneNumberPart(String phoneEntry) {
+        int specificationStart = phoneEntry.indexOf('(');
+        if (specificationStart == -1) {
+            return phoneEntry;
+        }
+        return phoneEntry.substring(0, specificationStart).trim();
     }
 
     /**
