@@ -7,6 +7,7 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.address.logic.commands.DeleteCommand.CONFIRMATION_DELETE_PERSON_MESSAGE;
+import static seedu.address.logic.commands.DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON_STRING;
@@ -204,6 +205,38 @@ public class DeleteCommandTest {
         DeleteCommand deleteCommand = new DeleteCommand(outOfBoundIndex.toString(), true);
 
         assertCommandFailure(deleteCommand, model, format_exception_message(model));
+    }
+
+    @Test
+    public void execute_validIndexNoConfirmation_deletesPerson() {
+        Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON_STRING, false);
+
+        CommandResult result;
+        try {
+            result = deleteCommand.execute(model);
+        } catch (CommandException ce) {
+            throw new AssertionError("Execution of command should not fail.", ce);
+        }
+        assertEquals(String.format(MESSAGE_DELETE_PERSON_SUCCESS,
+                Messages.format(personToDelete)), result.getFeedbackToUser());
+        assertFalse(model.hasPerson(personToDelete));
+    }
+
+    @Test
+    public void execute_validIndexWithConfirmation_showsConfirmationMessage() {
+        Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON_STRING, true);
+
+        CommandResult result;
+        try {
+            result = deleteCommand.execute(model);
+        } catch (CommandException ce) {
+            throw new AssertionError("Execution of command should not fail.", ce);
+        }
+
+        assertEquals(CONFIRMATION_DELETE_PERSON_MESSAGE, result.getFeedbackToUser());
+        assertTrue(model.hasPerson(personToDelete));
     }
 
     @Test
