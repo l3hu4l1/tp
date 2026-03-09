@@ -36,7 +36,7 @@ public class InventoryListPanel extends UiPart<Region> {
 
     private static final int ID_WIDTH = 50;
     private static final int QTY_COLUMN_WIDTH = 80;
-    private static final int NAME_COLUMN_MIN_WIDTH = 40;
+    private static final int NAME_COLUMN_MIN_WIDTH = 80;
 
     @FXML
     private ListView<Product> inventoryListView;
