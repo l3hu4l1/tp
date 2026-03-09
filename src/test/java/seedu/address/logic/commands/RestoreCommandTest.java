@@ -6,7 +6,6 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
@@ -28,7 +27,7 @@ public class RestoreCommandTest {
 
         model.archivePerson(vendor);
 
-        RestoreCommand restoreCommand = new RestoreCommand(Index.fromOneBased(1));
+        RestoreCommand restoreCommand = new RestoreCommand(vendor.getEmail().value);
 
         restoreCommand.execute(model);
 
@@ -39,7 +38,7 @@ public class RestoreCommandTest {
 
     @Test
     public void getPendingConfirmation_returnsInactivePendingConfirmation() {
-        RestoreCommand restoreCommand = new RestoreCommand(Index.fromOneBased(1));
+        RestoreCommand restoreCommand = new RestoreCommand(TypicalPersons.getTypicalPersons().get(0).getEmail().value);
         PendingConfirmation pendingConfirmation = restoreCommand.getPendingConfirmation();
         assertFalse(pendingConfirmation.getNeedConfirmation());
     }
@@ -48,7 +47,7 @@ public class RestoreCommandTest {
     public void execute_invalidIndex_throwsCommandException() {
         Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
-        RestoreCommand command = new RestoreCommand(Index.fromOneBased(1));
+        RestoreCommand command = new RestoreCommand("nonexistent@example.com");
 
         assertThrows(CommandException.class, () -> command.execute(model));
     }

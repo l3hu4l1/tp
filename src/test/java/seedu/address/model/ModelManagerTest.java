@@ -23,7 +23,6 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.product.exceptions.DuplicateProductException;
 import seedu.address.model.product.exceptions.ProductNotFoundException;
-import seedu.address.model.util.SampleInventoryDataUtil;
 import seedu.address.testutil.AddressBookBuilder;
 
 public class ModelManagerTest {
@@ -284,7 +283,7 @@ public class ModelManagerTest {
     public void setInventory_success() {
         ModelManager modelManager = new ModelManager(new AddressBook(), new UserPrefs());
 
-        Inventory inventory = SampleInventoryDataUtil.getSampleInventory();
+        Inventory inventory = new Inventory();
         modelManager.setInventory(inventory);
 
         assertEquals(inventory, modelManager.getInventory());
