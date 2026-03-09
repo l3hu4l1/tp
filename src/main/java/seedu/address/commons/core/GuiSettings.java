@@ -1,6 +1,7 @@
 package seedu.address.commons.core;
 
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.io.Serializable;
@@ -19,7 +20,14 @@ public class GuiSettings implements Serializable {
 
     // default to the screen size of the user's device
     private static final boolean DEFAULT_FULL_SCREEN = true;
-    private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private static final Dimension screenSize;
+    static {
+        if (GraphicsEnvironment.isHeadless()) {
+            screenSize = new Dimension((int) MIN_WIDTH, (int) MIN_HEIGHT);
+        } else {
+            screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        }
+    }
     private static final double DEFAULT_HEIGHT = screenSize.getHeight();
     private static final double DEFAULT_WIDTH = screenSize.getWidth();
 
