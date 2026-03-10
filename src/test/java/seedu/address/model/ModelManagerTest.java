@@ -228,7 +228,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void archiveProduct_updatesFilteredList() {
+    public void archiveProduct_setsArchivedFlag() {
         ModelManager model = new ModelManager(new AddressBook(), new UserPrefs());
         Product product = new ProductBuilder().build();
 
@@ -237,6 +237,45 @@ public class ModelManagerTest {
 
         assertTrue(model.getInventory().getProductList().get(0).isArchived());
     }
+
+    @Test
+    public void constructor_productsFilteredCorrectly() {
+        ModelManager model = new ModelManager(new AddressBook(), new UserPrefs());
+
+        Product product = new ProductBuilder().build();
+        model.addProduct(product);
+
+        assertEquals(1, model.getFilteredProductList().size());
+    }
+
+    @Test
+    public void archiveProduct_updatesFilteredList() {
+        ModelManager model = new ModelManager(new AddressBook(), new UserPrefs());
+
+        Product product = new ProductBuilder().build();
+        model.addProduct(product);
+
+        model.archiveProduct(product);
+
+        assertEquals(0, model.getFilteredProductList().size());
+    }
+
+    @Test
+    public void restoreProduct_updatesFilteredList() {
+        ModelManager model = new ModelManager(new AddressBook(), new UserPrefs());
+
+        Product product = new ProductBuilder().build();
+        model.addProduct(product);
+
+        model.archiveProduct(product);
+
+        Product archived = model.getInventory().getProductList().get(0);
+
+        model.restoreProduct(archived);
+
+        assertEquals(1, model.getFilteredProductList().size());
+    }
+
 
     @Test
     public void equals() {
