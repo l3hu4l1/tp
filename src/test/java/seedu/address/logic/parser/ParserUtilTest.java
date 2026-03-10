@@ -29,9 +29,6 @@ public class ParserUtilTest {
     private static final String INVALID_EMAIL = "example.com";
     private static final String INVALID_BLANK_EMAIL = " ";
     private static final String INVALID_TAG = "#friend";
-    private static final String INVALID_IDENTIFIER = " ";
-    private static final String INVALID_PRODUCT_NAME = " ";
-    private static final String INVALID_QUANTITY = "-1";
 
     private static final String INVALID_SHORT_PHONE = "12 ";
     private static final String INVALID_LONG_NAME = "This name is way too long and exceeds the "
@@ -47,7 +44,6 @@ public class ParserUtilTest {
             + "application. This address is way too long and exceeds the maximum length "
             + "allowed for an address in the vendor vault application. This address is"
             + "way too long and exceeds the maximum length allowed for an address in the vendor vault application. ";
-    private static final String INVALID_LONG_PRODUCT_NAME = "a".repeat(257);
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "123456";
@@ -55,11 +51,19 @@ public class ParserUtilTest {
     private static final String VALID_EMAIL = "rachel@example.com";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
+
     private static final String VALID_IDENTIFIER = "SKU-1001";
     private static final String VALID_PRODUCT_NAME = "Brown Rice 5kg";
     private static final String VALID_QUANTITY = "24";
     private static final String VALID_IDENTIFIER_WARN = "SKU 1001";
     private static final String VALID_PRODUCT_NAME_WARN = "apple juice 5% sugar";
+
+    private static final String INVALID_IDENTIFIER = " ";
+    private static final String INVALID_PRODUCT_NAME = " ";
+    private static final String INVALID_QUANTITY = "-1";
+
+    private static final String INVALID_LONG_IDENTIFIER = "a".repeat(257);
+    private static final String INVALID_LONG_PRODUCT_NAME = "a".repeat(257);
 
     private static final String WHITESPACE = " \t\r\n";
 
@@ -303,6 +307,11 @@ public class ParserUtilTest {
     public void parseIdentifier_warnValue_returnsWarning() throws Exception {
         assertEquals(Identifier.MESSAGE_WARN,
                 ParserUtil.parseIdentifier(VALID_IDENTIFIER_WARN).getWarning().orElse(""));
+    }
+
+    @Test
+    public void parseIdentifier_invalidLongIdentifier_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseIdentifier(INVALID_LONG_IDENTIFIER));
     }
 
     @Test
