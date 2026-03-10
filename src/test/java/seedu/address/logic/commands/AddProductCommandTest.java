@@ -224,6 +224,16 @@ public class AddProductCommandTest {
         }
 
         @Override
+        public void archiveProduct(Product product) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void restoreProduct(Product product) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public ObservableList<Product> getFilteredProductList() {
             throw new AssertionError("This method should not be called.");
         }
