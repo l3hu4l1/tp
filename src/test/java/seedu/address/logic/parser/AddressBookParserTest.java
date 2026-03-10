@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.ArchiveProductCommand;
 import seedu.address.logic.commands.CancelCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.Command;
@@ -29,6 +30,7 @@ import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.ListProductsCommand;
 import seedu.address.logic.commands.PendingConfirmation;
+import seedu.address.logic.commands.RestoreProductCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
@@ -145,5 +147,17 @@ public class AddressBookParserTest {
         Command command = parser.parseCommand("listproducts", new PendingConfirmation());
 
         assertTrue(command instanceof ListProductsCommand);
+      
+    public void parseCommand_archiveProduct() throws Exception {
+        Command command = parser.parseCommand("archiveproduct id/coffee", new PendingConfirmation());
+
+        assertTrue(command instanceof ArchiveProductCommand);
+    }
+
+    @Test
+    public void parseCommand_restoreProduct() throws Exception {
+        Command command = parser.parseCommand("restoreproduct id/coffee", new PendingConfirmation());
+
+        assertTrue(command instanceof RestoreProductCommand);
     }
 }
