@@ -114,6 +114,7 @@ public class EditCommand extends Command {
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        model.commitVendorVault();
 
         String formattedWarnings = allWarnings.isEmpty() ? "" : NEWLINE + allWarnings;
         String feedbackType = allWarnings.isEmpty()
