@@ -108,9 +108,14 @@ Format: `help`
 
 #### Adding a contact: `add`
 
-Adds a contact to the address book.
+Adds a contact to VendorVault.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
+
+<panel header="Why isn't it working?" type="seamless">
+You can transfer your VendorVault data by copying the data file
+from your old computer to the new one.
+</panel>
 
 A contact can have multiple phone numbers. To add multiple phone numbers, use:
 `add n/NAME p/PHONE_NUMBER_1 [([SPECIFICATIONS)], p/PHONE_NUMBER_2 [(SPECIFICATIONS)] e/EMAIL a/ADDRESS [t/TAG]…​`<br>
@@ -271,14 +276,14 @@ _Details coming soon ..._
 
 ## Command summary
 
-| Action          | Format, Examples                                                                                                                                                      |
-|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Add**         | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague` |
-| **Clear**       | `clear`                                                                                                                                                               |
-| **Delete**      | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                   |
-| **Edit**        | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`                                           |
-| **Add product** | `addproduct id/IDENTIFIER n/NAME [q/QUANTITY]`e.g., `addproduct id/SKU-1003 n/Tray of Eggs q/30 `                                                                     |
-| **Find**        | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                            |
-| **Undo**        | `undo`                                                                                                                                                                |
-| **List**        | `list`                                                                                                                                                                |
-| **Help**        | `help`                                                                                                                                                                |
+| Action             | Command                                                                | Example                                                                                                    | What it does                             |
+|--------------------|------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|------------------------------------------|
+| **Add Contact**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​ `               | `add n/TechSource Electronics p/61234567 e/sales@techsource.com a/15 Kallang Way, Singapore t/electronics` | Adds vendor contact                      |
+| **Edit Contact**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​` | `edit 2 n/TechSource Electronics p/61234567`                                                               | Edits specified fields of vendor contact |
+| **Delete Contact** | `delete INDEX`                                                         | `delete 3`                                                                                                 | Deletes contact at index specified       |
+| **List**           | `list`                                                                 |                                                                                                            | Lists all contacts                       |
+| **Find Contact**   | `find KEYWORD [MORE_KEYWORDS]`                                         | `find TechSource`                                                                                          | Lists all contacts matching `KEYWORD`    |
+| **Clear Contacts** | `clear`                                                                |                                                                                                            | Clears all contacts                      |
+| **Add product**    | `addproduct id/IDENTIFIER n/NAME [q/QUANTITY]`e.g.,                    | `addproduct id/SKU-1003 n/Tray of Eggs q/30 `                                                              | Adds product                             |
+| **Undo**           | `undo`                                                                 |                                                                                                            | Undoes previous command                  |
+| **Help**           | `help`                                                                 |                                                                                                            |                                          |
