@@ -1,7 +1,7 @@
 ---
   layout: default.md
   title: "User Guide"
-  pageNav: 3
+  pageNav: 5
 ---
 
 # VendorVault User Guide
@@ -96,6 +96,8 @@ Some example commands you can try:
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
 
+<div style="height: 20px;"></div>
+
 ### Viewing help : `help`
 
 Shows a message explaining how to access the help page.
@@ -104,42 +106,73 @@ Shows a message explaining how to access the help page.
 
 Format: `help`
 
+<div style="height: 30px;"></div>
+
 ### Managing Vendor Contacts
+
+<div style="height: 10px;"></div>
 
 #### Adding a contact: `add`
 
 Adds a contact to VendorVault.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
-
-<panel header="Why isn't it working?" type="seamless">
-You can transfer your VendorVault data by copying the data file
-from your old computer to the new one.
-</panel>
-
-A contact can have multiple phone numbers. To add multiple phone numbers, use:
-`add n/NAME p/PHONE_NUMBER_1 [([SPECIFICATIONS)], p/PHONE_NUMBER_2 [(SPECIFICATIONS)] e/EMAIL a/ADDRESS [t/TAG]…​`<br>
-
-<box type="tip" seamless>
-
-**Tip:** A contact can have any number of tags (including 0)
-</box>
+Format:
+```
+add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​
+```
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `add n/CompanyName p/61234567 (Office), 87654321 (HP) e/contact@company.com a/123, Clementi Rd, 1234665 t/business`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
-Duplicate detection is based on the email and phone number (and phone numbers excluding specification split according to `,`). Hence, adding a contact with the same email and phone number as an existing contact will be rejected.
-More specifically, the following are considered duplicates of each other (due to one duplicate phone number):
-* `add n/CompanyName p/61234567, 98765432 e/contact@company.com a/123, Clementi Rd, 1234665 t/business`
-* `add n/CompanyName p/61234567, 12345678 e/contact@company.com a/123, Clementi Rd, 1234665 t/business`
+<panel header="How can I include multiple phone numbers?" type="seamless">
+
+To include multiple phone numbers for a contact, you can **separate them with commas** in the `p/` parameter.
+
+For example, the following command adds a contact with two phone numbers: `61234567` and `87654321`:
+
+```
+add n/CompanyName p/61234567, 87654321 e/contact@company.com a/123, Clementi Rd, 1234665 t/business
+```
+
+</panel>
+
+<panel header="What contacts are considered duplicates?" type="seamless">
+
+VendorVault helps prevent accidentally adding the same contact twice with duplicate detection.
+
+How it works:
+* The app checks the email and phone numbers when you add a new contact.
+* If you try to add a contact with the **same email and phone number as an existing contact**, VendorVault will **reject it**.
+* Phone numbers are compared ignoring specifications (like “(Office)” or “(HP)”) and are separated by commas.
+
+For Example, the following commands are considered duplicates of each other because they share the same phone number `61234567` and email `contact@company.com`:<br> 
+```
+add n/CompanyName p/61234567, 98765432 e/contact@company.com a/123, Clementi Rd, 1234665 t/business
+add n/CompanyName p/61234567, 12345678 e/contact@company.com a/123, Clementi Rd, 1234665 t/business
+```
+
+</panel>
+
+<br>
+
+For more details on possible warnings and errors when adding a contact, refer to the [troubleshooting guide for add contact](#troubleshooting-add-contact) below.
+
+<box type="tip" seamless>
+
+**Tip:** A contact can have any number of tags (including 0)
+
+</box>
+
+<div style="height: 30px;"></div>
 
 #### Listing all contacts : `list`
 
 Shows a list of all contacts in the address book.
 
 Format: `list`
+
+<div style="height: 30px;"></div>
 
 #### Editing a contact : `edit`
 
@@ -157,6 +190,8 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
 Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st contact to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd contact to be `Betsy Crower` and clears all existing tags.
+
+<div style="height: 30px;"></div>
 
 #### Locating contacts by name: `find`
 
@@ -176,6 +211,8 @@ Examples:
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
   ![result for 'find alex david'](images/findAlexDavidResult.png)
 
+<div style="height: 30px;"></div>
+
 #### Deleting a contact : `delete`
 
 Deletes the specified contact from the address book.
@@ -189,6 +226,8 @@ Format: `delete INDEX`
 Examples:
 * `list` followed by `delete 2` deletes the 2nd contact in the address book.
 * `find Betsy` followed by `delete 1` deletes the 1st contact in the results of the `find` command.
+
+<div style="height: 30px;"></div>
 
 ### Managing Inventory
 
@@ -208,11 +247,15 @@ Examples:
 * `addproduct id/Pr1 n/HP LaserJet (M428fdw) q/5`
 * `addproduct id/DE/5 n/PlayStation`
 
+<div style="height: 30px;"></div>
+
 ### Clearing all entries : `clear`
 
 Clears all entries from the address book.
 
 Format: `clear`
+
+<div style="height: 30px;"></div>
 
 ### Undoing the previous command : `undo`
 
@@ -220,15 +263,21 @@ Undoes the previous command that changed the data.
 
 Format: `undo`
 
+<div style="height: 30px;"></div>
+
 ### Exiting the program : `exit`
 
 Exits the program.
 
 Format: `exit`
 
+<div style="height: 30px;"></div>
+
 ### Saving the data
 
 AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+
+<div style="height: 30px;"></div>
 
 ### Editing the data file
 
@@ -271,6 +320,52 @@ _Details coming soon ..._
 --------------------------------------------------------------------------------------------------------------------
 
 ## Troubleshooting
+
+### Managing contacts
+
+#### Troubleshooting `add` contact
+
+Use this section when `add` fails or returns a warning.
+
+<box type="warning" seamless>
+
+**Important:**
+* **Error** messages mean the contact was **not added**.
+* **Warning** messages mean the contact was **added**, but VendorVault is flagging a possible issue.
+
+</box>
+
+| Scenario                                                                         | Message shown                                                                                 | How to fix                                                        |
+|----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| Missing one or more required prefixes (`n/`, `p/`, `e/`, `a/`)                   | `Missing required field(s): ...`                                                              | Include all required prefixed fields in your command.             |
+| No prefixes at all                                                               | `All required prefixes are missing, ...`                                                      | Use the full prefixed format, e.g. `add n/... p/... e/... a/...`. |
+| Text appears before the first prefix                                             | `No non-prefix characters before prefix(es) is allowed, ...`                                  | Remove any text before `n/`.                                      |
+| Same single-value field repeated (e.g. two `n/` or two `e/`)                     | `Multiple values specified for the following single-valued field(s): ...`                     | Keep only one value for each of `n/`, `p/`, `e/`, `a/`.           |
+| Name is blank                                                                    | `Name should not be blank.`                                                                   | Provide a non-empty name after `n/`.                              |
+| Name is too long                                                                 | `Name should be less than 256 characters.`                                                    | Shorten the name.                                                 |
+| Phone is blank/invalid                                                           | `Phone number should not be empty and must be at least 3 digits.`                             | Ensure each phone entry has at least 3 digits.                    |
+| Email is blank                                                                   | `Email should not be blank.`                                                                  | Provide a non-empty email after `e/`.                             |
+| Email format is invalid                                                          | `Email should be of the format local-part@domain ...`                                         | Use a valid email format (e.g. `sales@vendor.com`).               |
+| Address is blank                                                                 | `Address can take any values, and it should not be blank`                                     | Provide a non-empty address after `a/`.                           |
+| Address is too long                                                              | `Address should be less than 500 characters.`                                                 | Shorten the address.                                              |
+| Tag contains non-alphanumeric characters                                         | `Tag names should be alphanumeric`                                                            | Use letters/numbers only for each `t/` value.                     |
+| Contact duplicates an existing contact by same email or overlapping phone number | `This vendor contact already exists in the address book with the same email or phone number.` | Change the phone/email, or edit the existing contact instead.     |
+
+Common `add` warnings:
+
+| Warning trigger                        | Warning shown                                                                                       | What it means                                                                                                                                                                     |
+|----------------------------------------|-----------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Name has unusual symbols               | `⚠ Warning: Name contains unusual symbols, is this intentional?`                                    | Name is accepted, but looks unusual. You can verify if you entered the correct name.                                                                                              |
+| Phone includes unusual symbols/format  | `⚠ Warning: Phone number contains unusual symbols, is this intentional? ...`                        | Phone is accepted, but format may be unintended. You can safely ignore it if you're providng specifications eg. `61234567 (Office)`                                               |
+| Email is unusually long                | `⚠ Warning: This email address is unusually long, is this intentional?`                             | Email is accepted, but unusually long. You can verify if the email entered is correct.                                                                                            |
+| Similar name to an existing contact    | `⚠ Warning: There's a contact with a similar name (name: %s), is this intentional?`                 | Possible duplicate by similar name. You can check if the name in the warning message is the same vendor as what you were about to add.                                            |
+| Similar address to an existing contact | `⚠ Warning: There's a contact with a similar address (name: %s, address: %s), is this intentional?` | Possible duplicate/related location by address similarity. You can check if the name and address in the warning message belongs to the same vendor as what you were about to add. |
+
+<box type="tip" seamless>
+
+Tip: If multiple warnings apply, VendorVault shows all of them (one per line) together with the success message.
+
+</box>
 
 --------------------------------------------------------------------------------------------------------------------
 
