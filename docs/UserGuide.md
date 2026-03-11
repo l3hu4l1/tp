@@ -229,6 +229,14 @@ Examples:
 
 <div style="height: 30px;"></div>
 
+#### Clearing all contacts: `clear`
+
+Clears all entries from the address book.
+
+Format: `clear`
+
+<div style="height: 30px;"></div>
+
 ### Managing Inventory
 
 #### Adding a product: `addproduct`
@@ -246,14 +254,6 @@ Examples:
 * `addproduct id/SKU-1003 n/Tray of Eggs q/30`
 * `addproduct id/Pr1 n/HP LaserJet (M428fdw) q/5`
 * `addproduct id/DE/5 n/PlayStation`
-
-<div style="height: 30px;"></div>
-
-### Clearing all entries : `clear`
-
-Clears all entries from the address book.
-
-Format: `clear`
 
 <div style="height: 30px;"></div>
 
