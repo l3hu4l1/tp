@@ -4,44 +4,73 @@
   pageNav: 3
 ---
 
-# AB-3 User Guide
+# VendorVault User Guide
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a  Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+VendorVault is a **desktop app for managing your vendors and inventory all in one place**. It combines the speed of typing commands with the simplicity of a visual interface, allowing you to update products, their quantities, track vendors, and organise their contacts quickly and efficiently, all optimised for use via a Command Line Interface (CLI).
+
+Spend less time searching through spreadsheets and switching between apps. VendorVault keeps your business information organised so you can focus on what matters most: growing your business.
 
 <!-- * Table of Contents -->
 <page-nav-print />
 
+<br>
+
 --------------------------------------------------------------------------------------------------------------------
+
+<br>
 
 ## Quick start
 
-1. Ensure you have Java `17` or above installed in your Computer.<br>
-   **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
+Follow these steps to get VendorVault up and running:
 
-1. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
-
-1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
-
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
-   A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
+1. Install Java (one-time setup)
+   * VendorVault requires Java `17` or above to run. Full guide for installation [here](https://se-education.org/guides/tutorials/javaInstallation.html)
+   * If you are familiar with the installation process, you can download it directly [here](https://www.oracle.com/asean/java/technologies/downloads/).<br>
+   *  **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
+<br><br>
+1. Download the latest version of VendorVault [here](https://github.com/AY2526S2-CS2103T-W08-2/tp).
+    * Specifically, choose to download the `.jar` file.
+    * If necessary, move the file to a folder you want to use as the _home folder_ for VendorVault.
+<br><br>
+1. Open Command Prompt (Windows) or Terminal (Mac/Linux) and run the following commands
+    ```
+   cd PATH_TO_FOLDER_CONTAINING_JAR_FILE
+   java -jar vendorvault.jar
+    ```
+   Replace `PATH_TO_FOLDER_CONTAINING_JAR_FILE` with the actual path to the folder you put the jar file in. For example, if you put the jar file in `C:\Users\John\Downloads`, you would run:
+   ```
+   cd C:\Users\John\Downloads
+   java -jar vendorvault.jar
+   ```
+   If you are using a Mac and have the jar file in your Downloads folder, you can run:
+   ```
+   cd ~/Downloads
+   java -jar vendorvault.jar
+   ```
+   VendorVault should start up and you should see a GUI similar to the below in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
-
-1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
-   Some example commands you can try:
+<br><br>
+1. Now, we're ready to use the app! At the top left of the app, you should see a command box with the text `Type a command here...`. This is where you can type in commands to interact with the app. You can also access the list of available commands by clicking on the `Help` menu at the top of the app or by pressing `F1` on your keyboard.
+<br><br>
+Some example commands you can try:
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * `add n/TechSource Electronics p/61234567 e/sales@techsource.com a/15 Kallang Way, Singapore` : Adds a vendor contact named `TechSource Electronics` to VendorVault.
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
    * `clear` : Deletes all contacts.
 
-   * `exit` : Exits the app.
+   * `exit` : Exits VendorVault.
 
-1. Refer to the [Features](#features) below for details of each command.
+1. Refer to the [Features](#features) below for details of each command. Or [Command Summary](#command-summary) for a quick summary of all commands.
+
+<br>
 
 --------------------------------------------------------------------------------------------------------------------
+
+<br>
 
 ## Features
 
@@ -75,8 +104,9 @@ Shows a message explaining how to access the help page.
 
 Format: `help`
 
+### Managing Vendor Contacts
 
-### Adding a contact: `add`
+#### Adding a contact: `add`
 
 Adds a contact to the address book.
 
@@ -100,13 +130,13 @@ More specifically, the following are considered duplicates of each other (due to
 * `add n/CompanyName p/61234567, 98765432 e/contact@company.com a/123, Clementi Rd, 1234665 t/business`
 * `add n/CompanyName p/61234567, 12345678 e/contact@company.com a/123, Clementi Rd, 1234665 t/business`
 
-### Listing all contacts : `list`
+#### Listing all contacts : `list`
 
 Shows a list of all contacts in the address book.
 
 Format: `list`
 
-### Editing a contact : `edit`
+#### Editing a contact : `edit`
 
 Edits an existing contact in the address book.
 
@@ -123,7 +153,7 @@ Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st contact to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd contact to be `Betsy Crower` and clears all existing tags.
 
-### Locating contacts by name: `find`
+#### Locating contacts by name: `find`
 
 Finds contacts whose names contain any of the given keywords.
 
@@ -141,7 +171,7 @@ Examples:
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
   ![result for 'find alex david'](images/findAlexDavidResult.png)
 
-### Deleting a contact : `delete`
+#### Deleting a contact : `delete`
 
 Deletes the specified contact from the address book.
 
@@ -155,7 +185,9 @@ Examples:
 * `list` followed by `delete 2` deletes the 2nd contact in the address book.
 * `find Betsy` followed by `delete 1` deletes the 1st contact in the results of the `find` command.
 
-### Adding a product: `addproduct`
+### Managing Inventory
+
+#### Adding a product: `addproduct`
 
 Adds a product to the inventory.
 
@@ -212,28 +244,41 @@ _Details coming soon ..._
 
 ## FAQ
 
+**Q**: I accidentally deleted a contact/product. Can I undo that?<br>
+**A**: Yes, you can undo the previous command that changed the data by using the `undo` command. For example, if you accidentally deleted a contact, simply enter `undo` and the contact will be restored.
+
+**Q**: I edited the data file directly and now VendorVault is not working. What should I do?<br>
+**A**: If you edited the data file and it caused VendorVault to behave unexpectedly, you can try the following steps:
+1. Restore from backup: If you made a backup of the data file before editing, you can restore the original data file by replacing the edited file with the backup.
+2. Start with a new data file: If you do not have a backup, you can delete the existing data file (or move it to a different location for safekeeping) and start VendorVault again. This will create a new, empty data file.
+
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
+**A**: You can transfer your VendorVault data by two files:
+* Install VendorVault on the new computer (follow the [Quick Start](#quick-start) guide).
+* Open the folder where VendorVault's `.jar` file is stored on your old computer.
+* Look for the data files created by VendorVault (this file contains all your vendors and inventory).
+    * Specifically, look for the `data` folder created by VendorVault, and the data file named `addressbook.json` and `inventory.json` inside that folder.
+* Copy this data file to a USB drive or cloud storage (e.g., Google Drive, Dropbox).
+* On the new computer, open the VendorVault folder.
+* Replace the empty data file there with the one you copied from your old computer.
+* Start VendorVault — your data should now appear exactly as before.
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Known issues
-
-1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
-2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+## Troubleshooting
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## Command summary
 
-Action     | Format, Examples
------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-**Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
-**Clear**  | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Add product** | `addproduct id/IDENTIFIER n/NAME [q/QUANTITY]`e.g., `addproduct id/SKU-1003 n/Tray of Eggs q/30 `
-**Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**Undo**   | `undo`
-**List**   | `list`
-**Help**   | `help`
+| Action          | Format, Examples                                                                                                                                                      |
+|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Add**         | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague` |
+| **Clear**       | `clear`                                                                                                                                                               |
+| **Delete**      | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                   |
+| **Edit**        | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`                                           |
+| **Add product** | `addproduct id/IDENTIFIER n/NAME [q/QUANTITY]`e.g., `addproduct id/SKU-1003 n/Tray of Eggs q/30 `                                                                     |
+| **Find**        | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                            |
+| **Undo**        | `undo`                                                                                                                                                                |
+| **List**        | `list`                                                                                                                                                                |
+| **Help**        | `help`                                                                                                                                                                |
