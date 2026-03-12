@@ -49,7 +49,8 @@ public class RestoreCommandTest {
 
     @Test
     public void execute_invalidIndex_throwsCommandException() {
-        Model model = new ModelManager(new VendorVault(getTypicalAddressBook(), getTypicalInventory()), new UserPrefs());
+        Model model = new ModelManager(
+                new VendorVault(getTypicalAddressBook(), getTypicalInventory()), new UserPrefs());
 
         RestoreCommand command = new RestoreCommand("nonexistent@example.com");
 
@@ -58,7 +59,8 @@ public class RestoreCommandTest {
 
     @Test
     public void execute_restoreArchivedPerson_success() throws Exception {
-        Model model = new ModelManager(new VendorVault(getTypicalAddressBook(), getTypicalInventory()), new UserPrefs());
+        Model model = new ModelManager(
+                new VendorVault(getTypicalAddressBook(), getTypicalInventory()), new UserPrefs());
 
         Person archived = new PersonBuilder().withEmail("test@email.com").build();
         model.addPerson(archived);
