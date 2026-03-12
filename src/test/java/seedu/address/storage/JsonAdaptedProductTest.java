@@ -1,6 +1,8 @@
 package seedu.address.storage;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.storage.JsonAdaptedProduct.MISSING_FIELD_MESSAGE_FORMAT;
 import static seedu.address.testutil.TypicalProducts.RICE;
 
@@ -48,8 +50,8 @@ public class JsonAdaptedProductTest {
         Product result = adapted.toModelType();
 
         assertEquals(original.getIdentifier().toString(), result.getIdentifier().toString());
-        assertEquals(original.getName().fullName,         result.getName().fullName);
-        assertEquals(original.getQuantity().toString(),   result.getQuantity().toString());
+        assertEquals(original.getName().fullName, result.getName().fullName);
+        assertEquals(original.getQuantity().toString(), result.getQuantity().toString());
     }
 
     @Test
@@ -105,7 +107,7 @@ public class JsonAdaptedProductTest {
         Product product = adapted.toModelType();
 
         assertEquals(VALID_IDENTIFIER, product.getIdentifier().toString());
-        assertEquals(VALID_NAME,       product.getName().fullName);
-        assertEquals(VALID_QUANTITY,   product.getQuantity().toString());
+        assertEquals(VALID_NAME, product.getName().fullName);
+        assertEquals(VALID_QUANTITY, product.getQuantity().toString());
     }
 }
