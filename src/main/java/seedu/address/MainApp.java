@@ -104,7 +104,7 @@ public class MainApp extends Application {
                 logger.info("Creating a new data file " + storage.getInventoryFilePath()
                         + " populated with a sample Inventory.");
             }
-            initialInventory = inventoryOptional.orElseGet(SampleDataUtil::getSampleInventory);
+            initialInventory = inventoryOptional.orElseGet(Inventory::new);
         } catch (DataLoadingException e) {
             logger.warning("Data file at " + storage.getInventoryFilePath() + " could not be loaded."
                     + " Will be starting with an empty Inventory.");
