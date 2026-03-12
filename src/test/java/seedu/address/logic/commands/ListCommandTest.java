@@ -5,14 +5,15 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalProducts.getTypicalInventory;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import seedu.address.model.Inventory;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.VendorVault;
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for ListCommand.
@@ -24,8 +25,9 @@ public class ListCommandTest {
 
     @BeforeEach
     public void setUp() {
-        model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new Inventory());
-        expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new Inventory());
+        model = new ModelManager(new VendorVault(
+                getTypicalAddressBook(), getTypicalInventory()), new UserPrefs());
+        expectedModel = new ModelManager(model.getVendorVault(), new UserPrefs());
     }
 
     @Test

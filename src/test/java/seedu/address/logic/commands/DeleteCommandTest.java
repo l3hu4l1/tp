@@ -14,16 +14,17 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON_STRING;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON_STRING;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalProducts.getTypicalInventory;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.Inventory;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.VendorVault;
 import seedu.address.model.person.NameEqualsKeywordsPredicate;
 import seedu.address.model.person.Person;
 
@@ -33,7 +34,8 @@ import seedu.address.model.person.Person;
  */
 public class DeleteCommandTest {
 
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new Inventory());
+    private Model model = new ModelManager(new VendorVault(
+            getTypicalAddressBook(), getTypicalInventory()), new UserPrefs());
 
     private String format_exception_message(Model model) {
         return Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX
@@ -77,7 +79,7 @@ public class DeleteCommandTest {
         DeleteCommand deleteCommand = new DeleteCommand("  " + INDEX_FIRST_PERSON_STRING + "  ",
                 true);
 
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new Inventory());
+        ModelManager expectedModel = new ModelManager(model.getVendorVault(), new UserPrefs());
         NameEqualsKeywordsPredicate predicate = new NameEqualsKeywordsPredicate(personToDelete);
         expectedModel.updateFilteredPersonList(predicate);
 
@@ -89,7 +91,7 @@ public class DeleteCommandTest {
         Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON_STRING, true);
 
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new Inventory());
+        ModelManager expectedModel = new ModelManager(model.getVendorVault(), new UserPrefs());
         NameEqualsKeywordsPredicate predicate = new NameEqualsKeywordsPredicate(personToDelete);
         expectedModel.updateFilteredPersonList(predicate);
 
@@ -101,7 +103,7 @@ public class DeleteCommandTest {
         Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON_STRING, true);
 
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new Inventory());
+        ModelManager expectedModel = new ModelManager(model.getVendorVault(), new UserPrefs());
         NameEqualsKeywordsPredicate predicate = new NameEqualsKeywordsPredicate(personToDelete);
         expectedModel.updateFilteredPersonList(predicate);
 
@@ -132,7 +134,7 @@ public class DeleteCommandTest {
         Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON_STRING, true);
 
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new Inventory());
+        ModelManager expectedModel = new ModelManager(model.getVendorVault(), new UserPrefs());
         NameEqualsKeywordsPredicate predicate = new NameEqualsKeywordsPredicate(personToDelete);
         expectedModel.updateFilteredPersonList(predicate);
 
@@ -169,7 +171,7 @@ public class DeleteCommandTest {
         Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON_STRING, true);
 
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new Inventory());
+        Model expectedModel = new ModelManager(model.getVendorVault(), new UserPrefs());
         NameEqualsKeywordsPredicate predicate = new NameEqualsKeywordsPredicate(personToDelete);
         expectedModel.updateFilteredPersonList(predicate);
 

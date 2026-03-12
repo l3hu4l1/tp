@@ -16,18 +16,15 @@ import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.Logic;
 import seedu.address.logic.LogicManager;
 import seedu.address.model.AddressBook;
-import seedu.address.model.Inventory;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.ReadOnlyInventory;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.VendorVault;
 import seedu.address.model.util.SampleDataUtil;
 import seedu.address.storage.AddressBookStorage;
-import seedu.address.storage.InventoryStorage;
 import seedu.address.storage.JsonAddressBookStorage;
-import seedu.address.storage.JsonInventoryStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.Storage;
 import seedu.address.storage.StorageManager;
@@ -62,8 +59,7 @@ public class MainApp extends Application {
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
         AddressBookStorage addressBookStorage = new JsonAddressBookStorage(userPrefs.getAddressBookFilePath());
-        InventoryStorage inventoryStorage = new JsonInventoryStorage(userPrefs.getProductsFilePath());
-        storage = new StorageManager(addressBookStorage, userPrefsStorage, inventoryStorage);
+        storage = new StorageManager(addressBookStorage, userPrefsStorage);
 
         model = initModelManager(storage, userPrefs);
 
@@ -95,22 +91,9 @@ public class MainApp extends Application {
             initialData = new AddressBook();
         }
 
-        Optional<ReadOnlyInventory> inventoryOptional;
-        ReadOnlyInventory initialInventory;
-        try {
-            inventoryOptional = storage.readInventory();
-            if (!inventoryOptional.isPresent()) {
-                logger.info("Creating a new data file " + storage.getInventoryFilePath()
-                        + " populated with a sample Inventory.");
-            }
-            initialInventory = inventoryOptional.orElseGet(SampleDataUtil::getSampleInventory);
-        } catch (DataLoadingException e) {
-            logger.warning("Data file at " + storage.getInventoryFilePath() + " could not be loaded."
-                    + " Will be starting with an empty Inventory.");
-            initialInventory = new Inventory();
-        }
+        VendorVault initialVault = new VendorVault(initialData, SampleDataUtil.getSampleInventory());
 
-        ModelManager modelManager = new ModelManager(initialData, userPrefs, initialInventory);
+        ModelManager modelManager = new ModelManager(initialVault, userPrefs);
 
         return modelManager;
     }
