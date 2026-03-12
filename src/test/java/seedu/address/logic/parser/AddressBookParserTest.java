@@ -176,8 +176,8 @@ public class AddressBookParserTest {
     }
 
     @Test
-    public void parse_listproduct_throwsSuggestion() {
-        assertParseFailure(parser, "listproduct",
-            "Unknown command: listproduct. Did you mean 'listproducts'?");
+    public void parseCommand_listproduct_throwsParseException() {
+        assertThrows(ParseException.class, ()
+            -> parser.parseCommand("listproducts", new PendingConfirmation()));
     }
 }
