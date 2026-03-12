@@ -122,47 +122,18 @@ add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​
 ```
 
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
+* `add n/TechLink Electronics p/61234567, 87654321 e/sales@techlink.com.sg a/10 Ubi Crescent, #05-12, Ubi Techpark, Singapore 408564`
 * `add n/CompanyName p/61234567 (Office), 87654321 (HP) e/contact@company.com a/123, Clementi Rd, 1234665 t/business`
-
-<panel header="How can I include multiple phone numbers?" type="seamless">
-
-To include multiple phone numbers for a contact, you can **separate them with commas** in the `p/` parameter.
-
-For example, the following command adds a contact with two phone numbers: `61234567` and `87654321`:
-
-```
-add n/CompanyName p/61234567, 87654321 e/contact@company.com a/123, Clementi Rd, 1234665 t/business
-```
-
-</panel>
-
-<panel header="What contacts are considered duplicates?" type="seamless">
-
-VendorVault helps prevent accidentally adding the same contact twice with duplicate detection.
-
-How it works:
-* The app checks the email and phone numbers when you add a new contact.
-* If you try to add a contact with the **same email and phone number as an existing contact**, VendorVault will **reject it**.
-* Phone numbers are compared ignoring specifications (like “(Office)” or “(HP)”) and are separated by commas.
-
-For Example, the following commands are considered duplicates of each other because they share the same phone number `61234567` and email `contact@company.com`:<br> 
-```
-add n/CompanyName p/61234567, 98765432 e/contact@company.com a/123, Clementi Rd, 1234665 t/business
-add n/CompanyName p/61234567, 12345678 e/contact@company.com a/123, Clementi Rd, 1234665 t/business
-```
-
-</panel>
-
-<br>
-
-For more details on possible warnings and errors when adding a contact, refer to the [troubleshooting guide for add contact](#troubleshooting-add-contact) below.
 
 <box type="tip" seamless>
 
-**Tip:** A contact can have any number of tags (including 0)
+**Tip:** Include multiple phone numbers by separating them with commas (eg. `p/61234567, 98765432`).
 
-</box>
+</box
+
+VendorVault helps to prevent duplicate contacts. Contacts with the same email and phone number as an existing contact will be rejected. For details on what contacts are considered duplicates, refer to this [FAQ](#faq-duplicate-contacts).
+
+For more details on possible warnings and errors when adding a contact, refer to the [troubleshooting guide for add contact](#troubleshooting-add-contact) below.
 
 <div style="height: 30px;"></div>
 
@@ -298,24 +269,50 @@ _Details coming soon ..._
 
 ## FAQ
 
-**Q**: I accidentally deleted a contact/product. Can I undo that?<br>
-**A**: Yes, you can undo the previous command that changed the data by using the `undo` command. For example, if you accidentally deleted a contact, simply enter `undo` and the contact will be restored.
+<panel header="I accidentally entered a command that changed the data. Can I undo that?" type="seamless">
 
-**Q**: I edited the data file directly and now VendorVault is not working. What should I do?<br>
-**A**: If you edited the data file and it caused VendorVault to behave unexpectedly, you can try the following steps:
-1. Restore from backup: If you made a backup of the data file before editing, you can restore the original data file by replacing the edited file with the backup.
+Yes, you can undo the previous command that changed the data by using the `undo` command. For example, if you accidentally deleted a contact, simply enter `undo` and the contact will be restored.
+
+</panel>
+
+<panel header="What contacts are considered duplicates?" type="seamless" id="faq-duplicate-contacts">
+
+VendorVault helps prevent accidentally adding the same contact twice with duplicate detection.
+
+How it works:
+* The app checks the email and phone numbers when you add a new contact.
+* If you try to add a contact with the **same email and phone number as an existing contact**, VendorVault will **reject it**.
+* Phone numbers are compared ignoring specifications (like “(Office)” or “(HP)”) and are separated by commas.
+
+For Example, the following commands are considered duplicates of each other because they share the same phone number `61234567` and email `contact@company.com`:<br>
+```
+add n/CompanyName p/61234567, 98765432 e/contact@company.com a/123, Clementi Rd, 1234665 t/business
+add n/CompanyName p/61234567, 12345678 e/contact@company.com a/123, Clementi Rd, 1234665 t/business
+```
+
+</panel>
+
+<panel header="I edited the data file directly and now VendorVault is not working. What should I do?" type="seamless">
+
+If you edited the data file and it caused VendorVault to behave unexpectedly, you can try the following steps:
+1. Restore from backup: If you made a backup of the data file before editing, you can restore the original data file by replacing the edited data files in the data folder with the backup.
 2. Start with a new data file: If you do not have a backup, you can delete the existing data file (or move it to a different location for safekeeping) and start VendorVault again. This will create a new, empty data file.
 
-**Q**: How do I transfer my data to another Computer?<br>
-**A**: You can transfer your VendorVault data by two files:
+</panel>
+
+<panel header="How do I transfer my data to another computer?" type="seamless">
+
+You can transfer your VendorVault data by transferring two files:
 * Install VendorVault on the new computer (follow the [Quick Start](#quick-start) guide).
 * Open the folder where VendorVault's `.jar` file is stored on your old computer.
 * Look for the data files created by VendorVault (this file contains all your vendors and inventory).
     * Specifically, look for the `data` folder created by VendorVault, and the data file named `addressbook.json` and `inventory.json` inside that folder.
 * Copy this data file to a USB drive or cloud storage (e.g., Google Drive, Dropbox).
-* On the new computer, open the VendorVault folder.
+* On the new computer, run the app and then open the newly created data folder.
 * Replace the empty data file there with the one you copied from your old computer.
 * Start VendorVault — your data should now appear exactly as before.
+
+</panel>
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -353,13 +350,13 @@ Use this section when `add` fails or returns a warning.
 
 Common `add` warnings:
 
-| Warning trigger                        | Warning shown                                                                                       | What it means                                                                                                                                                                     |
-|----------------------------------------|-----------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Name has unusual symbols               | `⚠ Warning: Name contains unusual symbols, is this intentional?`                                    | Name is accepted, but looks unusual. You can verify if you entered the correct name.                                                                                              |
-| Phone includes unusual symbols/format  | `⚠ Warning: Phone number contains unusual symbols, is this intentional? ...`                        | Phone is accepted, but format may be unintended. You can safely ignore it if you're providng specifications eg. `61234567 (Office)`                                               |
-| Email is unusually long                | `⚠ Warning: This email address is unusually long, is this intentional?`                             | Email is accepted, but unusually long. You can verify if the email entered is correct.                                                                                            |
-| Similar name to an existing contact    | `⚠ Warning: There's a contact with a similar name (name: %s), is this intentional?`                 | Possible duplicate by similar name. You can check if the name in the warning message is the same vendor as what you were about to add.                                            |
-| Similar address to an existing contact | `⚠ Warning: There's a contact with a similar address (name: %s, address: %s), is this intentional?` | Possible duplicate/related location by address similarity. You can check if the name and address in the warning message belongs to the same vendor as what you were about to add. |
+| Warning trigger                        | Warning shown                                                                                                          | What it means                                                                                                                                                                            |
+|----------------------------------------|------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Name has unusual symbols               | `⚠ Warning: Name contains unusual symbols, is this intentional?`                                                       | Name is accepted, but looks unusual. You can verify if you entered the correct name.                                                                                                     |
+| Phone includes unusual symbols/format  | `⚠ Warning: Phone number contains unusual symbols, is this intentional? ...`                                           | Phone is accepted, but format may be unintended. You can safely ignore it if you're providng specifications eg. `61234567 (Office)`                                                      |
+| Email is unusually long                | `⚠ Warning: This email address is unusually long, is this intentional?`                                                | Email is accepted, but unusually long. You can verify if the email entered is correct.                                                                                                   |
+| Similar name to an existing contact    | `⚠ Warning: There's a contact with a similar name (name: <similar-name>), is this intentional?`                        | Possible duplicate by similar name. You can check if the name in the warning message is the same vendor as what you were about to add.                                                   |
+| Similar address to an existing contact | `⚠ Warning: There's a contact with a similar address (name: <name>, address: <similar-address>), is this intentional?` | Possible duplicate/related location by address similarity. You can check if the vendor name and address in the warning message belongs to the same vendor as what you were about to add. |
 
 <box type="tip" seamless>
 
