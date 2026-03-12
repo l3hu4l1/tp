@@ -2,12 +2,16 @@ package seedu.address.storage;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.product.Name;
 import seedu.address.model.product.Identifier;
+import seedu.address.model.product.Name;
 import seedu.address.model.product.Product;
 import seedu.address.model.product.Quantity;
 
+/**
+ * Jackson-friendly version of {@link Product}
+ */
 public class JsonAdaptedProduct {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Product's %s field is missing";
@@ -20,6 +24,9 @@ public class JsonAdaptedProduct {
     private final String quantity;
     private final boolean isArchived;
 
+    /**
+     * Constructs a {@Code JsonAdapatedProduct} with the given product details.
+     */
     @JsonCreator
     public JsonAdaptedProduct(@JsonProperty("identfier") String identifier, @JsonProperty("name") String name,
             @JsonProperty("quantity") String quantity, @JsonProperty("isArchived") boolean isArchived) {
@@ -29,7 +36,9 @@ public class JsonAdaptedProduct {
         this.isArchived = isArchived;
     }
 
-
+    /**
+     * Converts a given {@code Product} into this class for Jackson use.
+     */
     public JsonAdaptedProduct(Product product) {
         this.identifier = product.getIdentifier().toString();
         this.name = product.getName().fullName;
@@ -37,6 +46,11 @@ public class JsonAdaptedProduct {
         this.isArchived = product.isArchived();
     }
 
+    /**
+     * Converts this Jackson-friendly adapted product into the model's {@code Product} object.
+     *
+     * @throws IllegalValueException if there were any data constraints violated in the adapted product.
+     */
     public Product toModelType() throws IllegalValueException {
         if (identifier == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,

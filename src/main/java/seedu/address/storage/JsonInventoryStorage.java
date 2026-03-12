@@ -14,7 +14,10 @@ import seedu.address.commons.util.FileUtil;
 import seedu.address.commons.util.JsonUtil;
 import seedu.address.model.ReadOnlyInventory;
 
-public class JsonInventoryStorage implements InventoryStorage{
+/**
+ * A class to access Inventory data stored as a json file on the hard disk.
+ */
+public class JsonInventoryStorage implements InventoryStorage {
 
     private static final Logger logger = LogsCenter.getLogger(JsonInventoryStorage.class);
 
@@ -33,6 +36,11 @@ public class JsonInventoryStorage implements InventoryStorage{
         return readInventory(filePath);
     }
 
+    /**
+     * Similar to {@link #readInventory()}
+     *
+     * @param filePath location of the data. Cannot be null.
+     */
     public Optional<ReadOnlyInventory> readInventory(Path filePath) throws DataLoadingException {
         requireNonNull(filePath);
 
@@ -55,6 +63,11 @@ public class JsonInventoryStorage implements InventoryStorage{
         saveInventory(inventory, filePath);
     }
 
+    /**
+     * Similar to {@link #saveInventory(ReadOnlyInventory, Path)}
+     *
+     * @param filePath location of the data. Cannot be null.
+     */
     public void saveInventory(ReadOnlyInventory inventory, Path filePath) throws IOException {
         requireNonNull(inventory);
         requireNonNull(filePath);
