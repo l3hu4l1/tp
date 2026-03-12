@@ -391,4 +391,35 @@ public class EditCommandTest {
         assertEquals(CommandResult.FEEDBACK_TYPE_WARN, result.getFeedbackType());
     }
 
+    @Test
+    public void execute_editAddressToMultipleSimilar_onlyOneWarning() throws Exception {
+        // ALICE already has "123, Jurong West Ave 6, #08-111" in the typical model.
+        // Add a second person whose address also contains "Jurong West".
+        Person anotherJurong = new PersonBuilder()
+                .withName("Another Person")
+                .withPhone("55555581")
+                .withEmail("another.jurong@example.com")
+                .withAddress("Jurong West Ave 5")
+                .build();
+        model.addPerson(anotherJurong);
+
+        // Edit CARL's address to "Jurong West" — both ALICE and anotherJurong are similar.
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withAddress("Jurong West")
+                .build();
+        EditCommand editCommand = new EditCommand(INDEX_THIRD_PERSON, descriptor);
+
+        CommandResult result = editCommand.execute(model);
+        String feedback = result.getFeedbackToUser();
+
+        // Exactly one address warning should appear — not both.
+        assertTrue(feedback.contains(String.format(MESSAGE_SIMILAR_ADDRESS, ALICE.getName(), ALICE.getAddress()))
+                || feedback.contains(String.format(MESSAGE_SIMILAR_ADDRESS,
+                        anotherJurong.getName(), anotherJurong.getAddress())));
+        assertFalse(feedback.contains(String.format(MESSAGE_SIMILAR_ADDRESS, ALICE.getName(), ALICE.getAddress()))
+                && feedback.contains(String.format(MESSAGE_SIMILAR_ADDRESS,
+                        anotherJurong.getName(), anotherJurong.getAddress())));
+        assertEquals(CommandResult.FEEDBACK_TYPE_WARN, result.getFeedbackType());
+    }
+
 }
