@@ -11,12 +11,12 @@ Given below are my contributions to the project.
 
 
 * *New Feature*: Added the ability to undo/redo previous commands. (Pull requests [\#66](https://github.com/AY2526S2-CS2103T-W08-2/tp/pull/66), [\#154](https://github.com/AY2526S2-CS2103T-W08-2/tp/pull/154), [\#160](https://github.com/AY2526S2-CS2103T-W08-2/tp/pull/160), [\#169](https://github.com/AY2526S2-CS2103T-W08-2/tp/pull/169))
-    * What it does: Allows users to undo previous commands step-by-step, with the option to redo them. 
-    * Justification: Provides a convenient way to recover from mistakes and improves usability. 
+    * What it does: Allows users to undo previous commands step-by-step, with the option to redo them.
+    * Justification: Provides a convenient way to recover from mistakes and improves usability.
     * Highlights: Applies to existing and future commands. See the Developer Guide for implementation details.
 
 * *New Feature*: Added a history command that allows the user to navigate to previous commands using up/down keys.(Pull requests [\#134](https://github.com/AY2526S2-CS2103T-W08-2/tp/pull/134))
-    * What it does: Lets users navigate previous commands using the up/down keys, making it easy to repeat commands without retyping. 
+    * What it does: Lets users navigate previous commands using the up/down keys, making it easy to repeat commands without retyping.
     * Justification: Improves efficiency and user experience by enabling quick reuse of past commands.
 
 * *Enhancements to existing features*:
