@@ -39,8 +39,6 @@ public class AddressBookParser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
     private static final Logger logger = LogsCenter.getLogger(AddressBookParser.class);
-    private static final String INVALID_COMMAND_WORD =
-        "Unknown command: listproducts. Did you mean 'listproduct'?";
 
     /**
      * Parses user input into command for execution.
@@ -111,8 +109,8 @@ public class AddressBookParser {
             case ListProductsCommand.COMMAND_WORD:
                 return new ListProductsCommand();
 
-            case "listproducts":
-                throw new ParseException(INVALID_COMMAND_WORD);
+            case ListProductsCommand.INVALID_COMMAND_WORD:
+                throw new ParseException(ListProductsCommand.INVALID_COMMAND_SUGGESTION);
 
             case ArchiveProductCommand.COMMAND_WORD:
                 return new ArchiveProductCommandParser().parse(arguments);

@@ -18,7 +18,13 @@ public class ListProductsCommand extends Command {
 
     public static final String COMMAND_WORD = "listproduct";
 
+    public static final String INVALID_COMMAND_WORD = "listproducts";
+
     public static final String MESSAGE_SUCCESS = "Listed all products";
+
+    public static final String INVALID_COMMAND_SUGGESTION =
+        "Unknown command: listproduct. Did you mean 'listproducts'?";
+
 
     /**
      * Executes the listproduct command.
