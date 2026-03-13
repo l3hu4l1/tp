@@ -47,6 +47,10 @@ public class AliasList {
         return hs;
     }
 
+    public int getSize() {
+        return this.aliases.size();
+    }
+
     /**
      * Adds a new alias to the list if its name is unique.
      * The alias name must not already exist in the list.
