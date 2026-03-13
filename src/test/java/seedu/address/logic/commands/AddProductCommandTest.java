@@ -32,6 +32,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.product.Identifier;
 import seedu.address.model.product.Name;
 import seedu.address.model.product.Product;
+import seedu.address.model.product.Quantity;
 import seedu.address.model.product.warnings.DuplicateProductWarning;
 import seedu.address.testutil.ProductBuilder;
 
@@ -140,6 +141,56 @@ public class AddProductCommandTest {
     }
 
     @Test
+    public void execute_multipleNonSimilarProducts_loopCompletesWithoutWarning() throws Exception {
+        Product existingOne = new ProductBuilder()
+                .withIdentifier("SKU-4100")
+                .withName("Stapler")
+                .build();
+        Product existingTwo = new ProductBuilder()
+                .withIdentifier("SKU-4101")
+                .withName("Paper Clips")
+                .build();
+        Product productToAdd = new ProductBuilder()
+                .withIdentifier("SKU-4102")
+                .withName("Rubber Band")
+                .build();
+        ModelStubAcceptingProductAdded modelStub = new ModelStubAcceptingProductAdded();
+        modelStub.seedExistingProduct(existingOne);
+        modelStub.seedExistingProduct(existingTwo);
+
+        CommandResult result = new AddProductCommand(productToAdd).execute(modelStub);
+
+        assertFalse(result.getFeedbackToUser().contains("similar name"));
+        assertEquals(CommandResult.FEEDBACK_TYPE_SUCCESS, result.getFeedbackType());
+    }
+
+    @Test
+    public void execute_warningValueTrueButDifferentWarningType_noSimilarNameWarning() throws Exception {
+        // When there's multiple warnings
+        Product toAddWithDifferentWarningType = new ProductWithForcedWarning(
+                new Identifier("SKU-4200"),
+                new Name("Desk Lamp"),
+                new Quantity("5"),
+                new DuplicateProductWarning(true, "OTHER_WARNING_TYPE"));
+
+        ModelStubAcceptingProductAdded modelStub = new ModelStubAcceptingProductAdded();
+        modelStub.seedExistingProduct(new ProductBuilder()
+                .withIdentifier("SKU-4201")
+                .withName("Desk Mat")
+                .build());
+        modelStub.seedExistingProduct(new ProductBuilder()
+                .withIdentifier("SKU-4202")
+                .withName("Desk Organizer")
+                .build());
+
+        CommandResult result = new AddProductCommand(toAddWithDifferentWarningType).execute(modelStub);
+
+        assertFalse(result.getFeedbackToUser().contains("similar name"));
+        assertEquals(CommandResult.FEEDBACK_TYPE_SUCCESS, result.getFeedbackType());
+        assertEquals(3, modelStub.productsAdded.size());
+    }
+
+    @Test
     public void execute_similarProductName_warningMatchesMessageSimilarName() throws Exception {
         Product existingProduct = new ProductBuilder()
                 .withIdentifier("SKU-5000")
@@ -162,7 +213,6 @@ public class AddProductCommandTest {
 
     @Test
     public void execute_presetWarningAndSimilarName_warningsJoinedWithNewline() throws Exception {
-        // Multiple warnings
         Product existingProduct = new ProductBuilder()
                 .withIdentifier("SKU-6000")
                 .withName("Printer Ink")
@@ -454,6 +504,22 @@ public class AddProductCommandTest {
         void seedExistingProduct(Product product) {
             requireNonNull(product);
             productsAdded.add(product);
+        }
+    }
+
+    /** Product test double that forces a specific warning result. */
+    private static class ProductWithForcedWarning extends Product {
+        private final DuplicateProductWarning forcedWarning;
+
+        ProductWithForcedWarning(Identifier identifier, Name name, Quantity quantity,
+                                 DuplicateProductWarning forcedWarning) {
+            super(identifier, name, quantity);
+            this.forcedWarning = forcedWarning;
+        }
+
+        @Override
+        public DuplicateProductWarning isSameProductWarn(Product otherProduct) {
+            return forcedWarning;
         }
     }
 }
