@@ -288,8 +288,8 @@ public class ModelManagerTest {
         UserPrefs userPrefs = new UserPrefs();
 
         // same values -> returns true
-        VendorVault vendorVault = new VendorVault(addressBook, new Inventory());
-        VendorVault differentVendorVault = new VendorVault(differentAddressBook, new Inventory());
+        VendorVault vendorVault = new VendorVault(addressBook, new Inventory(), new Aliases());
+        VendorVault differentVendorVault = new VendorVault(differentAddressBook, new Inventory(), new Aliases());
 
         modelManager = new ModelManager(vendorVault, userPrefs);
         ModelManager modelManagerCopy = new ModelManager(vendorVault, userPrefs);

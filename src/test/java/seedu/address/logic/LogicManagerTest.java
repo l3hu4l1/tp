@@ -32,6 +32,7 @@ import seedu.address.model.ReadOnlyInventory;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
 import seedu.address.storage.JsonAddressBookStorage;
+import seedu.address.storage.JsonAliasStorage;
 import seedu.address.storage.JsonInventoryStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.StorageManager;
@@ -55,7 +56,11 @@ public class LogicManagerTest {
                 new JsonAddressBookStorage(temporaryFolder.resolve("addressBook.json"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
         JsonInventoryStorage inventoryStorage = new JsonInventoryStorage(temporaryFolder.resolve("products.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage, inventoryStorage);
+        JsonAliasStorage aliasStorage = new JsonAliasStorage(temporaryFolder.resolve("alias.json"));
+        StorageManager storage = new StorageManager(addressBookStorage,
+                userPrefsStorage,
+                inventoryStorage,
+                aliasStorage);
         logic = new LogicManager(model, storage);
     }
 
@@ -199,7 +204,11 @@ public class LogicManagerTest {
         JsonUserPrefsStorage userPrefsStorage =
                 new JsonUserPrefsStorage(temporaryFolder.resolve("ExceptionUserPrefs.json"));
         JsonInventoryStorage inventoryStorage = new JsonInventoryStorage(temporaryFolder.resolve("products.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage, inventoryStorage);
+        JsonAliasStorage aliasStorage = new JsonAliasStorage(temporaryFolder.resolve("alias.json"));
+        StorageManager storage = new StorageManager(addressBookStorage,
+                userPrefsStorage,
+                inventoryStorage,
+                aliasStorage);
 
         logic = new LogicManager(model, storage);
 
@@ -225,8 +234,12 @@ public class LogicManagerTest {
                 throw e;
             }
         };
+        JsonAliasStorage aliasStorage = new JsonAliasStorage(temporaryFolder.resolve("alias.json"));
 
-        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage, inventoryStorage);
+        StorageManager storage = new StorageManager(addressBookStorage,
+                userPrefsStorage,
+                inventoryStorage,
+                aliasStorage);
 
         logic = new LogicManager(model, storage);
 
