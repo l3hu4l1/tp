@@ -1,14 +1,16 @@
 package seedu.address.logic.commands;
 
-import seedu.address.logic.Messages;
+import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_DUPLICATE_ALIAS;
+
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.alias.Alias;
 import seedu.address.model.alias.exceptions.DuplicateAliasException;
 
-import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.Messages.MESSAGE_DUPLICATE_ALIAS;
-
+/**
+ * Adds a new alias
+ */
 public class AliasCommand extends Command {
 
     public static final String COMMAND_WORD = "alias";

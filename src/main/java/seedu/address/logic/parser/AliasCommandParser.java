@@ -5,6 +5,9 @@ import seedu.address.logic.commands.CommandType;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.alias.Alias;
 
+/**
+ * Parses input arguments and creates a new AliasCommand Object
+ */
 public class AliasCommandParser implements Parser<AliasCommand> {
 
     public static final String MESSAGE_ORIGINAL_COMMAND_DOES_NOT_EXISTS =
@@ -17,6 +20,11 @@ public class AliasCommandParser implements Parser<AliasCommand> {
     public static final String MESSAGE_FORMATTED_WRONGLY =
             "Message is formatted wrongly.";
 
+    /**
+     * Parses the given {@code String} of arguments and transform it to a new Alias object.
+     * The new alias object will be parsed to AliasCommand object for execution
+     *
+     */
     public AliasCommand parse(String args) throws ParseException {
         String argsTrimmed = args.trim();
 
