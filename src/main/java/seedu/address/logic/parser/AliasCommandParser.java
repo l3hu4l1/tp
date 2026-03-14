@@ -20,6 +20,8 @@ public class AliasCommandParser implements Parser<AliasCommand> {
     public static final String MESSAGE_FORMATTED_WRONGLY =
             "Message is formatted wrongly.";
 
+    public static final String MESSAGE_ALIAS_IS_A_PREDEFINED_COMMAND =
+            "Alias is a predefined command, please choose another alias.";
     /**
      * Parses the given {@code String} of arguments and transform it to a new Alias object.
      * The new alias object will be parsed to AliasCommand object for execution
@@ -44,6 +46,10 @@ public class AliasCommandParser implements Parser<AliasCommand> {
 
         if (newAlias.contains(" ")) {
             throw new ParseException(MESSAGE_ALIAS_CONTAINS_SPACE);
+        }
+
+        if (CommandType.isValidCommand(newAlias)) {
+            throw new ParseException(MESSAGE_ALIAS_IS_A_PREDEFINED_COMMAND);
         }
 
         Alias alias = new Alias(newAlias, originalCommand);
