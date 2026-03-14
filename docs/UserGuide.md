@@ -513,9 +513,3 @@ Common `addproduct` warnings:
 |-------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
 | Identifier/Name has unusual symbols | `⚠ Warning: Identifier contains unusual symbols, is this intentional?`<br><br/>`⚠ Warning: Name contains unusual symbols, is this intentional?` | Identifier/Name is accepted, but looks unusual. You can verify if you entered it correctly.                                     |
 | Similar name to an existing product | `⚠ Warning: There's a product with a similar name (name: <similar-name>), is this intentional?`                                                 | Possible duplicate by similar name. You can check if the name in the warning message is the same as what you were about to add. |
-
-<box type="tip" seamless>
-
-Tip: If multiple warnings apply, VendorVault shows all of them (one per line) together with the success message.
-
-</box>
