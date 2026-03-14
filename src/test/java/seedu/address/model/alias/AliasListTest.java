@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.model.alias.exceptions.DuplicateAliasException;
+import seedu.address.model.alias.exceptions.NoAliasFoundInAliasListException;
 
 public class AliasListTest {
 
@@ -52,5 +53,33 @@ public class AliasListTest {
         aliasList.addAlias(new Alias(aliasString, originalCommand));
         assertThrows(DuplicateAliasException.class, () ->
                 aliasList.addAlias(new Alias(aliasString, "delete")));
+    }
+
+    @Test
+    public void findAlias_existingAlias_returnsCorrectAlias() throws NoAliasFoundInAliasListException {
+        AliasList aliasList = new AliasList();
+        aliasList.addAlias(new Alias(aliasString, originalCommand));
+
+        Alias result = aliasList.findAlias(aliasString);
+        assertEquals(aliasString, result.getAlias());
+    }
+
+    @Test
+    public void findAlias_nonExistentAlias_throwsException() {
+        AliasList aliasList = new AliasList();
+        aliasList.addAlias(new Alias(aliasString, originalCommand));
+
+        assertThrows(NoAliasFoundInAliasListException.class, () -> {
+            aliasList.findAlias("nonexistent");
+        });
+    }
+
+    @Test
+    public void findAlias_emptyList_throwsException() {
+        AliasList emptyList = new AliasList();
+
+        assertThrows(NoAliasFoundInAliasListException.class, () -> {
+            emptyList.findAlias("anything");
+        });
     }
 }
