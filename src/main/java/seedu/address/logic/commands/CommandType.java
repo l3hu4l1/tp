@@ -32,4 +32,25 @@ public enum CommandType {
     public String getCommandWord() {
         return this.commandWord;
     }
+
+    /**
+     * Validates whether the provided command matches a valid command in the enumeration.
+     * Empty strings are considered invalid.
+     *
+     * @param command The command string to validate.
+     * @return True if the command corresponds to a valid command, false otherwise.
+     */
+    public static boolean isValidCommand(String command) {
+        if (command.isEmpty()) {
+            return false;
+        }
+
+        for (CommandType type: CommandType.values()) {
+            if (type.commandWord.equals(command)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

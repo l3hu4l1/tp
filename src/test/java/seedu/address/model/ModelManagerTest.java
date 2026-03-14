@@ -20,6 +20,10 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.logic.commands.ListCommand;
+import seedu.address.model.alias.Alias;
+import seedu.address.model.alias.exceptions.DuplicateAliasException;
+import seedu.address.model.alias.exceptions.NoAliasFoundInAliasListException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.product.Product;
 import seedu.address.model.product.exceptions.DuplicateProductException;
@@ -382,5 +386,41 @@ public class ModelManagerTest {
         modelManager.setInventory(inventory);
 
         assertEquals(inventory, modelManager.getInventory());
+    }
+
+    @Test
+    public void addAlias_nullAlias_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.addAlias(null));
+    }
+
+    @Test
+    public void addAlias_validAlias_success() throws Exception {
+        Alias alias = new Alias("ls", ListCommand.COMMAND_WORD);
+        modelManager.addAlias(alias);
+        assertEquals(alias, modelManager.findAlias("ls"));
+    }
+
+    @Test
+    public void addAlias_duplicateAlias_throwsDuplicateAliasException() throws Exception {
+        Alias alias = new Alias("ls", ListCommand.COMMAND_WORD);
+        modelManager.addAlias(alias);
+        assertThrows(DuplicateAliasException.class, () -> modelManager.addAlias(alias));
+    }
+
+    @Test
+    public void findAlias_nullAliasStr_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.findAlias(null));
+    }
+
+    @Test
+    public void findAlias_existingAlias_returnsAlias() throws Exception {
+        Alias alias = new Alias("ls", ListCommand.COMMAND_WORD);
+        modelManager.addAlias(alias);
+        assertEquals(alias, modelManager.findAlias("ls"));
+    }
+
+    @Test
+    public void findAlias_nonExistentAlias_throwsNoAliasFoundInAliasListException() {
+        assertThrows(NoAliasFoundInAliasListException.class, () -> modelManager.findAlias("nonexistent"));
     }
 }

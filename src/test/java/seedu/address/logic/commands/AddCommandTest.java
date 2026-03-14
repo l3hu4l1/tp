@@ -32,6 +32,9 @@ import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyInventory;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.ReadOnlyVendorVault;
+import seedu.address.model.alias.Alias;
+import seedu.address.model.alias.exceptions.DuplicateAliasException;
+import seedu.address.model.alias.exceptions.NoAliasFoundInAliasListException;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
@@ -436,6 +439,16 @@ public class AddCommandTest {
 
         @Override
         public void restoreProduct(Product target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addAlias(Alias alias) throws DuplicateAliasException {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public Alias findAlias(String aliasStr) throws NoAliasFoundInAliasListException {
             throw new AssertionError("This method should not be called.");
         }
 
