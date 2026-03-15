@@ -1,5 +1,6 @@
 package seedu.address.testutil;
 
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_IDENTIFIER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_QUANTITY;
@@ -29,6 +30,7 @@ public class ProductUtil {
         sb.append(PREFIX_NAME + product.getName().fullName + " ");
         sb.append(PREFIX_QUANTITY + product.getQuantity().toString() + " ");
         sb.append(PREFIX_THRESHOLD + product.getRestockThreshold().toString() + " ");
+        product.getVendorEmail().ifPresent(email -> sb.append(PREFIX_EMAIL + email.value + " "));
         return sb.toString();
     }
 
