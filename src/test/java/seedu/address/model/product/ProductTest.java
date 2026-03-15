@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_IDENTIFIER_AIRPODS;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PRODUCT_NAME_IPAD;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_QUANTITY_IPHONE;
@@ -14,9 +15,36 @@ import static seedu.address.testutil.TypicalProducts.RICE;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.model.person.Email;
 import seedu.address.testutil.ProductBuilder;
 
 public class ProductTest {
+
+    @Test
+    public void constructor_withVendorEmail_notArchivedByDefault() {
+        Product product = new Product(
+                RICE.getIdentifier(),
+                RICE.getName(),
+                RICE.getQuantity(),
+                RICE.getRestockThreshold(),
+                new Email(VALID_EMAIL_AMY));
+
+        assertEquals(new Email(VALID_EMAIL_AMY), product.getVendorEmail().orElse(null));
+        assertFalse(product.isArchived());
+    }
+
+    @Test
+    public void constructor_withArchivedStatus_vendorEmailIsEmpty() {
+        Product product = new Product(
+                RICE.getIdentifier(),
+                RICE.getName(),
+                RICE.getQuantity(),
+                RICE.getRestockThreshold(),
+                true);
+
+        assertTrue(product.getVendorEmail().isEmpty());
+        assertTrue(product.isArchived());
+    }
 
     @Test
     public void isSameProduct() {
@@ -95,6 +123,10 @@ public class ProductTest {
         // different threshold -> returns false
         editedRice = new ProductBuilder(RICE).withThreshold(VALID_THRESHOLD_AIRPODS).build();
         assertFalse(RICE.equals(editedRice));
+
+        // different vendor email -> returns false
+        editedRice = new ProductBuilder(RICE).withVendorEmail(VALID_EMAIL_AMY).build();
+        assertFalse(RICE.equals(editedRice));
     }
 
     @Test
@@ -108,7 +140,8 @@ public class ProductTest {
     public void toStringMethod() {
         String expected =
                 Product.class.getCanonicalName() + "{identifier=" + RICE.getIdentifier() + ", name=" + RICE.getName()
-                + ", quantity=" + RICE.getQuantity() + ", threshold=" + RICE.getRestockThreshold() + "}";
+                        + ", quantity=" + RICE.getQuantity() + ", threshold=" + RICE.getRestockThreshold()
+                        + ", vendorEmail=null}";
         assertEquals(expected, RICE.toString());
     }
 
