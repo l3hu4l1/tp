@@ -23,8 +23,8 @@ public class DeleteProductCommand extends Command {
     public static final String COMMAND_WORD = "deleteproduct";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the product identified by its product ID.\n"
-            + "Parameters: PRODUCT_ID\n"
+            + ": Deletes the product identified by its product identifier.\n"
+            + "Parameters: PRODUCT_IDENTIFIER\n"
             + "Example: " + COMMAND_WORD + " P001";
 
     public static final String MESSAGE_DELETE_PRODUCT_SUCCESS = "Deleted Product: %1$s";
@@ -34,7 +34,7 @@ public class DeleteProductCommand extends Command {
 
     public static final String MESSAGE_DELETE_FAILURE = "Did not delete product";
 
-    public static final String MESSAGE_INVALID_PRODUCT_ID = "No product found with the specified ID.";
+    public static final String MESSAGE_INVALID_PRODUCT_ID = "No product found with the specified identifier.";
 
     private PendingConfirmation pendingConfirmation = new PendingConfirmation();
 

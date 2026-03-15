@@ -11,7 +11,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class DeleteProductCommandParser implements Parser<DeleteProductCommand> {
 
     public static final String MESSAGE_INVALID_FORMAT =
-            "Product id must be provided.\n"
+            "Product identifier must be provided.\n"
                     + "Example: " + DeleteProductCommand.COMMAND_WORD + " P001";
 
     @Override
