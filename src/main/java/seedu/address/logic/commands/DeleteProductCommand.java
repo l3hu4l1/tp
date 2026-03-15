@@ -110,7 +110,7 @@ public class DeleteProductCommand extends Command {
      * @param productToDelete the product to delete
      * @return the command result wrapped in an {@link Optional}
      */
-    public Optional<CommandResult> onConfirm(Model model, Product productToDelete) {
+    private Optional<CommandResult> onConfirm(Model model, Product productToDelete) {
         return Optional.of(this.deleteProduct(model, productToDelete));
     }
 
@@ -120,7 +120,7 @@ public class DeleteProductCommand extends Command {
      * @param model the model to update
      * @return the command result wrapped in an {@link Optional}
      */
-    public Optional<CommandResult> onCancel(Model model) {
+    private Optional<CommandResult> onCancel(Model model) {
         model.updateFilteredProductList(PREDICATE_SHOW_ACTIVE_PRODUCTS);
         return Optional.of(new CommandResult(MESSAGE_DELETE_FAILURE));
     }
