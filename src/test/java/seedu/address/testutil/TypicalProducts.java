@@ -1,5 +1,6 @@
 package seedu.address.testutil;
 
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_IDENTIFIER_AIRPODS;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_IDENTIFIER_IPAD;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PRODUCT_NAME_AIRPODS;
@@ -43,7 +44,7 @@ public class TypicalProducts {
             .withThreshold(VALID_THRESHOLD_IPAD).build();
     public static final Product AIRPODS = new ProductBuilder().withIdentifier(VALID_IDENTIFIER_AIRPODS)
             .withName(VALID_PRODUCT_NAME_AIRPODS).withQuantity(VALID_QUANTITY_AIRPODS)
-            .withThreshold(VALID_THRESHOLD_AIRPODS).build();
+            .withThreshold(VALID_THRESHOLD_AIRPODS).withVendorEmail(VALID_EMAIL_BOB).build();
 
     private TypicalProducts() {
     } // prevents instantiation
