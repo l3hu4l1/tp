@@ -274,8 +274,10 @@ Format: `addproduct id/IDENTIFIER n/NAME [q/QUANTITY] [th/RESTOCK_THRESHOLD]`
 
 <box type="tip" seamless>
 
-**Tip:** If quantity is not specified, it will default to 0. If threshold is not specified, it will default 
-to 0.
+If quantity is not specified, it will default to 0. 
+<br>
+If threshold is not specified, it will default to 0.
+
 </box>
 
 Examples:
@@ -284,10 +286,7 @@ Examples:
 
 <panel header="What products are considered duplicates?" type="seamless" id="faq-duplicate-products">
 
-A product is considered a duplicate if:
-* It has the **same product identifier (id) as an existing product** in VendorVault.
-
-For example, the these products are considered duplicates because they share the same product identifier `SKU-1003`:<br>
+A product is considered a duplicate if it has the **same identifier (id) as an existing product** in VendorVault. For example, these products have the same identifier `SKU-1003`:
 ```
 addproduct id/SKU-1003 n/Arduino Uno R4 Development Board
 addproduct id/SKU-1003 n/Raspberry Pi 5 (8GB RAM)
