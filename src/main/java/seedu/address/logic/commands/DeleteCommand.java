@@ -77,6 +77,20 @@ public class DeleteCommand extends Command {
      *
      */
     public CommandResult deletePerson(Model model, Person personToDelete) {
+        List<Product> linkedProducts = collectLinkedProducts(model, personToDelete);
+
+        // Unlink products first by replacing them
+        for (Product linkedProduct : linkedProducts) {
+            Product unlinkedProduct = new Product(
+                    linkedProduct.getIdentifier(),
+                    linkedProduct.getName(),
+                    linkedProduct.getQuantity(),
+                    linkedProduct.getRestockThreshold(),
+                    null,
+                    linkedProduct.isArchived());
+            model.setProduct(linkedProduct, unlinkedProduct);
+        }
+
         model.deletePerson(personToDelete);
 
         model.commitVendorVault();
