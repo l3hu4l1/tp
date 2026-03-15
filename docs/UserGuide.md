@@ -394,15 +394,15 @@ If you edited the data file and it caused VendorVault to behave unexpectedly, yo
 
 <panel header="How do I transfer my data to another computer?" type="seamless">
 
-You can transfer your VendorVault data by transferring two files:
-* Install VendorVault on the new computer (follow the [Quick Start](#quick-start) guide).
-* Open the folder where VendorVault's `.jar` file is stored on your old computer.
-* Look for the data files created by VendorVault (this file contains all your vendors and inventory).
-    * Specifically, look for the `data` folder created by VendorVault, and the data file named `addressbook.json` and `inventory.json` inside that folder.
-* Copy this data file to a USB drive or cloud storage (e.g., Google Drive, Dropbox).
-* On the new computer, run the app and then open the newly created data folder.
-* Replace the empty data file there with the one you copied from your old computer.
-* Start VendorVault — your data should now appear exactly as before.
+Follow these steps:
+* Install VendorVault on the new computer (see [Quick Start](#quick-start)).
+* On the old computer, open the folder where VendorVault's `.jar` file is located.
+* Look for the data files created by VendorVault. They contain your vendor and inventory data.
+    * Specifically, look for the `data` folder which contain the files `addressbook.json` and `inventory.json`.
+* Copy both files to an external or cloud storage.
+* On the new computer, launch VendorVault and a new `data` folder will be created. 
+* Replace the files there with those from the old computer.
+* Relaunch VendorVault and you should see your data appear exactly as before.
 
 </panel>
 
