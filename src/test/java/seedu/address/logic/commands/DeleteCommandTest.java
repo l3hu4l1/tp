@@ -210,6 +210,14 @@ public class DeleteCommandTest {
     }
 
     @Test
+    public void collectLinkedProducts_noLinkedProducts_returnsEmptyList() {
+        Person personToDelete = model.getFilteredPersonList().get(0);
+        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail(), false);
+
+        assertTrue(deleteCommand.collectLinkedProducts(model, personToDelete).isEmpty());
+    }
+
+    @Test
     public void collectLinkedProducts_hasLinkedProducts_returnsMatchingProducts() {
         Person personToDelete = model.getFilteredPersonList().get(0);
         Person anotherPerson = model.getFilteredPersonList().get(1);
