@@ -63,7 +63,7 @@ Some example commands you can try:
 
    * `add n/TechSource Electronics p/61234567 e/sales@techsource.com a/15 Kallang Way, Singapore` : Adds a vendor contact named `TechSource Electronics` to VendorVault.
 
-   * `delete 3` : Deletes the 3rd contact shown in the current list.
+   * `delete sales@techsource.com` : Deletes `TechSource Electronics`.
 
    * `clear` : Deletes all contacts.
 
