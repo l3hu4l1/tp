@@ -3,9 +3,11 @@ package seedu.address.model.product;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.parser.ParserUtil;
+import seedu.address.model.person.Email;
 import seedu.address.model.product.warnings.DuplicateProductWarning;
 
 /**
@@ -21,13 +23,22 @@ public class Product {
     private final Name name;
     private final Quantity quantity;
     private final RestockThreshold threshold;
+    private final Email vendorEmail;
     private final boolean isArchived;
 
     /**
      * Creates a Product that is not archived.
      */
     public Product(Identifier identifier, Name name, Quantity quantity, RestockThreshold threshold) {
-        this(identifier, name, quantity, threshold, false);
+        this(identifier, name, quantity, threshold, null, false);
+    }
+
+    /**
+     * Creates a Product with optional vendor email that is not archived.
+     */
+    public Product(Identifier identifier, Name name, Quantity quantity, RestockThreshold threshold,
+                   Email vendorEmail) {
+        this(identifier, name, quantity, threshold, vendorEmail, false);
     }
 
     /**
@@ -36,11 +47,20 @@ public class Product {
      */
     public Product(Identifier identifier, Name name, Quantity quantity, RestockThreshold threshold,
                    boolean isArchived) {
+        this(identifier, name, quantity, threshold, null, isArchived);
+    }
+
+    /**
+     * Creates a Product with optional vendor email and archived status.
+     */
+    public Product(Identifier identifier, Name name, Quantity quantity, RestockThreshold threshold,
+                   Email vendorEmail, boolean isArchived) {
         requireAllNonNull(identifier, name, quantity, threshold);
         this.identifier = identifier;
         this.name = name;
         this.quantity = quantity;
         this.threshold = threshold;
+        this.vendorEmail = vendorEmail;
         this.isArchived = isArchived;
     }
 
@@ -60,16 +80,20 @@ public class Product {
         return threshold;
     }
 
+    public Optional<Email> getVendorEmail() {
+        return Optional.ofNullable(vendorEmail);
+    }
+
     public boolean isArchived() {
         return isArchived;
     }
 
     public Product archive() {
-        return new Product(identifier, name, quantity, threshold, true);
+        return new Product(identifier, name, quantity, threshold, vendorEmail, true);
     }
 
     public Product restore() {
-        return new Product(identifier, name, quantity, threshold, false);
+        return new Product(identifier, name, quantity, threshold, vendorEmail, false);
     }
 
     /**
@@ -134,12 +158,13 @@ public class Product {
                 && name.equals(otherProduct.name)
                 && quantity.equals(otherProduct.quantity)
                 && threshold.equals(otherProduct.threshold)
+                && Objects.equals(vendorEmail, otherProduct.vendorEmail)
                 && isArchived == otherProduct.isArchived;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier, name, quantity, threshold, isArchived);
+        return Objects.hash(identifier, name, quantity, threshold, vendorEmail, isArchived);
     }
 
     @Override
@@ -149,6 +174,7 @@ public class Product {
                 .add("name", name)
                 .add("quantity", quantity)
                 .add("threshold", threshold)
+                .add("vendorEmail", vendorEmail)
                 .toString();
     }
 
