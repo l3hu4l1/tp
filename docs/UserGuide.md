@@ -10,6 +10,16 @@ VendorVault is a **desktop app for managing your vendors and inventory all in on
 
 Spend less time searching through spreadsheets and switching between apps. VendorVault keeps your business information organised so you can focus on what matters most: growing your business.
 
+<br>
+
+## Target Audience
+
+VendorVault is designed for:
+
+* **Small business owners** managing vendor contacts and suppliers
+* **Small business owners** who track inventory and vendor information
+* **Users comfortable with typing commands** to quickly manage data
+
 <!-- * Table of Contents -->
 <page-nav-print />
 
@@ -103,17 +113,17 @@ command here...`. This is where you can type in commands to interact with the ap
 <br><br>
 Some example commands you can try:
 
-   * `list` : Lists all contacts.
+* `list` : Lists all contacts.
 
-   * `add n/TechSource Electronics p/61234567 e/sales@techsource.com a/15 Kallang Way, Singapore` : Adds a vendor contact named `TechSource Electronics` to VendorVault.
+* `add n/TechSource Electronics p/61234567 e/sales@techsource.com a/15 Kallang Way, Singapore` : Adds a vendor contact named `TechSource Electronics` to VendorVault.
 
-   * `delete sales@techsource.com` : Deletes `TechSource Electronics`.
+* `delete sales@techsource.com` : Deletes `TechSource Electronics`.
 
-   * `clear` : Deletes all contacts.
+* `clear` : Deletes all contacts.
 
-   * `exit` : Exits VendorVault.
+* `exit` : Exits VendorVault.
 
-5. Refer to the [Features](#features) below for details of each command. Or [Command Summary](#command-summary) for a quick summary of all commands.
+1. Refer to the [Features](#features) below for details of each command. Or [Command Summary](#command-summary) for a quick summary of all commands.
 
 <br>
 
@@ -184,11 +194,13 @@ Format: `help`
 Adds a contact to VendorVault.
 
 Format:
+
 ```
 add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​
 ```
 
 Examples:
+
 * `add n/Adafruit Industries p/64601234 e/support@adafruit.com a/151 Varick St, New York, NY 10013, USA`
 * `add n/Cytron Technologies Pte. Ltd. p/65480668 (Office), 91234567 (Sales) e/sg.sales@cytron.io a/09 Collyer Quay t/electronics`
 
@@ -213,10 +225,12 @@ add n/DigiKey Singapore p/61234567, 87654321 e/sg.sales@digikey.com a/71 Ayer Ra
 <panel header="What contacts are considered duplicates?" type="seamless" id="faq-duplicate-contacts">
 
 A contact is considered a duplicate if:
+
 * It has the **same email and phone number as an existing contact** in VendorVault.
 * Phone numbers are compared while ignoring labels (such as “(Office)” or “(HP)”). Multiple phone numbers should be separated by commas.
 
 For example, these contacts are considered duplicates because they share the same phone number `61234567` and email `contact@company.com`:<br>
+
 ```
 add n/DigiKey Singapore p/61234567, 98765432 e/contact@company.com a/71 Ayer Rajah Crescent, #05-18, Singapore 139951
 add n/DigiKey Singapore p/61234567, 12345678 e/contact@company.com a/71 Ayer Rajah Crescent, #05-18, Singapore 139951
@@ -235,6 +249,7 @@ For more details on possible warnings and errors when adding a contact, refer to
 Shows a list of all contacts in the VendorVault.
 
 Format:
+
 ```
 list
 ```
@@ -252,13 +267,15 @@ This command only shows active contacts. To view archived contacts, use [`restor
 Edits a contact using the given email. Only the fields you specify will be updated, all others stay the same.
 
 Format:
+
 ```
 edit EMAIL [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​
 ```
 
 Examples:
-*  `edit support@adafruit.com p/98196742 a/New York, USA` Updates the phone number and address for `support@adafruit.com`. The name, email, and tags remain unchanged.
-*  `edit sg.sales@cytron.io n/Cytron t/` Updates the name to Cytron for `sg.sales@cytron.io` and clears all existing tags.
+
+* `edit support@adafruit.com p/98196742 a/New York, USA` Updates the phone number and address for `support@adafruit.com`. The name, email, and tags remain unchanged.
+* `edit sg.sales@cytron.io n/Cytron t/` Updates the name to Cytron for `sg.sales@cytron.io` and clears all existing tags.
 
 <panel header="What happens to a contact's existing tags when I edit them?" type="seamless">
 
@@ -297,6 +314,7 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 
 Examples:
+
 * `find John` returns `john` and `John Doe`
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
   ![result for 'find alex david'](images/findAlexDavidResult.png)
@@ -308,11 +326,13 @@ Examples:
 Moves a contact to the archive. Archived contacts are hidden from the main list but are **not permanently deleted** — they can be restored at any time.
 
 Format:
+
 ```
 archive EMAIL
 ```
 
 Examples:
+
 * `archive sg.sales@cytron.io` archives the contact associated with the email `sg.sales@cytron.io`.
 
 <box type="tip" seamless>
@@ -340,6 +360,7 @@ Use [`restore`](#restoring-an-archived-contact-restore) without any argument to 
 Moves a previously archived contact back to the active contact list.
 
 Format:
+
 ```
 restore EMAIL
 ```
@@ -347,6 +368,7 @@ restore EMAIL
 * If `EMAIL` is omitted, VendorVault will display all archived contacts so you can find the one you want to restore.
 
 Examples:
+
 * `restore` — shows all archived contacts in the panel.
 * `restore sg.sales@cytron.io` — restores the archived contact with email `sg.sales@cytron.io`.
 
@@ -360,19 +382,20 @@ Only contacts that have been archived can be restored. If you try to restore an 
 
 #### Deleting a contact : `delete`
 
-Removes a contact from the address book using their email address as the *unique identifier*
+Removes a contact from the address book using their email address as the _unique identifier_
 You will be prompted to confirm the deletion before any changes are made.
 
 Format: `delete EMAIL`
 
 Examples:
+
 * `delete support@adafruit.com` deletes the contact associated with the email `support@adafruit.com`.
 
 **Tip:** To skip the confimation prompt, use the `-y` flag: `delete -y EMAIL`
 
 <panel header="Why can't I delete using other fields?" type="seamless">
 
-Email addresses serve as the *unique identifier* for each contact, so the `delete` command only accepts email as input to ensure the correct contact is targeted.
+Email addresses serve as the _unique identifier_ for each contact, so the `delete` command only accepts email as input to ensure the correct contact is targeted.
 
 </panel>
 
@@ -388,12 +411,11 @@ Format: `clear`
 
 <box type="important">
 
-*This action is irreversible*. Ensure you have backed up your data before proceeding, as `clear` will delete all stored contact information.
+_This action is irreversible_. Ensure you have backed up your data before proceeding, as `clear` will delete all stored contact information.
 
 For instructions on how to backup your data, check out [How do I backup my data](#faq-backup-data)
 
 </box>
-
 
 <div style="height: 30px;"></div>
 
@@ -414,12 +436,14 @@ If threshold is not specified, it will default to 0.
 </box>
 
 Examples:
+
 * `addproduct id/Pr1 n/HP LaserJet (M428fdw) q/50 th/10`
 * `addproduct id/DE/5 n/PlayStation`
 
 <panel header="What products are considered duplicates?" type="seamless" id="faq-duplicate-products">
 
 A product is considered a duplicate if it has the **same identifier (id) as an existing product** in VendorVault. For example, these products have the same identifier `SKU-1003`:
+
 ```
 addproduct id/SKU-1003 n/Arduino Uno R4 Development Board
 addproduct id/SKU-1003 n/Raspberry Pi 5 (8GB RAM)
@@ -432,6 +456,7 @@ addproduct id/SKU-1003 n/Raspberry Pi 5 (8GB RAM)
 Shows a list of all **active** (non-archived) products in the inventory.
 
 Format:
+
 ```
 listproduct
 ```
@@ -444,7 +469,7 @@ This command only shows active products. To view archived products, use [`restor
 
 <div style="height: 30px;"></div>
 
-#### Editing a product : `editproduct` *(coming soon)*
+#### Editing a product : `editproduct` _(coming soon)_
 
 <box type="info" seamless>
 
@@ -459,11 +484,13 @@ This command only shows active products. To view archived products, use [`restor
 Moves a product to the archive. Archived products are hidden from the main inventory list but are **not permanently deleted** — they can be restored at any time using their identifier.
 
 Format:
+
 ```
 archiveproduct IDENTIFIER
 ```
 
 Examples:
+
 * `archiveproduct SKU-1003` archives the product with identifier `SKU-1003`.
 * `archiveproduct SKU-2048` archives the product with identifier `SKU-2048`.
 
@@ -492,6 +519,7 @@ Use [`restoreproduct`](#restoring-an-archived-product-restoreproduct) without an
 Moves a previously archived product back to the active inventory list.
 
 Format:
+
 ```
 restoreproduct IDENTIFIER
 ```
@@ -499,6 +527,7 @@ restoreproduct IDENTIFIER
 * If `IDENTIFIER` is omitted, VendorVault will display all archived products so you can find the one you want to restore.
 
 Examples:
+
 * `restoreproduct` — shows all archived products in the panel.
 * `restoreproduct SKU-1003` — restores the archived product with identifier `SKU-1003`.
 
@@ -516,11 +545,13 @@ Permanently removes a product from the inventory using its product identifier.
 You will be prompted to confirm the deletion before any changes are made.
 
 Format:
+
 ```
 deleteproduct PRODUCT_IDENTIFIER
 ```
 
 Examples:
+
 * `deleteproduct SKU-1003` deletes the product with identifier `SKU-1003`.
 
 **Tip:** To skip the confirmation prompt, use the `-y` flag: `deleteproduct -y PRODUCT_IDENTIFIER`
@@ -547,7 +578,7 @@ Format: `clearproduct`
 
 <box type="important">
 
-*This action is irreversible*. All products will be permanently deleted. Ensure you have backed up your data before proceeding.
+_This action is irreversible_. All products will be permanently deleted. Ensure you have backed up your data before proceeding.
 
 For instructions on how to back up your data, check out [How do I backup my data](#faq-backup-data).
 
@@ -559,7 +590,6 @@ For instructions on how to back up your data, check out [How do I backup my data
 
 </box>
 
-
 <div style="height: 30px;"></div>
 
 ### Undoing the previous command : `undo`
@@ -567,6 +597,7 @@ For instructions on how to back up your data, check out [How do I backup my data
 Undoes the previous command that changed the data.
 
 Format:
+
 ```
 undo
 ```
@@ -578,6 +609,7 @@ undo
 Redoes the previous undone command that changed the data.
 
 Format:
+
 ```
 redo
 ```
@@ -618,9 +650,10 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 ## Command Summary
 
 ### Contact Commands
+
 | Action             | Command                                                                | Example                                                                                                    | What it does                             |
 |--------------------|------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|------------------------------------------|
-| **Add Contact**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​ `               | `add n/TechSource Electronics p/61234567 e/sales@techsource.com a/15 Kallang Way, Singapore t/electronics` | Adds vendor contact                      |
+| **Add Contact**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`               | `add n/TechSource Electronics p/61234567 e/sales@techsource.com a/15 Kallang Way, Singapore t/electronics` | Adds vendor contact                      |
 | **Edit Contact**   | `edit EMAIL [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​` | `edit sales@techsource.com n/TechSource p/61234568`                                                        | Edits specified fields of vendor contact |
 | **Delete Contact** | `delete EMAIL`                                                         | `delete sales@techsource.com`                                                                              | Deletes contact by email                 |
 | **List**           | `list`                                                                 |                                                                                                            | Lists active contacts                       |
@@ -633,7 +666,7 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 |-------------------------|-------------------------------------------------------------------------|----------------------------------------------------------------|---------------------------------------------------------------------------|
 | **Add Product**         | `addproduct id/IDENTIFIER n/NAME [q/QUANTITY] [th/RESTOCK_THRESHOLD]`  | `addproduct id/SKU-1003 n/Arduino Uno R4 q/50 th/10`          | Adds product                                                              |
 | **List Products**       | `listproduct`                                                           |                                                                | Lists all active products                                                 |
-| **Edit Product**        | `editproduct` *(coming soon)*                                           |                                                                | Edits a product's details                                                 |
+| **Edit Product**        | `editproduct` _(coming soon)_                                           |                                                                | Edits a product's details                                                 |
 | **Archive Product**     | `archiveproduct IDENTIFIER`                                             | `archiveproduct SKU-1003`                                      | Archives product (hidden, not deleted)                                    |
 | **Restore Product**     | `restoreproduct [IDENTIFIER]`                                           | `restoreproduct SKU-1003`                                      | Restores archived product; lists all archived if no identifier given      |
 | **Delete Product**      | `deleteproduct IDENTIFIER`                                              | `deleteproduct SKU-1003`                                       | Permanently deletes product by identifier                                 |
@@ -673,6 +706,7 @@ Use archive when you're unsure if you'll need the data again. Use delete when yo
 <panel header="I edited the data file directly and now VendorVault is not working. What should I do?" type="seamless">
 
 If you edited the data file and it caused VendorVault to behave unexpectedly, you can try the following steps:
+
 1. Restore from backup: If you made a backup of the data file before editing, you can restore the original data file by replacing the edited data files in the data folder with the backup.
 2. Start with a new data file: If you do not have a backup, you can delete the existing data file (or move it to a different location for safekeeping) and start VendorVault again. This will create a new, empty data file.
 
@@ -681,6 +715,7 @@ If you edited the data file and it caused VendorVault to behave unexpectedly, yo
 <panel header="How do I transfer my data to another computer?" type="seamless">
 
 Follow these steps:
+
 * Install VendorVault on the new computer (see [Quick Start](#quick-start)).
 * On the old computer, open the folder where VendorVault's `.jar` file is located.
 * Look for the `data` folder, which contain the files `addressbook.json` and `inventory.json`.
@@ -723,7 +758,6 @@ Follow these steps:
 #### Troubleshooting `add` contact
 
 Use this section when `add` fails or returns a warning.
-
 
 | Scenario                                                                         | Message shown                                                             | How to fix                                                        |
 |----------------------------------------------------------------------------------|---------------------------------------------------------------------------|-------------------------------------------------------------------|
