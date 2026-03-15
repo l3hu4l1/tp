@@ -210,6 +210,37 @@ public class DeleteCommandTest {
     }
 
     @Test
+    public void collectLinkedProducts_hasLinkedProducts_returnsMatchingProducts() {
+        Person personToDelete = model.getFilteredPersonList().get(0);
+        Person anotherPerson = model.getFilteredPersonList().get(1);
+        Product linkedProductOne = new ProductBuilder()
+                .withIdentifier("SKU-001")
+                .withName("Linked Product One")
+                .withVendorEmail(personToDelete.getEmail().value)
+                .build();
+        Product linkedProductTwoArchived = new ProductBuilder()
+                .withIdentifier("SKU-002")
+                .withName("Linked Product Two")
+                .withVendorEmail(personToDelete.getEmail().value)
+                .build()
+                .archive();
+        Product unlinkedProduct = new ProductBuilder()
+                .withIdentifier("SKU-003")
+                .withName("Unlinked Product")
+                .withVendorEmail(anotherPerson.getEmail().value)
+                .build();
+
+        model.addProduct(linkedProductOne);
+        model.addProduct(linkedProductTwoArchived);
+        model.addProduct(unlinkedProduct);
+
+        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail(), false);
+        assertEquals(2, deleteCommand.collectLinkedProducts(model, personToDelete).size());
+        assertTrue(deleteCommand.collectLinkedProducts(model, personToDelete).contains(linkedProductOne));
+        assertTrue(deleteCommand.collectLinkedProducts(model, personToDelete).contains(linkedProductTwoArchived));
+    }
+
+    @Test
     public void equals() {
         DeleteCommand deleteFirstCommand = new DeleteCommand(AMY_EMAIL, true);
         DeleteCommand deleteSecondCommand = new DeleteCommand(BOB_EMAIL, true);
