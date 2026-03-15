@@ -8,6 +8,9 @@ import seedu.address.model.Model;
 import seedu.address.model.alias.Alias;
 import seedu.address.model.alias.exceptions.DuplicateAliasException;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
  * Adds a new alias
  */
@@ -17,22 +20,57 @@ public class AliasCommand extends Command {
 
     public static final String MESSAGE_ADD_ALIAS_SUCCESS = "Added Alias: %1$s";
 
-    private final Alias alias;
+    public static final String MESSAGE_EMPTY_ALIAS_LIST = "No alias added yet. Add alias using the alias command.";
+
+    public static final String MESSAGE_DISPLAY_ALIAS_LIST = "Here are your current aliases: ";
+
+    private final Optional<Alias> alias;
 
     public AliasCommand(Alias alias) {
-        this.alias = alias;
+        this.alias = Optional.of(alias);
+    }
+
+    public AliasCommand() {
+        this.alias = Optional.empty();
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
+        if (alias.isPresent()) {
+            return addAliasToModel(model, alias.get());
+        } else {
+            return null;
+        }
+    }
+
+    public CommandResult addAliasToModel(Model model, Alias alias) throws CommandException {
         try {
             model.addAlias(alias);
         } catch (DuplicateAliasException e) {
             throw new CommandException(MESSAGE_DUPLICATE_ALIAS);
         }
-
         return new CommandResult(String.format(MESSAGE_ADD_ALIAS_SUCCESS, alias.getAlias()));
+    }
+
+    public CommandResult showCurrentAliases(Model model) throws CommandException {
+        List<Alias> aliasList = model.getAliases().getAliasList();
+        if (aliasList.isEmpty()) {
+            return new CommandResult(MESSAGE_EMPTY_ALIAS_LIST);
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(MESSAGE_DISPLAY_ALIAS_LIST);
+        for (int i = 1; i <= aliasList.size(); i++) {
+            Alias currAlias = aliasList.get(i-1);
+            stringBuilder.append(i)
+                    .append(") Alias:")
+                    .append(currAlias.getAlias())
+                    .append(", Original Command:")
+                    .append(currAlias.getOriginalCommand());
+        }
+        return new CommandResult(stringBuilder.toString());
     }
 
     @Override
