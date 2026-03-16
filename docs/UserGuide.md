@@ -388,7 +388,11 @@ Examples:
 
 * `delete support@adafruit.com` deletes the contact associated with the email `support@adafruit.com`.
 
-<br>
+<box type="important" seamless>
+
+You can use undo to restore the data only **within the same app session**. If you may need the contact again in the future, consider using [`archive`](#archiving-a-contact-archive) instead.
+
+</box>
 
 <div style="height: 30px;"></div>
 
