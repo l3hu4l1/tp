@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.logic.Messages.MESSAGE_DUPLICATE_PRODUCT;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PRODUCT_NAME_IPAD;
@@ -21,7 +20,6 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.EditProductCommand.EditProductDescriptor;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
-import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
 import seedu.address.model.product.Product;
 import seedu.address.testutil.EditProductDescriptorBuilder;
@@ -47,7 +45,7 @@ public class EditProductCommandTest {
                 .withVendorEmail(VALID_EMAIL_AMY)
                 .build();
 
-        EditProductCommand.EditProductDescriptor descriptor = new EditProductDescriptorBuilder()
+        EditProductDescriptor descriptor = new EditProductDescriptorBuilder()
                 .withName(VALID_PRODUCT_NAME_IPAD)
                 .withQuantity(VALID_QUANTITY_IPHONE)
                 .withThreshold(VALID_THRESHOLD_AIRPODS)
@@ -57,9 +55,8 @@ public class EditProductCommandTest {
         EditProductCommand command =
                 new EditProductCommand(firstProduct.getIdentifier().value, descriptor);
 
-        Model expectedModel = new ModelManager(
-                model.getVendorVault(),
-                new UserPrefs());
+        Model expectedModel = new ModelManager();
+        expectedModel.setVendorVault(model.getVendorVault());
         expectedModel.setProduct(firstProduct, editedProduct);
         expectedModel.updateFilteredProductList(Model.PREDICATE_SHOW_ACTIVE_PRODUCTS);
         expectedModel.commitVendorVault();
@@ -77,24 +74,27 @@ public class EditProductCommandTest {
         model.setInventory(getTypicalInventory());
 
         Product firstProduct = model.getFilteredProductList().get(0);
-        EditProductCommand.EditProductDescriptor descriptor = new EditProductDescriptorBuilder()
+
+        EditProductDescriptor descriptor = new EditProductDescriptorBuilder()
                 .withQuantity(VALID_QUANTITY_IPHONE)
                 .build();
-        EditProductCommand command = new EditProductCommand(firstProduct.getIdentifier().value, descriptor);
+
+        EditProductCommand command =
+                new EditProductCommand(firstProduct.getIdentifier().value, descriptor);
 
         Product editedProduct = new ProductBuilder(firstProduct)
                 .withQuantity(VALID_QUANTITY_IPHONE)
                 .build();
 
-        Model expectedModel = new ModelManager(
-                model.getVendorVault(),
-                new UserPrefs());
+        Model expectedModel = new ModelManager();
+        expectedModel.setVendorVault(model.getVendorVault());
         expectedModel.setProduct(firstProduct, editedProduct);
         expectedModel.updateFilteredProductList(Model.PREDICATE_SHOW_ACTIVE_PRODUCTS);
         expectedModel.commitVendorVault();
 
         assertCommandSuccess(command, model,
-                String.format(EditProductCommand.MESSAGE_EDIT_PRODUCT_SUCCESS, Messages.formatProduct(editedProduct)),
+                String.format(EditProductCommand.MESSAGE_EDIT_PRODUCT_SUCCESS,
+                        Messages.formatProduct(editedProduct)),
                 expectedModel);
     }
 
@@ -103,30 +103,35 @@ public class EditProductCommandTest {
         Model model = new ModelManager();
         model.setAddressBook(getTypicalAddressBook());
         model.setInventory(getTypicalInventory());
+
         Product originalProduct = model.getFilteredProductList().get(0);
+
         Product productWithVendor = new ProductBuilder(originalProduct)
                 .withVendorEmail(VALID_EMAIL_AMY)
                 .build();
+
         model.setProduct(originalProduct, productWithVendor);
 
-        EditProductCommand.EditProductDescriptor descriptor = new EditProductDescriptorBuilder()
+        EditProductDescriptor descriptor = new EditProductDescriptorBuilder()
                 .withoutVendorEmail()
                 .build();
-        EditProductCommand command = new EditProductCommand(productWithVendor.getIdentifier().value, descriptor);
+
+        EditProductCommand command =
+                new EditProductCommand(productWithVendor.getIdentifier().value, descriptor);
 
         Product editedProduct = new ProductBuilder(productWithVendor)
                 .withoutVendorEmail()
                 .build();
 
-        Model expectedModel = new ModelManager(
-                model.getVendorVault(),
-                new UserPrefs());
+        Model expectedModel = new ModelManager();
+        expectedModel.setVendorVault(model.getVendorVault());
         expectedModel.setProduct(productWithVendor, editedProduct);
         expectedModel.updateFilteredProductList(Model.PREDICATE_SHOW_ACTIVE_PRODUCTS);
         expectedModel.commitVendorVault();
 
         assertCommandSuccess(command, model,
-                String.format(EditProductCommand.MESSAGE_EDIT_PRODUCT_SUCCESS, Messages.formatProduct(editedProduct)),
+                String.format(EditProductCommand.MESSAGE_EDIT_PRODUCT_SUCCESS,
+                        Messages.formatProduct(editedProduct)),
                 expectedModel);
     }
 
@@ -137,12 +142,16 @@ public class EditProductCommandTest {
         model.setInventory(getTypicalInventory());
 
         Product firstProduct = model.getFilteredProductList().get(0);
-        EditProductCommand.EditProductDescriptor descriptor = new EditProductDescriptorBuilder()
+
+        EditProductDescriptor descriptor = new EditProductDescriptorBuilder()
                 .withVendorEmail("ghost@example.com")
                 .build();
-        EditProductCommand command = new EditProductCommand(firstProduct.getIdentifier().value, descriptor);
 
-        assertCommandFailure(command, model, EditProductCommand.MESSAGE_VENDOR_EMAIL_NOT_FOUND);
+        EditProductCommand command =
+                new EditProductCommand(firstProduct.getIdentifier().value, descriptor);
+
+        assertCommandFailure(command, model,
+                EditProductCommand.MESSAGE_VENDOR_EMAIL_NOT_FOUND);
     }
 
     @Test
@@ -151,18 +160,21 @@ public class EditProductCommandTest {
         model.setAddressBook(getTypicalAddressBook());
         model.setInventory(getTypicalInventory());
 
-        EditProductCommand.EditProductDescriptor descriptor = new EditProductDescriptorBuilder()
+        EditProductDescriptor descriptor = new EditProductDescriptorBuilder()
                 .withName(VALID_PRODUCT_NAME_IPAD)
                 .build();
-        EditProductCommand command = new EditProductCommand("MISSING-ID", descriptor);
 
-        assertCommandFailure(command, model, EditProductCommand.MESSAGE_INVALID_PRODUCT_ID);
+        EditProductCommand command =
+                new EditProductCommand("MISSING-ID", descriptor);
+
+        assertCommandFailure(command, model,
+                EditProductCommand.MESSAGE_INVALID_PRODUCT_ID);
     }
 
     @Test
     public void constructor_noFieldsEdited_throwsException() {
-        EditProductCommand.EditProductDescriptor descriptor =
-                new EditProductCommand.EditProductDescriptor();
+        EditProductDescriptor descriptor =
+                new EditProductDescriptor();
         assertThrows(IllegalArgumentException.class, ()
                 -> new EditProductCommand("SKU-1", descriptor));
     }
@@ -170,18 +182,22 @@ public class EditProductCommandTest {
     @Test
     public void equals() {
         String targetIdentifier = "SKU-1001";
-        EditProductCommand.EditProductDescriptor firstDescriptor = new EditProductDescriptorBuilder()
-                .withName(VALID_PRODUCT_NAME_IPAD)
-                .build();
-        EditProductCommand.EditProductDescriptor secondDescriptor = new EditProductDescriptorBuilder()
-                .withQuantity(VALID_QUANTITY_IPHONE)
-                .build();
 
-        EditProductCommand editFirstCommand = new EditProductCommand(targetIdentifier, firstDescriptor);
-        EditProductCommand editSecondCommand = new EditProductCommand("SKU-1002", secondDescriptor);
+        EditProductDescriptor firstDescriptor =
+                new EditProductDescriptorBuilder().withName(VALID_PRODUCT_NAME_IPAD).build();
+
+        EditProductDescriptor secondDescriptor =
+                new EditProductDescriptorBuilder().withQuantity(VALID_QUANTITY_IPHONE).build();
+
+        EditProductCommand editFirstCommand =
+                new EditProductCommand(targetIdentifier, firstDescriptor);
+
+        EditProductCommand editSecondCommand =
+                new EditProductCommand("SKU-1002", secondDescriptor);
 
         assertTrue(editFirstCommand.equals(editFirstCommand));
-        assertTrue(editFirstCommand.equals(new EditProductCommand(targetIdentifier, firstDescriptor)));
+        assertTrue(editFirstCommand.equals(
+                new EditProductCommand(targetIdentifier, firstDescriptor)));
         assertFalse(editFirstCommand.equals(1));
         assertFalse(editFirstCommand.equals(null));
         assertFalse(editFirstCommand.equals(editSecondCommand));
@@ -191,28 +207,35 @@ public class EditProductCommandTest {
     public void equals_sameIdentifierDifferentDescriptor_false() {
         String targetIdentifier = "SKU-1001";
 
-        EditProductCommand.EditProductDescriptor descriptor1 =
+        EditProductDescriptor descriptor1 =
                 new EditProductDescriptorBuilder().withName("iPad").build();
 
-        EditProductCommand.EditProductDescriptor descriptor2 =
+        EditProductDescriptor descriptor2 =
                 new EditProductDescriptorBuilder().withQuantity("5").build();
 
-        EditProductCommand command1 = new EditProductCommand(targetIdentifier, descriptor1);
-        EditProductCommand command2 = new EditProductCommand(targetIdentifier, descriptor2);
+        EditProductCommand command1 =
+                new EditProductCommand(targetIdentifier, descriptor1);
+
+        EditProductCommand command2 =
+                new EditProductCommand(targetIdentifier, descriptor2);
 
         assertFalse(command1.equals(command2));
     }
 
     @Test
     public void toStringMethod() {
-        EditProductCommand.EditProductDescriptor descriptor = new EditProductDescriptorBuilder()
-                .withName(VALID_PRODUCT_NAME_IPAD)
-                .withVendorEmail(VALID_EMAIL_BOB)
-                .build();
-        EditProductCommand command = new EditProductCommand("SKU-1001", descriptor);
+        EditProductDescriptor descriptor =
+                new EditProductDescriptorBuilder()
+                        .withName(VALID_PRODUCT_NAME_IPAD)
+                        .withVendorEmail(VALID_EMAIL_BOB)
+                        .build();
+
+        EditProductCommand command =
+                new EditProductCommand("SKU-1001", descriptor);
 
         String expected = EditProductCommand.class.getCanonicalName()
                 + "{targetIdentifier=SKU-1001, editProductDescriptor=" + descriptor + "}";
+
         assertEquals(expected, command.toString());
     }
 }
