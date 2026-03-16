@@ -118,7 +118,8 @@ Some example commands you can try:
 
 * `help`: View available commands within the app.
 
-1. Refer to the [Features](#features) below for details of each command. Or [Command Summary](#command-summary) for a quick summary of all commands.
+5\. Refer to the [Features](#features) below for details of each command. Or [Command Summary](#command-summary) for 
+a quick summary of all commands.
 
 <br>
 
