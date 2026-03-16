@@ -17,6 +17,8 @@ import static seedu.address.testutil.TypicalProducts.getTypicalInventory;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -436,5 +438,27 @@ public class ModelManagerTest {
     @Test
     public void findAlias_nonExistentAlias_throwsNoAliasFoundInAliasListException() {
         assertThrows(NoAliasFoundInAliasListException.class, () -> modelManager.findAlias("nonexistent"));
+    }
+
+    @Test
+    public void getAliasList_emptyAliases_returnsEmptyList() {
+        Aliases aliases = new Aliases();
+        modelManager.setAliases(aliases);
+        assertEquals(Collections.emptyList(), modelManager.getAliasList());
+    }
+
+    @Test
+    public void getAliasList_withAliases_returnsEmptyList() {
+        Aliases aliases = new Aliases();
+        Alias alias1 = new Alias("ls", "list");
+        Alias alias2 = new Alias("a", "add");
+
+        aliases.addAlias(alias1);
+        aliases.addAlias(alias2);
+
+        List<Alias> result = aliases.getAliasList();
+        assertEquals(2, result.size());
+        assertTrue(result.contains(alias1));
+        assertTrue(result.contains(alias2));
     }
 }
