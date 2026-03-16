@@ -662,12 +662,13 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 
 ### General Commands
 
-| Action   | Command | What it does                   |
-|----------|---------|--------------------------------|
-| **Undo** | `undo`  | Undoes previous command        |
-| **Redo** | `redo`  | Redoes last undone command     |
-| **Help** | `help`  | Shows help message             |
-| **Exit** | `exit`  | Exits VendorVault              |
+| Action    | Command | What it does               |
+|-----------|---------|----------------------------|
+| **Alias** | `alias` | Add a command alias        |
+| **Undo**  | `undo`  | Undoes previous command    |
+| **Redo**  | `redo`  | Redoes last undone command |
+| **Help**  | `help`  | Shows help message         |
+| **Exit**  | `exit`  | Exits VendorVault          |
 
 --------------------------------------------------------------------------------------------------------------------
 
