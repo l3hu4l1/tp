@@ -388,25 +388,6 @@ Examples:
 
 * `delete support@adafruit.com` deletes the contact associated with the email `support@adafruit.com`.
 
-
-<box type="info" seamless>
-
-There is a confirmation prompt for `delete` command.
-
-</box>
-
-<panel header="Can I skip the confirmation prompt?" type="seamless">
-
-Yes, you can use the flag `-y` to skip the confirmation prompt.
-
-For example, the following command bypass the confirmation prompt and deletes a contact with the email: `sg.sales@digikey.com`
-
-```
-delete -y sg.sales@digikey.com
-```
-
-</panel>
-
 <br>
 
 <div style="height: 30px;"></div>
