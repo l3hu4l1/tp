@@ -240,13 +240,13 @@ public class ModelManagerTest {
 
     @Test
     public void getInventory_notNull() {
-        ModelManager modelManager = new ModelManager(new VendorVault(), new UserPrefs());
+        ModelManager modelManager = new ModelManager(new VendorVault(), new UserPrefs(), new Aliases());
         assertNotNull(modelManager.getInventory());
     }
 
     @Test
     public void archiveProduct_setsArchivedFlag() {
-        ModelManager model = new ModelManager(new VendorVault(), new UserPrefs());
+        ModelManager model = new ModelManager(new VendorVault(), new UserPrefs(), new Aliases());
         Product product = new ProductBuilder().build();
 
         model.addProduct(product);
@@ -257,7 +257,7 @@ public class ModelManagerTest {
 
     @Test
     public void constructor_productsFilteredCorrectly() {
-        ModelManager model = new ModelManager(new VendorVault(), new UserPrefs());
+        ModelManager model = new ModelManager(new VendorVault(), new UserPrefs(), new Aliases());
 
         Product product = new ProductBuilder().build();
         model.addProduct(product);
@@ -267,7 +267,7 @@ public class ModelManagerTest {
 
     @Test
     public void archiveProduct_updatesFilteredList() {
-        ModelManager model = new ModelManager(new VendorVault(), new UserPrefs());
+        ModelManager model = new ModelManager(new VendorVault(), new UserPrefs(), new Aliases());
 
         Product product = new ProductBuilder().build();
         model.addProduct(product);
@@ -279,7 +279,7 @@ public class ModelManagerTest {
 
     @Test
     public void restoreProduct_updatesFilteredList() {
-        ModelManager model = new ModelManager(new VendorVault(), new UserPrefs());
+        ModelManager model = new ModelManager(new VendorVault(), new UserPrefs(), new Aliases());
 
         Product product = new ProductBuilder().build();
         model.addProduct(product);
@@ -299,13 +299,14 @@ public class ModelManagerTest {
         AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
         AddressBook differentAddressBook = new AddressBook();
         UserPrefs userPrefs = new UserPrefs();
+        Aliases aliases = new Aliases();
 
         // same values -> returns true
-        VendorVault vendorVault = new VendorVault(addressBook, new Inventory(), new Aliases());
-        VendorVault differentVendorVault = new VendorVault(differentAddressBook, new Inventory(), new Aliases());
+        VendorVault vendorVault = new VendorVault(addressBook, new Inventory());
+        VendorVault differentVendorVault = new VendorVault(differentAddressBook, new Inventory());
 
-        modelManager = new ModelManager(vendorVault, userPrefs);
-        ModelManager modelManagerCopy = new ModelManager(vendorVault, userPrefs);
+        modelManager = new ModelManager(vendorVault, userPrefs, aliases);
+        ModelManager modelManagerCopy = new ModelManager(vendorVault, userPrefs, aliases);
         assertTrue(modelManager.equals(modelManagerCopy));
 
         // same object -> returns true
@@ -318,12 +319,12 @@ public class ModelManagerTest {
         assertFalse(modelManager.equals(5));
 
         // different addressBook -> returns false
-        assertFalse(modelManager.equals(new ModelManager(differentVendorVault, userPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(differentVendorVault, userPrefs, aliases)));
 
         // different filteredList -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
         modelManager.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
-        assertFalse(modelManager.equals(new ModelManager(vendorVault, userPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(vendorVault, userPrefs, aliases)));
 
         // resets modelManager to initial state for upcoming tests
         modelManager.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
@@ -331,20 +332,20 @@ public class ModelManagerTest {
         // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setAddressBookFilePath(Paths.get("differentFilePath"));
-        assertFalse(modelManager.equals(new ModelManager(vendorVault, differentUserPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(vendorVault, differentUserPrefs, aliases)));
 
         // different inventory -> returns false
-        ModelManager modelManagerWithProduct = new ModelManager(vendorVault, userPrefs);
+        ModelManager modelManagerWithProduct = new ModelManager(vendorVault, userPrefs, aliases);
         modelManagerWithProduct.addProduct(OIL);
         assertFalse(modelManager.equals(modelManagerWithProduct));
 
         // different filteredProductList -> returns false
-        ModelManager modelManagerWithFilteredProducts = new ModelManager(vendorVault, userPrefs);
+        ModelManager modelManagerWithFilteredProducts = new ModelManager(vendorVault, userPrefs, aliases);
         modelManagerWithFilteredProducts.addProduct(OIL);
         modelManagerWithFilteredProducts.addProduct(RICE);
         modelManagerWithFilteredProducts.updateFilteredProductList(
                 product -> product.getIdentifier().equals(OIL.getIdentifier()));
-        ModelManager modelManagerWithAllProductsShown = new ModelManager(vendorVault, userPrefs);
+        ModelManager modelManagerWithAllProductsShown = new ModelManager(vendorVault, userPrefs, aliases);
         modelManagerWithAllProductsShown.addProduct(OIL);
         modelManagerWithAllProductsShown.addProduct(RICE);
         modelManagerWithAllProductsShown.updateFilteredProductList(PREDICATE_SHOW_ALL_PRODUCTS);
@@ -353,7 +354,7 @@ public class ModelManagerTest {
 
     @Test
     public void constructor_filtersArchivedProducts() {
-        ModelManager model = new ModelManager(new VendorVault(), new UserPrefs());
+        ModelManager model = new ModelManager(new VendorVault(), new UserPrefs(), new Aliases());
 
         Product product = new ProductBuilder().build();
         model.addProduct(product);
@@ -363,7 +364,7 @@ public class ModelManagerTest {
 
     @Test
     public void restoreProduct_showsProductInFilteredList() {
-        ModelManager model = new ModelManager(new VendorVault(), new UserPrefs());
+        ModelManager model = new ModelManager(new VendorVault(), new UserPrefs(), new Aliases());
 
         Product product = new ProductBuilder().build();
         model.addProduct(product);
@@ -379,7 +380,7 @@ public class ModelManagerTest {
 
     @Test
     public void updateFilteredProductList_showActiveProducts_filtersArchived() {
-        ModelManager model = new ModelManager(new VendorVault(), new UserPrefs());
+        ModelManager model = new ModelManager(new VendorVault(), new UserPrefs(), new Aliases());
 
         Product product = new ProductBuilder().build();
         model.addProduct(product);
@@ -393,7 +394,7 @@ public class ModelManagerTest {
 
     @Test
     public void setInventory_success() {
-        ModelManager modelManager = new ModelManager(new VendorVault(), new UserPrefs());
+        ModelManager modelManager = new ModelManager(new VendorVault(), new UserPrefs(), new Aliases());
 
         Inventory inventory = new Inventory();
         modelManager.setInventory(inventory);
