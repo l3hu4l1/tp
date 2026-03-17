@@ -120,7 +120,7 @@ public class Inventory implements ReadOnlyInventory {
     @Override
     public Optional<Product> findSimilarNameMatch(Product candidate, Product exclude) {
         return products.asUnmodifiableObservableList().stream()
-                .filter(p -> exclude == null || !p.equals(exclude))
+                .filter(p -> !p.equals(exclude))
                 .filter(candidate::isSimilarNameTo)
                 .findFirst();
     }
