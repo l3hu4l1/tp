@@ -3,12 +3,10 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.model.Model.PREDICATE_SHOW_ACTIVE_PERSONS;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javafx.collections.ObservableList;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -81,13 +79,11 @@ public class DeleteCommand extends Command {
      *
      */
     public CommandResult deletePerson(Model model, Person personToDelete) {
-        List<Product> linkedProducts = collectLinkedProducts(model, personToDelete);
+        List<Product> linkedProducts = VendorProductLinkUtil.collectLinkedProducts(
+                model, personToDelete.getEmail());
 
         // Unlink products first
-        for (Product linkedProduct : linkedProducts) {
-            Product unlinkedProduct = linkedProduct.clearVendorEmail();
-            model.setProduct(linkedProduct, unlinkedProduct);
-        }
+        VendorProductLinkUtil.clearVendorEmail(model, linkedProducts);
 
         model.deletePerson(personToDelete);
 
@@ -105,26 +101,7 @@ public class DeleteCommand extends Command {
                 .collect(Collectors.joining(", "));
         String warning = String.format(MESSAGE_PRODUCTS_DELINKED, linkedProducts.size(), linkedProductIds);
 
-        return new CommandResult(successMessage + "/n" + warning, CommandResult.FEEDBACK_TYPE_WARN);
-    }
-
-    /**
-     * Returns products currently linked to the given person via vendor email.
-     */
-    List<Product> collectLinkedProducts(Model model, Person personToDelete) {
-        List<Product> linkedProducts = new ArrayList<>();
-        ObservableList<Product> productList = model.getInventory().getProductList();
-
-        for (Product product : productList) {
-            if (product.getVendorEmail().isPresent()) {
-                Email vendorEmail = product.getVendorEmail().get();
-                if (vendorEmail.equals(personToDelete.getEmail())) {
-                    linkedProducts.add(product);
-                }
-            }
-        }
-
-        return linkedProducts;
+        return new CommandResult(successMessage + "\n" + warning, CommandResult.FEEDBACK_TYPE_WARN);
     }
 
     /**
