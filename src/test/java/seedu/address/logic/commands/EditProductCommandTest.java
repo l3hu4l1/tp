@@ -314,10 +314,10 @@ public class EditProductCommandTest {
     @Test
     public void equals_differentVendorEmail_false() {
         EditProductDescriptor descriptor1 = new EditProductDescriptorBuilder()
-                .withVendorEmail(VALID_EMAIL_AMY)
+                .withoutVendorEmail()
                 .build();
         EditProductDescriptor descriptor2 = new EditProductDescriptorBuilder()
-                .withVendorEmail(VALID_EMAIL_BOB)
+                .withName("iPad")
                 .build();
         assertFalse(descriptor1.equals(descriptor2));
     }
