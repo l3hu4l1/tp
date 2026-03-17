@@ -171,7 +171,7 @@ public class AddProductCommandTest {
     }
 
     @Test
-    public void execute_warningValueTrueButDifferentWarningType_noSimilarNameWarning() throws Exception {
+    public void execute_warningValueTrueButDifferentWarningType_withSimilarNameWarning() throws Exception {
         // When there's multiple warnings
         Product toAddWithDifferentWarningType = new ProductWithForcedWarning(
                 new Identifier("SKU-4200"),
@@ -193,7 +193,7 @@ public class AddProductCommandTest {
         CommandResult result = new AddProductCommand(toAddWithDifferentWarningType).execute(modelStub);
 
         assertTrue(result.getFeedbackToUser().contains("similar name"));
-        assertEquals(CommandResult.FEEDBACK_TYPE_SUCCESS, result.getFeedbackType());
+        assertEquals(CommandResult.FEEDBACK_TYPE_WARN, result.getFeedbackType());
         assertEquals(3, modelStub.productsAdded.size());
     }
 
