@@ -11,8 +11,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_QUANTITY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_THRESHOLD;
 import static seedu.address.logic.parser.ParserUtil.FIELD_IDENTIFIER;
 import static seedu.address.logic.parser.ParserUtil.FIELD_PRODUCT_NAME;
-import static seedu.address.logic.parser.ParserUtil.SEPARATOR_NEW_LINE;
 import static seedu.address.logic.parser.ParserUtil.SEPARATOR_COMMA;
+import static seedu.address.logic.parser.ParserUtil.SEPARATOR_NEW_LINE;
 
 import java.util.Arrays;
 import java.util.List;

@@ -9,11 +9,11 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.address.logic.parser.ParserUtil.SEPARATOR_COMMA;
 import static seedu.address.logic.parser.ParserUtil.FIELD_ADDRESS;
 import static seedu.address.logic.parser.ParserUtil.FIELD_EMAIL;
 import static seedu.address.logic.parser.ParserUtil.FIELD_NAME;
 import static seedu.address.logic.parser.ParserUtil.FIELD_PHONE;
+import static seedu.address.logic.parser.ParserUtil.SEPARATOR_COMMA;
 
 import java.util.Arrays;
 import java.util.List;
@@ -67,23 +67,26 @@ public class AddCommandParser implements Parser<AddCommand> {
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
 
         StringBuilder warnings = new StringBuilder();
+        Person person = parsePerson(argMultimap, warnings);
+
+        if (!warnings.isEmpty()) {
+            return new AddCommand(person, warnings.toString());
+        }
+        return new AddCommand(person);
+    }
+
+    private Person parsePerson(ArgumentMultimap argMultimap, StringBuilder warnings) throws ParseException {
         ParseResult<Name> nameResult = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         ParseResult<Phone> phoneResult = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         ParseResult<Email> emailResult = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Set<Tag> tags = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-        Person person = new Person(
-                nameResult.getValue(), phoneResult.getValue(), emailResult.getValue(), address, tags);
         appendWarning(warnings, nameResult.getWarning());
         appendWarning(warnings, phoneResult.getWarning());
         appendWarning(warnings, emailResult.getWarning());
 
-        if (!warnings.isEmpty()) {
-            return new AddCommand(person, warnings.toString());
-        }
-
-        return new AddCommand(person);
+        return new Person(nameResult.getValue(), phoneResult.getValue(), emailResult.getValue(), address, tags);
     }
 
     /**
