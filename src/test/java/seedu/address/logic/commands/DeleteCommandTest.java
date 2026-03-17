@@ -3,9 +3,11 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_EMAIL;
 import static seedu.address.logic.commands.CommandResult.FEEDBACK_TYPE_WARN;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.address.logic.commands.DeleteCommand.CONFIRMATION_DELETE_PERSON_MESSAGE;
@@ -179,6 +181,13 @@ public class DeleteCommandTest {
 
         assertEquals(CONFIRMATION_DELETE_PERSON_MESSAGE, result.getFeedbackToUser());
         assertTrue(model.hasPerson(personToDelete));
+    }
+
+    @Test
+    public void execute_nonExistentEmail_throwsCommandException() {
+        DeleteCommand deleteCommand = new DeleteCommand(NON_EXISTENT_EMAIL, false);
+
+        assertCommandFailure(deleteCommand, model, MESSAGE_INVALID_PERSON_DISPLAYED_EMAIL);
     }
 
     @Test
