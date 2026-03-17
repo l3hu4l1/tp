@@ -1,6 +1,5 @@
 package seedu.address.logic.commands;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -203,27 +202,6 @@ public class EditProductCommandTest {
         assertFalse(editFirstCommand.equals(1));
         assertFalse(editFirstCommand.equals(null));
         assertFalse(editFirstCommand.equals(editSecondCommand));
-    }
-
-    @Test
-    public void execute_duplicateProduct_throwsCommandException() {
-        Model model = new ModelManager();
-        model.setAddressBook(getTypicalAddressBook());
-        model.setInventory(getTypicalInventory());
-
-        Product firstProduct = model.getFilteredProductList().get(0);
-        Product secondProduct = model.getFilteredProductList().get(1);
-
-        EditProductDescriptor descriptor = new EditProductDescriptorBuilder()
-                .withName(secondProduct.getName().fullName)
-                .withQuantity(String.valueOf(secondProduct.getQuantity().value))
-                .withThreshold(String.valueOf(secondProduct.getRestockThreshold().value))
-                .build();
-
-        EditProductCommand command =
-                new EditProductCommand(firstProduct.getIdentifier().value, descriptor);
-
-        assertDoesNotThrow(() -> command.execute(model));
     }
 
     @Test

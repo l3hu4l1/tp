@@ -1,7 +1,6 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.Messages.MESSAGE_DUPLICATE_PRODUCT;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -16,7 +15,6 @@ import seedu.address.model.product.Name;
 import seedu.address.model.product.Product;
 import seedu.address.model.product.Quantity;
 import seedu.address.model.product.RestockThreshold;
-import seedu.address.model.product.exceptions.DuplicateProductException;
 
 /**
  * Edits the details of an existing {@link Product} in the inventory.
@@ -86,11 +84,7 @@ public class EditProductCommand extends Command {
 
         Product editedProduct = createEditedProduct(productToEdit, editProductDescriptor, model);
 
-        try {
-            model.setProduct(productToEdit, editedProduct);
-        } catch (DuplicateProductException e) {
-            throw new CommandException(MESSAGE_DUPLICATE_PRODUCT);
-        }
+        model.setProduct(productToEdit, editedProduct);
 
         model.updateFilteredProductList(Model.PREDICATE_SHOW_ACTIVE_PRODUCTS);
         model.commitVendorVault();
