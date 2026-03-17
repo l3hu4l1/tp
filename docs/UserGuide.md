@@ -318,13 +318,7 @@ find KEYWORD [MORE_KEYWORDS]
 Examples:
 
 * `find Industries Technologies` finds the contacts names that contains `Industries` or `Technologies`
-* `find Industries` finds the contacts names that contains `Industries` 
-
-<box type="tip" seamless>
-
-**Tip:** The keywords to search are _case-insensitive_
-
-</box>
+* `find Industries` finds the contacts names that contains `Industries`
 
 <panel header="Can I search by part of the name?" type="seamless">
 
@@ -692,6 +686,11 @@ Follow these steps:
 
 * Open the folder where VendorVault's `.jar` file is located.
 * Inside, locate the `data` folder, which contains `.json` files.
+<box type="warning" seamless>
+
+Please follow this format carefully. Files that do not adhere to the required format will be considered invalid.
+
+</box>
 
 <panel header="`addressbook.json`: stores contact details" type="seamless">
 
@@ -700,17 +699,11 @@ This is the json for address book:
 ```json
 {
   "persons" : [ {
-    "name" : "Alex Yeoh",
-    "phone" : "87438807",
-    "email" : "alexyeoh@example.com",
-    "address" : "Blk 30 Geylang Street 29, #06-40",
-    "tags" : [ "friends" ]
-  }, {
-    "name" : "Bernice Yu",
-    "phone" : "99272758",
-    "email" : "berniceyu@example.com",
-    "address" : "Blk 30 Lorong 3 Serangoon Gardens, #07-18",
-    "tags" : [ "colleagues", "friends" ]
+    "name" : NAME,
+    "phone" : PHONE_NUMBER,
+    "email" : EMAIL,
+    "address" : ADDRESS,
+    "tags" : [ TAGS ]
   } ]
 }
 ```
@@ -724,19 +717,12 @@ This is the json for inventory:
 ```json
 {
   "products" : [ {
-    "identifier" : "ABCDE",
-    "name" : "item",
-    "quantity" : "0",
-    "threshold" : "10",
-    "vendorEmail" : null,
-    "isArchived" : false
-  }, {
-    "identifier" : "ABCDF",
-    "name" : "item2",
-    "quantity" : "0",
-    "threshold" : "10",
-    "vendorEmail" : null,
-    "isArchived" : false
+    "identifier" : IDENTIFIER(string),
+    "name" : NAME(string),
+    "quantity" : QUANTITY(integer),
+    "threshold" : THRESHOLD(interger),
+    "vendorEmail" : VENDOR_EMAIL(email),
+    "isArchived" : BOOLEAN(true/false)
   } ]
 }
 ```
@@ -750,11 +736,8 @@ This is the json for aliases:
 ```json
 {
   "aliasList" : [ {
-    "alias" : "a",
-    "originalCommand" : "add"
-  }, {
-    "alias" : "b",
-    "originalCommand" : "add"
+    "alias" : ALIAS,
+    "originalCommand" : ORIGINAL_COMMAND
   } ]
 }
 ```
