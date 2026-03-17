@@ -1,5 +1,6 @@
 package seedu.address.model.product;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Objects;
@@ -101,6 +102,14 @@ public class Product {
      */
     public Product clearVendorEmail() {
         return new Product(identifier, name, quantity, threshold, null, isArchived);
+    }
+
+    /**
+     * Returns a copy of this product with the given vendor email.
+     */
+    public Product withVendorEmail(Email vendorEmail) {
+        requireNonNull(vendorEmail);
+        return new Product(identifier, name, quantity, threshold, vendorEmail, isArchived);
     }
 
     /**
