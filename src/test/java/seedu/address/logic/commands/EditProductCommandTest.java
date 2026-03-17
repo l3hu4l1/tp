@@ -276,6 +276,51 @@ public class EditProductCommandTest {
     }
 
     @Test
+    public void equals_differentName_false() {
+        EditProductDescriptor descriptor1 =
+                new EditProductDescriptorBuilder().withName("iPad").withQuantity(VALID_QUANTITY_IPHONE).build();
+        EditProductDescriptor descriptor2 =
+                new EditProductDescriptorBuilder().withName("iPhone").withQuantity(VALID_QUANTITY_IPHONE).build();
+        assertFalse(descriptor1.equals(descriptor2));
+    }
+
+    @Test
+    public void equals_differentQuantity_false() {
+        EditProductDescriptor descriptor1 =
+                new EditProductDescriptorBuilder().withName("iPad").withQuantity("5").build();
+        EditProductDescriptor descriptor2 =
+                new EditProductDescriptorBuilder().withName("iPad").withQuantity("10").build();
+        assertFalse(descriptor1.equals(descriptor2));
+    }
+
+    @Test
+    public void equals_differentThreshold_false() {
+        EditProductDescriptor descriptor1 =
+                new EditProductDescriptorBuilder().withName("iPad").withThreshold(VALID_THRESHOLD_AIRPODS).build();
+        EditProductDescriptor descriptor2 =
+                new EditProductDescriptorBuilder().withName("iPad").withThreshold("99").build();
+        assertFalse(descriptor1.equals(descriptor2));
+    }
+
+    @Test
+    public void equals_differentVendorEmail_false() {
+        EditProductDescriptor descriptor1 =
+                new EditProductDescriptorBuilder().withName("iPad").withVendorEmail(VALID_EMAIL_AMY).build();
+        EditProductDescriptor descriptor2 =
+                new EditProductDescriptorBuilder().withName("iPad").withVendorEmail(VALID_EMAIL_BOB).build();
+        assertFalse(descriptor1.equals(descriptor2));
+    }
+
+    @Test
+        public void equals_sameFields_true() {
+        EditProductDescriptor descriptor1 =
+                new EditProductDescriptorBuilder().withName("iPad").withQuantity(VALID_QUANTITY_IPHONE).build();
+        EditProductDescriptor descriptor2 =
+                new EditProductDescriptorBuilder().withName("iPad").withQuantity(VALID_QUANTITY_IPHONE).build();
+        assertTrue(descriptor1.equals(descriptor2));
+    }
+
+    @Test
     public void toStringMethod() {
         EditProductDescriptor descriptor =
                 new EditProductDescriptorBuilder()
