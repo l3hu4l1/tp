@@ -11,6 +11,7 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Email;
+import seedu.address.model.product.Identifier;
 import seedu.address.model.product.Name;
 import seedu.address.model.product.Product;
 import seedu.address.model.product.Quantity;
@@ -84,6 +85,11 @@ public class EditProductCommand extends Command {
 
         Product editedProduct = createEditedProduct(productToEdit, editProductDescriptor, model);
 
+        if (!productToEdit.getIdentifier().equals(editedProduct.getIdentifier())
+                && model.hasProduct(editedProduct)) {
+            throw new CommandException(Messages.MESSAGE_DUPLICATE_PRODUCT);
+        }
+
         model.setProduct(productToEdit, editedProduct);
 
         model.updateFilteredProductList(Model.PREDICATE_SHOW_ACTIVE_PRODUCTS);
@@ -91,7 +97,7 @@ public class EditProductCommand extends Command {
 
         return new CommandResult(
             String.format(MESSAGE_EDIT_PRODUCT_SUCCESS,
-                    Messages.formatProduct(editedProduct)));
+                    editedProduct));
     }
 
     /**
@@ -101,6 +107,10 @@ public class EditProductCommand extends Command {
                                                EditProductDescriptor descriptor,
                                                Model model)
             throws CommandException {
+
+
+        Identifier updatedId =
+                descriptor.getIdentifier().orElse(productToEdit.getIdentifier());
 
         Name updatedName =
                 descriptor.getName().orElse(productToEdit.getName());
@@ -115,7 +125,7 @@ public class EditProductCommand extends Command {
                 getUpdatedVendorEmail(productToEdit, descriptor, model);
 
         return new Product(
-                productToEdit.getIdentifier(),
+                updatedId,
                 updatedName,
                 updatedQuantity,
                 updatedThreshold,
@@ -185,6 +195,7 @@ public class EditProductCommand extends Command {
      */
     public static class EditProductDescriptor {
 
+        private Identifier identifier;
         private Name name;
         private Quantity quantity;
         private RestockThreshold threshold;
@@ -200,6 +211,7 @@ public class EditProductCommand extends Command {
             setName(toCopy.name);
             setQuantity(toCopy.quantity);
             setThreshold(toCopy.threshold);
+            setIdentifier(toCopy.identifier);
 
             if (toCopy.vendorEmailEdited) {
                 setVendorEmail(toCopy.vendorEmail);
@@ -210,8 +222,16 @@ public class EditProductCommand extends Command {
          * Returns true if any field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, quantity, threshold)
+            return CollectionUtil.isAnyNonNull(name, quantity, threshold, identifier)
                     || vendorEmailEdited;
+        }
+
+        public void setIdentifier(Identifier identifier) {
+            this.identifier = identifier;
+        }
+
+        public Optional<Identifier> getIdentifier() {
+            return Optional.ofNullable(identifier);
         }
 
         public void setName(Name name) {
@@ -270,6 +290,7 @@ public class EditProductCommand extends Command {
             return Objects.equals(name, e.name)
                     && Objects.equals(quantity, e.quantity)
                     && Objects.equals(threshold, e.threshold)
+                    && Objects.equals(identifier, e.identifier)
                     && Objects.equals(vendorEmail, e.vendorEmail)
                     && vendorEmailEdited == e.vendorEmailEdited;
         }
@@ -277,6 +298,7 @@ public class EditProductCommand extends Command {
         @Override
         public String toString() {
             return new ToStringBuilder(this)
+                    .add("identifier", identifier)
                     .add("name", name)
                     .add("quantity", quantity)
                     .add("threshold", threshold)
