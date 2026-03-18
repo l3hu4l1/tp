@@ -386,7 +386,7 @@ Only contacts that have been archived can be restored. If you try to restore an 
 
 #### Deleting a contact : `delete`
 
-Removes a contact from the address book using their email address as the _unique identifier_
+Removes a contact from the address book using their email address as the _unique identifier_.
 You will be prompted to confirm the deletion before any changes are made.
 
 Format: 
@@ -468,6 +468,16 @@ listproduct
 <box type="info" seamless>
 
 **This feature is currently in progress** and will be available in a future release. `editproduct` will allow you to update a product's name, quantity, or restock threshold without having to delete and re-add it.
+
+</box>
+
+<div style="height: 30px;"></div>
+
+#### Locating products : `findproduct` _(coming soon)_
+
+<box type="info" seamless>
+
+**This feature is currently in progress** and will be available in a future release.
 
 </box>
 
@@ -693,6 +703,9 @@ Follow these steps:
 
 * Open the folder where VendorVault's `.jar` file is located.
 * Inside, locate the `data` folder, which contains `.json` files.
+
+</panel>
+
 <box type="warning" seamless>
 
 Please follow this format carefully. Files that do not adhere to the required format will be considered invalid.
@@ -748,9 +761,6 @@ This is the json for aliases:
   } ]
 }
 ```
-
-</panel>
-
 
 </panel>
 
@@ -813,6 +823,7 @@ Tip: If multiple warnings apply, VendorVault shows all of them (one per line) to
 #### Troubleshooting `edit` contact
 
 Use this section when `edit` fails or returns a warning.
+
 <box type="info" seamless>
 
 Many errors that occur in `add` also apply to `edit`, specifically, all except the first three errors listed in the add contact section above also apply. Similarly, all warnings from `add` apply to `edit` as well. For these shared errors, refer to the [Troubleshooting add contact](#troubleshooting-add-contact) guide, as they behave the same way in edit contact commands.
