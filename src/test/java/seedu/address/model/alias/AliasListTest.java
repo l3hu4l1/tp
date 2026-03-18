@@ -120,7 +120,7 @@ public class AliasListTest {
     @Test
     public void removeAlias_onlyTargetAliasRemoved_otherAliasesUnaffected() throws Exception {
         AliasList aliasList = new AliasList();
-        
+
         aliasList.addAlias(new Alias(aliasString, originalCommand));
         aliasList.addAlias(new Alias("cl", "clear"));
         aliasList.removeAlias(aliasString);
