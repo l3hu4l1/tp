@@ -22,6 +22,17 @@ public class UiManager implements Ui {
     private static final Logger logger = LogsCenter.getLogger(UiManager.class);
     private static final String ICON_APPLICATION = "/images/vendor_vault.png";
 
+    private static final String[] UI_FONT_CANDIDATES = {"Segoe UI", "Helvetica", "Helvetica Neue", "Arial"};
+    private static final String[] SEMIBOLD_FONT_CANDIDATES = {"Segoe UI Semibold", "Helvetica Neue Medium",
+        "Helvetica Neue Bold", "Arial Bold"};
+    private static final String[] LIGHT_FONT_CANDIDATES = {"Segoe UI Light", "Helvetica Light", "Helvetica Neue Light"};
+    private static final String[] MONO_FONT_CANDIDATES = {"Consolas", "Menlo", "SF Mono", "Monaco", "Monospaced"};
+
+    private String uiFont;
+    private String uiFontSemibold;
+    private String uiFontLight;
+    private String monoFont;
+
     private Logic logic;
     private MainWindow mainWindow;
 
@@ -54,6 +65,34 @@ public class UiManager implements Ui {
         return new Image(MainApp.class.getResourceAsStream(imagePath));
     }
 
+    private void initBrandFonts() {
+        uiFont = resolveFirstAvailableFontName(UI_FONT_CANDIDATES);
+        uiFontSemibold = resolveFirstAvailableFontName(appendFallbackCandidate(SEMIBOLD_FONT_CANDIDATES, uiFont));
+        uiFontLight = resolveFirstAvailableFontName(appendFallbackCandidate(LIGHT_FONT_CANDIDATES, uiFont));
+        monoFont = resolveFirstAvailableFontName(MONO_FONT_CANDIDATES);
+
+        logger.info(String.format("Resolved fonts: ui='%s', semibold='%s', light='%s', mono='%s'",
+            uiFont, uiFontSemibold, uiFontLight, monoFont));
+    }
+
+    private String resolveFirstAvailableFontName(String... candidates) {
+        List<String> fontNames = Font.getFontNames();
+        for (String candidate : candidates) {
+            for (String fontName : fontNames) {
+                if (fontName.equalsIgnoreCase(candidate)) {
+                    return fontName;
+                }
+            }
+        }
+        return Font.getDefault().getName();
+    }
+
+    private String[] appendFallbackCandidate(String[] candidates, String fallbackCandidate) {
+        String[] combined = new String[candidates.length + 1];
+        System.arraycopy(candidates, 0, combined, 0, candidates.length);
+        combined[candidates.length] = fallbackCandidate;
+        return combined;
+    }
     void showAlertDialogAndWait(Alert.AlertType type, String title, String headerText, String contentText) {
         showAlertDialogAndWait(mainWindow.getPrimaryStage(), type, title, headerText, contentText);
     }
