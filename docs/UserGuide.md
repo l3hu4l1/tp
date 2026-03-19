@@ -583,12 +583,12 @@ Create an alternative command word that triggers an existing command.
 
 Format:
 ```
-alias ALIAS ORIGINAL_COMMAND
+alias ORIGINAL_COMMAND ALIAS
 ```
 
 Example:
 * `alias` list all current aliases
-* `alias ls list` maps `ls` as an alias for the `list` command
+* `alias list ls` maps `ls` as an alias for the `list` command
 
 <div style="height: 30px;"></div>
 
@@ -933,6 +933,8 @@ Use this section when `addproduct` fails or returns a warning.
 | Name is blank                                       | `Name should not be blank.`                                               | Provide a non-empty name after `n/`.                                            |
 | Name is too long                                    | `Name should be at most 120 characters.`                                  | Shorten the name.                                                               |
 | Product is a duplicate                              | `This product already exists with the same identifier.`                   | Change the identifier, or edit the existing product instead.                    |
+| Quantity is invalid                                 | `Quantity should be a non-negative valid integer.`                        | Ensure it is a whole number between 0 and 2,147,483,647.                        |
+| Threshold is invalid                                | `Restock threshold should be a non-negative valid integer.`               | Ensure it is a whole number between 0 and 2,147,483,647.                        |
 | Product's vendor does not exist                     | `Vendor email ... does not match any existing contact.`                   | Check that the email matches an existing contact's email, or add a new contact. |
 
 <br>
