@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.Messages.MESSAGE_INVALID_CONFIRMATION_FLAG;
 import static seedu.address.logic.parser.ConfirmationFlagIndicator.containsConfirmationFlag;
 import static seedu.address.logic.parser.ConfirmationFlagIndicator.removeConfirmationFlag;
 
@@ -11,10 +12,6 @@ import seedu.address.model.person.Email;
  * Parses input arguments and creates a new DeleteCommand object
  */
 public class DeleteCommandParser implements Parser<DeleteCommand> {
-
-    public static final String MESSAGE_WRONGLY_FORMED_FLAG =
-            "Invalid format. The '-y' flag must be standalone.\n"
-                    + "Example: delete -y <email>";
 
     public static final String CONFIRMATION_INDICATOR = "-y";
 
@@ -30,10 +27,9 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
 
         String argsTrimmed = args.trim();
 
-
         String[] tokens = argsTrimmed.split("\\s+");
         boolean needsConfirmation = !containsConfirmationFlag(
-                tokens, CONFIRMATION_INDICATOR, MESSAGE_WRONGLY_FORMED_FLAG);
+                tokens, CONFIRMATION_INDICATOR, MESSAGE_INVALID_CONFIRMATION_FLAG);
         String emailBeforeParsed = removeConfirmationFlag(tokens, CONFIRMATION_INDICATOR);
         ParseResult<Email> email = ParserUtil.parseEmail(emailBeforeParsed);
 
