@@ -639,7 +639,7 @@ redo
 
 #### Listing all contacts and products : `listall`
 
-Shows a list of all **active** contacts and products at once. Useful for getting a full overview of your data after using `find` or `findproduct`.
+Shows a list of all **active** contacts and products at once. Useful for getting a full overview of your data after using `find` or `findproduct` and `restore` or `restoreproduct`.
 
 Format:
 ```
