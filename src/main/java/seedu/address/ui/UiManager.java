@@ -33,7 +33,8 @@ public class UiManager implements Ui {
     private static final String ICON_APPLICATION = "/images/vendor_vault.png";
 
     private static final String DARK_THEME_RESOURCE_PATH = "/view/DarkTheme.css";
-    private static final String[] UI_FONT_CANDIDATES = {"Segoe UI", "Helvetica", "Helvetica Neue", "Arial"};
+    private static final String[] UI_FONT_CANDIDATES = {"Segoe UI", "Helvetica", "Helvetica Neue", "Arial",
+        "Microsoft Sans Serif"};
     private static final String[] SEMIBOLD_FONT_CANDIDATES = {"Segoe UI Semibold", "Helvetica Neue Medium",
         "Helvetica Neue Bold", "Arial Bold"};
     private static final String[] LIGHT_FONT_CANDIDATES = {"Segoe UI Light", "Helvetica Light", "Helvetica Neue Light"};
