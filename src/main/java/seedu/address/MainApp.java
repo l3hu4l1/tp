@@ -45,7 +45,7 @@ import seedu.address.ui.UiManager;
  */
 public class MainApp extends Application {
 
-    public static final Version VERSION = new Version(0, 2, 2, true);
+    public static final Version VERSION = new Version(1, 3, 0, true);
 
     private static final Logger logger = LogsCenter.getLogger(MainApp.class);
 
@@ -109,7 +109,7 @@ public class MainApp extends Application {
                 logger.info("Creating a new data file " + storage.getInventoryFilePath()
                         + " populated with a sample Inventory.");
             }
-            initialInventory = inventoryOptional.orElseGet(Inventory::new);
+            initialInventory = inventoryOptional.orElseGet(SampleDataUtil::getSampleInventory);
         } catch (DataLoadingException e) {
             logger.warning("Data file at " + storage.getInventoryFilePath() + " could not be loaded."
                     + " Will be starting with an empty Inventory.");

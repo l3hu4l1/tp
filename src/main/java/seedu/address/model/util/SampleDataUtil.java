@@ -32,24 +32,28 @@ public class SampleDataUtil {
 
     public static Person[] getSamplePersons() {
         return new Person[] {
-            new Person(personName("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
-                    new Address("Blk 30 Geylang Street 29, #06-40"),
-                    getTagSet("friends")),
-            new Person(personName("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
-                    new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"),
-                    getTagSet("colleagues", "friends")),
-            new Person(personName("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
-                    new Address("Blk 11 Ang Mo Kio Street 74, #11-04"),
-                    getTagSet("neighbours")),
-            new Person(personName("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
-                    new Address("Blk 436 Serangoon Gardens Street 26, #16-43"),
-                    getTagSet("family")),
-            new Person(personName("Irfan Ibrahim"), new Phone("92492021"), new Email("irfan@example.com"),
-                    new Address("Blk 47 Tampines Street 20, #17-35"),
-                    getTagSet("classmates")),
-            new Person(personName("Roy Balakrishnan"), new Phone("92624417"), new Email("royb@example.com"),
-                    new Address("Blk 45 Aljunied Street 85, #11-31"),
-                    getTagSet("colleagues"))
+            new Person(personName("Adafruit Industries"), new Phone("64601234"), new Email("support@adafruit.com"),
+                    new Address("151 Varick St, New York, NY 10013, USA"),
+                    getTagSet("IOT")),
+            new Person(personName("Cytron Technologies Pte. Ltd"), new Phone("65480668 (Office), 91234567 (Sales)"), new Email("sg.sales@cytron.io"),
+                    new Address("09 Collyer Quay"),
+                    getTagSet("electronics")),
+            new Person(personName("TechSource Electronics"), new Phone("61234567"), new Email("sales@techsource.com"),
+                    new Address("15 Kallang Way, Singapore"),
+                    getTagSet("electronics", "IOT")),
+            new Person(personName("Synapse Supply"), new Phone("+65 62981234, +60 169876543"), new Email("hello@synapse.sg"),
+                    new Address("3 Kaki Bukit Road, Singapore 415978"),
+                    getTagSet("wholesale")),
+            new Person(personName("Rochor & Co."), new Phone("63330881, 69041288"), new Email("support.rochor@yahoo.com"),
+                    new Address("Sim Lim Square #05-55"),
+                    getTagSet()),
+            new Person(personName("ByteLabs"), new Phone("65607845 (Mike)"), new Email("bytelabs@gmail.com"),
+                    new Address("Ubi Techpark Lot 9"),
+                    getTagSet("partner", "refurb")),
+            new Person(personName("Soonheng Retail & Logistics"), new Phone("+60 22 3650 7080"), new Email("orders" +
+                    "@soonheng.com.my"), new Address("Jalan Ciku No. 03, Kluang"), getTagSet()),
+            new Person(personName("Audio House"), new Phone("68412122"), new Email("sales@ah.com"), new Address(
+                    "Audio House Building #01-01"), getTagSet("electronics", "home"))
         };
     }
 
