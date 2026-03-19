@@ -1,6 +1,6 @@
 package seedu.address.logic.parser;
 
-import java.util.Arrays;
+import static seedu.address.logic.parser.ConfirmationFlagIndicator.containsConfirmationFlag;
 
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -33,23 +33,11 @@ public class ClearCommandParser implements Parser<ClearCommand> {
         }
 
         String[] tokens = argsTrimmed.split(ParserUtil.SEPARATOR_SPACE);
-        boolean hasConfirmFlag = containsConfirmationFlag(tokens);
+        boolean hasConfirmFlag = containsConfirmationFlag(
+                tokens, CLEAR_CONFIRMATION_FLAG, MESSAGE_INVALID_CONFIRMATION_FLAG);
 
         return new ClearCommand(!hasConfirmFlag);
     }
 
-    private boolean containsConfirmationFlag(String[] tokens) throws ParseException {
-        boolean hasWronglyFormedFlag = Arrays.stream(tokens)
-                .anyMatch(this::isMalformedConfirmationFlag);
-        if (hasWronglyFormedFlag) {
-            throw new ParseException(MESSAGE_INVALID_CONFIRMATION_FLAG);
-        }
-        return Arrays.asList(tokens).contains(CLEAR_CONFIRMATION_FLAG);
-    }
-
-    private boolean isMalformedConfirmationFlag(String token) {
-        return token.startsWith(CLEAR_CONFIRMATION_FLAG)
-                && !token.equals(CLEAR_CONFIRMATION_FLAG);
-    }
 }
 

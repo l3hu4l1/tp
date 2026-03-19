@@ -1,7 +1,7 @@
 package seedu.address.logic.parser;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import static seedu.address.logic.parser.ConfirmationFlagIndicator.containsConfirmationFlag;
+import static seedu.address.logic.parser.ConfirmationFlagIndicator.removeConfirmationFlag;
 
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -32,25 +32,11 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
 
 
         String[] tokens = argsTrimmed.split("\\s+");
-        boolean needsConfirmation = !checkConfirmationIndicator(tokens);
-        String emailBeforeParsed = removeConfirmationIndicator(tokens);
+        boolean needsConfirmation = !containsConfirmationFlag(
+                tokens, CONFIRMATION_INDICATOR, MESSAGE_WRONGLY_FORMED_FLAG);
+        String emailBeforeParsed = removeConfirmationFlag(tokens, CONFIRMATION_INDICATOR);
         ParseResult<Email> email = ParserUtil.parseEmail(emailBeforeParsed);
 
         return new DeleteCommand(email.getValue(), needsConfirmation);
-    }
-
-    private boolean checkConfirmationIndicator(String[] tokens) throws ParseException {
-        boolean hasWronglyFormedFlag = Arrays.stream(tokens)
-                .anyMatch(t -> t.startsWith(CONFIRMATION_INDICATOR) && !t.equals(CONFIRMATION_INDICATOR));
-        if (hasWronglyFormedFlag) {
-            throw new ParseException(MESSAGE_WRONGLY_FORMED_FLAG);
-        }
-        return Arrays.asList(tokens).contains(CONFIRMATION_INDICATOR);
-    }
-
-    private String removeConfirmationIndicator(String[] tokens) {
-        return Arrays.stream(tokens)
-                .filter(t -> !t.equals(CONFIRMATION_INDICATOR))
-                .collect(Collectors.joining(" "));
     }
 }
