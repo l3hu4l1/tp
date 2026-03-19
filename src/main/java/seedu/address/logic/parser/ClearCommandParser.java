@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.Messages.MESSAGE_INVALID_CONFIRMATION_FLAG;
 import static seedu.address.logic.parser.ConfirmationFlagIndicator.containsConfirmationFlag;
 
 import seedu.address.logic.commands.ClearCommand;
@@ -9,10 +10,6 @@ import seedu.address.logic.parser.exceptions.ParseException;
  * Parses input arguments and creates a new ClearCommand object.
  */
 public class ClearCommandParser implements Parser<ClearCommand> {
-
-    public static final String MESSAGE_INVALID_CONFIRMATION_FLAG =
-            "Invalid format. The '-y' flag must be standalone.\n"
-                    + "Example: clear -y";
 
     public static final String CLEAR_CONFIRMATION_FLAG = "-y";
 

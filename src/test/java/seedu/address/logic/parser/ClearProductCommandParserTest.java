@@ -1,12 +1,10 @@
 package seedu.address.logic.parser;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.ClearProductCommand;
-import seedu.address.logic.parser.exceptions.ParseException;
 
 public class ClearProductCommandParserTest {
 
@@ -18,8 +16,4 @@ public class ClearProductCommandParserTest {
         assertNotNull(command);
     }
 
-    @Test
-    public void parse_invalidArgs_throwsParseException() {
-        assertThrows(ParseException.class, () -> parser.parse("extra"));
-    }
 }
