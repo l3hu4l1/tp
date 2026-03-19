@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -228,13 +227,18 @@ public class Person {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .add("name", name)
-                .add("phone", phone)
-                .add("email", email)
-                .add("address", address)
-                .add("tags", tags)
-                .toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append(name);
+
+        sb.append(", Phone: ").append(phone);
+        sb.append(", Email: ").append(email);
+        sb.append(", Address: ").append(address);
+
+        if (!tags.isEmpty()) {
+            sb.append(", Tags: ").append(tags);
+        }
+
+        return sb.toString();
     }
 
 }

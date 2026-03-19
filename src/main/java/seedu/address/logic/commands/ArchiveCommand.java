@@ -53,9 +53,9 @@ public class ArchiveCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        List<Person> lastShownList = model.getFilteredPersonList();
+        List<Person> fullList = model.getVendorVault().getPersonList();
 
-        Person vendorToArchive = lastShownList.stream()
+        Person vendorToArchive = fullList.stream()
                 .filter(person -> person.getEmail().value.equals(email))
                 .findFirst()
                 .orElseThrow(() ->
