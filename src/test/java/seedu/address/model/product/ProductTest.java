@@ -149,10 +149,15 @@ public class ProductTest {
 
     @Test
     public void toStringMethod() {
-        String expected =
-                Product.class.getCanonicalName() + "{identifier=" + RICE.getIdentifier() + ", name=" + RICE.getName()
-                        + ", quantity=" + RICE.getQuantity() + ", threshold=" + RICE.getRestockThreshold()
-                        + ", vendorEmail=null}";
+        String emailStr = RICE.getVendorEmail().map(Object::toString).orElse("-");
+
+        String expected = String.format("%s; ID: %s; Qty: %s; Threshold: %s; Email: %s",
+                RICE.getName(),
+                RICE.getIdentifier(),
+                RICE.getQuantity(),
+                RICE.getRestockThreshold(),
+                emailStr);
+
         assertEquals(expected, RICE.toString());
     }
 
@@ -163,7 +168,7 @@ public class ProductTest {
                 .withName("brown rice 5kg")
                 .build();
 
-        assertTrue(RICE.isSameProductWarn(other).getValue());
+        assertTrue(RICE.isSameProductWarn(other).isDuplicated());
     }
 
     @Test
@@ -173,12 +178,12 @@ public class ProductTest {
                 .withName("Fried Noodles Beef")
                 .build();
 
-        assertTrue(NOODLES.isSameProductWarn(other).getValue());
+        assertTrue(NOODLES.isSameProductWarn(other).isDuplicated());
     }
 
     @Test
     public void isSameProductWarn_completelyDifferentNames_noWarning() {
-        assertFalse(RICE.isSameProductWarn(OIL).getValue());
+        assertFalse(RICE.isSameProductWarn(OIL).isDuplicated());
     }
 
     @Test
@@ -188,6 +193,6 @@ public class ProductTest {
                 .withName("Ricecake Deluxe")
                 .build();
 
-        assertFalse(RICE.isSameProductWarn(other).getValue());
+        assertFalse(RICE.isSameProductWarn(other).isDuplicated());
     }
 }

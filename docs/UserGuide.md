@@ -1,5 +1,5 @@
 ---
-  layout: default.md
+  layout: no_sidebar.md
   title: "User Guide"
   pageNav: 5
 ---
@@ -34,9 +34,9 @@ Follow these steps to get VendorVault up and running:
 
 1. Ensure Java 17 or above is installed.
    * Full guide for installation [here](https://se-education.org/guides/tutorials/javaInstallation.html). If you are familiar with the process, you can download Java directly [here](https://www.oracle.com/asean/java/technologies/downloads/).<br>
-   
+
    <box type="important" seamless>
-   
+
      Mac users: Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
    </box>
@@ -155,7 +155,7 @@ When in doubt, **archive, don't delete.**
 
 **Note about destructive commands:**
 
-* You can use undo to restore the data only **within the same app session**. 
+* You can use undo to restore the data only **within the same app session**.
 * If you may need the contact/product again in the future, consider using [`archive`](#archiving-a-contact-archive) / [`archiveproduct`](#archiving-a-product-archiveproduct) respectively.
 
 </box>
@@ -185,16 +185,6 @@ When in doubt, **archive, don't delete.**
 </box>
 
 <div style="height: 20px;"></div>
-
-### Viewing help : `help`
-
-Shows a message explaining how to access the help page.
-
-![help message](images/helpMessage.png)
-
-Format: `help`
-
-<div style="height: 30px;"></div>
 
 ### Managing Vendor Contacts
 
@@ -237,7 +227,7 @@ add n/DigiKey Singapore p/61234567, 87654321 e/sg.sales@digikey.com a/71 Ayer Ra
 
 A contact is considered a duplicate if:
 
-* It has the **same email and phone number as an existing contact** in VendorVault.
+* It has the **same email or phone number as an existing contact** in VendorVault.
 * Phone numbers are compared while ignoring labels (such as “(Office)” or “(HP)”). Multiple phone numbers should be separated by commas.
 
 For example, these contacts are considered duplicates because they share the same phone number `61234567` and email `contact@company.com`:<br>
@@ -282,9 +272,9 @@ Examples:
 * `edit support@adafruit.com p/98196742 a/New York, USA` Updates the phone number and address for `support@adafruit.com`. The name, email, and tags remain unchanged.
 * `edit sg.sales@cytron.io n/Cytron t/` Updates the name to Cytron for `sg.sales@cytron.io` and clears all existing tags.
 
-<panel header="What happens to a contact's existing tags when I edit them?" type="seamless">
+<panel header="What happens when I edit a contact's tag?" type="seamless">
 
-The existing tags are **replaced with the new tags you specified**, adding new tags is not cumulative.
+The existing tags are **removed and replaced with the new tags you specified**, new tags are not cumulative.
 
 For example, if a contact has existing tags `t/electronics t/supplier` and you edit it with `edit EMAIL t/wholesale`, the contact's tags will be updated to only have `t/wholesale` and the previous tags will be removed.
 
@@ -305,31 +295,11 @@ For more details on possible warnings and errors when editing a contact, refer t
 
 <div style="height: 30px;"></div>
 
-#### Locating contacts by name: `find`
+#### Locating contacts: `find` (coming soon)
 
-Finds contacts whose names contain any of the given keywords (case-insensitive).
+**This feature is currently in progress** and will be available in a future release. `find` will allow you to view a contact details in **full**.
 
-Format: 
-
-```
-find KEYWORD [MORE_KEYWORDS]
-```
-
-Examples:
-
-* `find Industries Technologies` finds the contacts names that contains `Industries` or `Technologies`
-* `find Industries` finds the contacts names that contains `Industries`
-
-<panel header="Can I search by part of the name?" type="seamless">
-
-No, the `find` command will match by full name, not partial name.
-
-Example:
-* If there is a company named `Adafruit Industries`
-* `find fruit` will not find the company
-* `find adafruit` will find the company
-
-</panel>
+</box>
 
 <div style="height: 30px;"></div>
 
@@ -386,10 +356,10 @@ Only contacts that have been archived can be restored. If you try to restore an 
 
 #### Deleting a contact : `delete`
 
-Removes a contact from the address book using their email address as the _unique identifier_
+Removes a contact from the address book using their email address as the _unique identifier_.
 You will be prompted to confirm the deletion before any changes are made.
 
-Format: 
+Format:
 
 ```
 delete EMAIL
@@ -415,8 +385,8 @@ Format: `clear`
 
 Adds a product to the inventory.
 
-Format: 
-```addproduct id/IDENTIFIER n/NAME [q/QUANTITY] [th/RESTOCK_THRESHOLD]```
+Format:
+```addproduct id/IDENTIFIER n/NAME [q/QUANTITY] [th/RESTOCK_THRESHOLD] [e/VENDOR_EMAIL]```
 
 <box type="tip" seamless>
 
@@ -428,10 +398,16 @@ If threshold is not specified, it will default to 0.
 
 </box>
 
+<box type="info" seamless>
+
+`VENDOR_EMAIL` must match the email of an existing contact.
+
+</box>
+
 Examples:
 
 * `addproduct id/Pr1 n/HP LaserJet (M428fdw) q/50 th/10`
-* `addproduct id/DE/5 n/PlayStation`
+* `addproduct id/DE/5 n/PlayStation e/sg.sales@cytron.io`
 
 <panel header="What products are considered duplicates?" type="seamless" id="faq-duplicate-products">
 
@@ -457,11 +433,53 @@ listproduct
 
 <div style="height: 30px;"></div>
 
-#### Editing a product : `editproduct` _(coming soon)_
+#### Editing a product : `editproduct`
+
+Edits the details of an existing product in the inventory. Only the fields you specify will be updated, all others stay the same.
+
+Format:
+```
+editproduct IDENTIFIER [id/NEW_IDENTIFIER] [n/NAME] [q/QUANTITY] [th/RESTOCK_THRESHOLD] [e/VENDOR_EMAIL]
+```
+
+<box type="info" seamless>
+
+**Note:** `VENDOR_EMAIL` must match the email of an existing contact. If the contact does not exist in VendorVault, the edit will **not** go through.
+
+</box>
+
+Examples:
+
+* `editproduct SKU-1003 id/SKU-1002 n/Arduino Uno R4 q/50`
+* `editproduct SKU-1003 e/support@adafruit.com`
+
+<panel header="How do I remove the vendor email from a product?" type="seamless">
+
+Simply type `e/` without specifying any email.
+
+For example, `editproduct SKU-1003 e/` will remove the vendor email from the product with identifier `SKU-1003`.
+
+</panel>
+
+<br>
+
+For more details on possible warnings and errors when editing a product, refer to the [troubleshooting guide for editproduct](#troubleshooting-editproduct) below.
+
+<div style="height: 30px;"></div>
 
 <box type="info" seamless>
 
 **This feature is currently in progress** and will be available in a future release. `editproduct` will allow you to update a product's name, quantity, or restock threshold without having to delete and re-add it.
+
+</box>
+
+<div style="height: 30px;"></div>
+
+#### Locating products : `findproduct` _(coming soon)_
+
+<box type="info" seamless>
+
+**This feature is currently in progress** and will be available in a future release. `findproduct` will allow you to view a product details in **full**.
 
 </box>
 
@@ -549,6 +567,17 @@ Format: `clearproduct`
 
 ### Utility Commands
 
+#### Viewing help : `help`
+
+Shows a message explaining how to access the help page.
+
+Format:
+```
+help
+```
+
+<div style="height: 30px;"></div>
+
 #### Add a command alias : `alias`
 
 Create an alternative command word that triggers an existing command.
@@ -566,7 +595,7 @@ Example:
 
 #### Undoing the previous command : `undo`
 
-Undoes the previous command that changed the data.
+Undoes the last change you made to your contacts or products. You can repeat `undo` to go back through multiple changes in the current app session.
 
 Format:
 
@@ -578,7 +607,7 @@ undo
 
 #### Redoing the previous undone command : `redo`
 
-Redoes the previous undone command that changed the data.
+Redoes the last change you undid on your contacts or products. You can repeat `redo` to go forward through multiple undone changes in the current app session.
 
 Format:
 
@@ -588,11 +617,25 @@ redo
 
 <div style="height: 30px;"></div>
 
+#### Listing all contacts and products : `listall`
+
+Shows a list of all **active** contacts and products at once. Useful for getting a full overview of your data after using `find` or `findproduct` and `restore` or `restoreproduct`.
+
+Format:
+```
+listall
+```
+
+<div style="height: 30px;"></div>
+
 #### Exiting the program : `exit`
 
 Exits the program.
 
-Format: `exit`
+Format:
+```
+exit
+```
 
 <div style="height: 30px;"></div>
 
@@ -617,15 +660,18 @@ Format: `exit`
 
 ### Product Commands
 
-| Action                  | Command                                                                 | Example                                                        | What it does                                                              |
-|-------------------------|-------------------------------------------------------------------------|----------------------------------------------------------------|---------------------------------------------------------------------------|
-| **Add Product**         | `addproduct id/IDENTIFIER n/NAME [q/QUANTITY] [th/RESTOCK_THRESHOLD]`  | `addproduct id/SKU-1003 n/Arduino Uno R4 q/50 th/10`          | Adds product                                                              |
-| **List Products**       | `listproduct`                                                           |                                                                | Lists all active products                                                 |
-| **Edit Product**        | `editproduct` _(coming soon)_                                           |                                                                | Edits a product's details                                                 |
-| **Archive Product**     | `archiveproduct IDENTIFIER`                                             | `archiveproduct SKU-1003`                                      | Archives product (hidden, not deleted)                                    |
-| **Restore Product**     | `restoreproduct [IDENTIFIER]`                                           | `restoreproduct SKU-1003`                                      | Restores archived product; lists all archived if no identifier given      |
-| **Delete Product**      | `deleteproduct IDENTIFIER`                                              | `deleteproduct SKU-1003`                                       | Permanently deletes product by identifier                                 |
-| **Clear Products**      | `clearproduct`                                                          |                                                                | Permanently clears all products                                           |
+| Action              | Command                                                                                | Example                                                                     | What it does                                                         |
+|---------------------|----------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|----------------------------------------------------------------------|
+| **Add Product**     | `addproduct id/IDENTIFIER n/NAME [q/QUANTITY] [th/RESTOCK_THRESHOLD] [e/VENDOR_EMAIL]` | `addproduct id/SKU-1003 n/Arduino Uno R4 q/50 th/10 e/sales@techsource.com` | Adds product                                                         |
+| **Edit Product**    | `editproduct IDENTIFIER [id/NEW_IDENTIFIER] [n/NAME] [q/QUANTITY] [th/RESTOCK_THRESHOLD] [e/VENDOR_EMAIL]` | `editproduct SKU-1003 n/Arduino Uno R4 q/50` | Edits a product's details  |
+| **Delete Product**  | `deleteproduct PRODUCT_IDENTIFIER`    | `deleteproduct SKU-1003`  | Permanently deletes product by identifier; prompts for confirmation |
+| **List Products**   | `listproduct`                                                                          |                                                                             | Lists all active products                                            |
+| **Find Product**    | `findproduct` _(coming soon)_                                                          |                                                                             |
+| **Clear Products**  | `clearproduct`                        |                           | Permanently clears all active products; prompts for confirmation    |
+| **Archive Product** | `archiveproduct IDENTIFIER`                                                            | `archiveproduct SKU-1003`                                                   | Archives product (hidden, not deleted)                               |
+| **Restore Product** | `restoreproduct [IDENTIFIER]`                                                          | `restoreproduct SKU-1003`                                                   | Restores archived product; lists all archived if no identifier given |
+| **Delete Product**  | `deleteproduct IDENTIFIER`                                                             | `deleteproduct SKU-1003`                                                    | Permanently deletes product by identifier                            |
+| **Clear Products**  | `clearproduct`                                                                         |                                                                             | Permanently clears all products                                      |
 
 ### General Commands
 
@@ -634,6 +680,7 @@ Format: `exit`
 | **Alias** | `alias` | Add a new alias            |
 | **Undo**  | `undo`  | Undoes previous command    |
 | **Redo**  | `redo`  | Redoes last undone command |
+| **List All** | `listall` | Lists all active contacts and products |
 | **Help**  | `help`  | Shows help message         |
 | **Exit**  | `exit`  | Exits VendorVault          |
 
@@ -686,6 +733,7 @@ Follow these steps:
 
 * Open the folder where VendorVault's `.jar` file is located.
 * Inside, locate the `data` folder, which contains `.json` files.
+
 <box type="warning" seamless>
 
 Please follow this format carefully. Files that do not adhere to the required format will be considered invalid.
@@ -694,7 +742,7 @@ Please follow this format carefully. Files that do not adhere to the required fo
 
 <panel header="`addressbook.json`: stores contact details" type="seamless">
 
-This is the json for address book: 
+This is the json for address book:
 
 ```json
 {
@@ -744,7 +792,6 @@ This is the json for aliases:
 
 </panel>
 
-
 </panel>
 
 <br>
@@ -770,29 +817,29 @@ This is the json for aliases:
 
 Use this section when `add` fails or returns a warning.
 
-| Scenario                                                                         | Message shown                                                             | How to fix                                                        |
-|----------------------------------------------------------------------------------|---------------------------------------------------------------------------|-------------------------------------------------------------------|
-| Missing one or more required prefixes (`n/`, `p/`, `e/`, `a/`)                   | `Missing required field(s): ...`                                          | Include all required prefixed fields in your command.             |
-| No prefixes at all                                                               | `All required prefixes are missing, ...`                                  | Use the full prefixed format, e.g. `add n/... p/... e/... a/...`. |
-| Text appears before the first prefix                                             | `No non-prefix characters before prefix(es) is allowed, ...`              | Remove any text before `n/`.                                      |
-| Same single-value field repeated (e.g. two `n/` or two `e/`)                     | `Multiple values specified for the following single-valued field(s): ...` | Keep only one value for each of `n/`, `p/`, `e/`, `a/`.           |
-| Name is blank                                                                    | `Name should not be blank.`                                               | Provide a non-empty name after `n/`.                              |
-| Name is too long                                                                 | `Name should be at most 256 characters.`                                  | Shorten the name.                                                 |
-| Phone is blank/too short                                                         | `Phone number should not be empty and must be at least 3 digits.`         | Ensure each phone entry has at least 3 digits.                    |
-| Email is blank                                                                   | `Email should not be blank.`                                              | Provide a non-empty email after `e/`.                             |
-| Email format is invalid                                                          | `Email should be of the format local-part@domain ...`                     | Use a valid email format (e.g. `sales@vendor.com`).               |
-| Address is blank                                                                 | `Address can take any values, and it should not be blank`                 | Provide a non-empty address after `a/`.                           |
-| Address is too long                                                              | `Address should be at most 500 characters.`                               | Shorten the address.                                              |
-| Tag contains non-alphanumeric characters                                         | `Tag names should be alphanumeric`                                        | Use letters/numbers only for each `t/` value.                     |
-| Contact duplicates an existing contact by same email or overlapping phone number | `This vendor contact already exists with the same email or phone number.` | Change the phone/email, or edit the existing contact instead.     |
+| Scenario                                                                         | Message shown                                                             | How to fix                                                                      |
+|----------------------------------------------------------------------------------|---------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| Missing one or more required prefixes (`n/`, `p/`, `e/`, `a/`)                   | `Missing required field(s): ...`                                          | Include all required prefixed fields in your command.                           |
+| No prefixes at all                                                               | `All required prefixes are missing, ...`                                  | Use the full prefixed format, e.g. `add n/... p/... e/... a/...`.               |
+| Text appears before the first prefix                                             | `No non-prefix characters before prefix(es) is allowed, ...`              | Remove any text before `n/`.                                                    |
+| Same single-value field repeated (e.g. two `n/` or two `e/`)                     | `Multiple values specified for the following single-valued field(s): ...` | Keep only one value for each of `n/`, `p/`, `e/`, `a/`.                         |
+| Name is blank                                                                    | `Name should not be blank.`                                               | Provide a non-empty name after `n/`.                                            |
+| Name is too long                                                                 | `Name should be at most 256 characters.`                                  | Shorten the name.                                                               |
+| Phone is blank/too short                                                         | `Phone number should not be empty and must be at least 3 digits.`         | Ensure each phone entry has at least 3 digits.                                  |
+| Email is blank                                                                   | `Email should not be blank.`                                              | Provide a non-empty email after `e/`.                                           |
+| Email format is invalid                                                          | `Email should be of the format local-part@domain ...`                     | Use a valid email format (e.g. `sales@vendor.com`) less than 320 characters.    |
+| Address is blank                                                                 | `Address can take any values, and it should not be blank`                 | Provide a non-empty address after `a/`.                                         |
+| Address is too long                                                              | `Address should be at most 500 characters.`                               | Shorten the address.                                                            |
+| Tag contains non-alphanumeric characters                                         | `Tag names should be alphanumeric`                                        | Use letters/numbers only for each `t/` value.                                   |
+| Contact duplicates an existing contact by same email or overlapping phone number | `This vendor contact already exists with the same email or phone number.` | Change the phone/email, or edit the existing contact instead.                   |
 
 Common `add` warnings:
 
 | Warning trigger                        | Warning shown                                                                                                          | What it means                                                                                                                                                                            |
 |----------------------------------------|------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Name has unusual symbols               | `⚠ Warning: Name contains unusual symbols, is this intentional?`                                                       | Name is accepted, but looks unusual. You can verify if you entered the correct name.                                                                                                     |
-| Phone includes unusual symbols/format  | `⚠ Warning: Phone number contains unusual symbols, is this intentional?`                                               | Phone is accepted, but format may be unintended. You can safely ignore it if you're providing labels eg. `61234567 (Office)`                                                             |
-| Email is unusually long                | `⚠ Warning: This email address is unusually long, is this intentional?`                                                | Email is accepted, but unusually long. You can verify if the email entered is correct.                                                                                                   |
+| Name has unusual symbols               | `⚠ Warning: Name contains unusual symbols, is this intentional?`                                                       | Name is accepted, but [looks unusual](#contact-name-format). You can verify if you entered the correct name.                                                                             |
+| Phone includes unusual symbols/format  | `⚠ Warning: Phone number contains unusual symbols, is this intentional?`                                               | Phone is accepted, but [format may be unintended](#contact-phone-format). You can safely ignore it if you're providing labels eg. `61234567 (Office)`                                    |
+| Email is unusually long                | `⚠ Warning: This email address is unusually long, is this intentional?`                                                | Email is accepted, but more than 256 characters. You can verify if the email entered is correct.                                                                                         |
 | Similar name to an existing contact    | `⚠ Warning: There's a contact with a similar name (name: <similar-name>), is this intentional?`                        | Possible duplicate by similar name. You can check if the name in the warning message is the same vendor as what you were about to add.                                                   |
 | Similar address to an existing contact | `⚠ Warning: There's a contact with a similar address (name: <name>, address: <similar-address>), is this intentional?` | Possible duplicate/related location by address similarity. You can check if the vendor name and address in the warning message belongs to the same vendor as what you were about to add. |
 
@@ -806,6 +853,7 @@ Tip: If multiple warnings apply, VendorVault shows all of them (one per line) to
 #### Troubleshooting `edit` contact
 
 Use this section when `edit` fails or returns a warning.
+
 <box type="info" seamless>
 
 Many errors that occur in `add` also apply to `edit`, specifically, all except the first three errors listed in the add contact section above also apply. Similarly, all warnings from `add` apply to `edit` as well. For these shared errors, refer to the [Troubleshooting add contact](#troubleshooting-add-contact) guide, as they behave the same way in edit contact commands.
@@ -858,6 +906,14 @@ Use this section when `delete` fails.
 | Email Format is invalid                | `Email should be of the format local-part@domain ...` | Check the email if its correct.             |
 | Email provided but no matching contact | `No contact with the specified email was found.`      | Check the email if its correct.             |
 
+<br>
+
+Common `delete` warnings:
+
+| Warning trigger                             | Warning shown                                            | What it means                                        |
+|---------------------------------------------|----------------------------------------------------------|------------------------------------------------------|
+| Contact with existing product(s) is deleted | `... product(s) became unassociated from contact (...).` | The product(s) will not have a corresponding vendor. |
+
 <div style="height: 30px;"></div>
 
 ### Managing inventory
@@ -867,15 +923,16 @@ Use this section when `delete` fails.
 
 Use this section when `addproduct` fails or returns a warning.
 
-| Scenario                                            | Message shown                                                             | How to fix                                                    |
-|-----------------------------------------------------|---------------------------------------------------------------------------|---------------------------------------------------------------|
-| Missing one or more required prefixes (`id/`, `n/`) | `Missing required field(s): ...`                                          | Include all required prefixed fields in your command.         |
-| No prefixes at all                                  | `All required prefixes are missing, ...`                                  | Use the full prefixed format, e.g. `addproduct id/... n/...`. |
-| Text appears before the first prefix                | `No non-prefix characters before prefix(es) is allowed, ...`              | Remove any text before `id/`.                                 |
-| Same single-value field repeated (e.g. two `q/`)    | `Multiple values specified for the following single-valued field(s): ...` | Keep only one value for each of `id/`, `n/`, `q/`, `th/`.     |
-| Identifier is blank                                 | `Identifier should not be blank.`                                         | Provide a non-empty identifier after `id/`.                   |
-| Name is too long                                    | `Name should be at most 120 characters.`                                  | Shorten the name.                                             |
-| Product is a duplicate                              | `This product already exists with the same identifier.`                   | Change the identifier, or edit the existing product instead.  |
+| Scenario                                            | Message shown                                                             | How to fix                                                                      |
+|-----------------------------------------------------|---------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| Missing one or more required prefixes (`id/`, `n/`) | `Missing required field(s): ...`                                          | Include all required prefixed fields in your command.                           |
+| No prefixes at all                                  | `All required prefixes are missing, ...`                                  | Use the full prefixed format, e.g. `addproduct id/... n/...`.                   |
+| Text appears before the first prefix                | `No non-prefix characters before prefix(es) is allowed, ...`              | Remove any text before `id/`.                                                   |
+| Same single-value field repeated (e.g. two `q/`)    | `Multiple values specified for the following single-valued field(s): ...` | Keep only one value for each of `id/`, `n/`, `q/`, `th/`.                       |
+| Identifier is blank                                 | `Identifier should not be blank.`                                         | Provide a non-empty identifier after `id/`.                                     |
+| Name is too long                                    | `Name should be at most 120 characters.`                                  | Shorten the name.                                                               |
+| Product is a duplicate                              | `This product already exists with the same identifier.`                   | Change the identifier, or edit the existing product instead.                    |
+| Product's vendor does not exist                     | `Vendor email ... does not match any existing contact.`                   | Check that the email matches an existing contact's email, or add a new contact. |
 
 <br>
 
@@ -885,6 +942,46 @@ Common `addproduct` warnings:
 |-------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
 | Identifier/Name has unusual symbols | `⚠ Warning: Identifier contains unusual symbols, is this intentional?`<br><br/>`⚠ Warning: Name contains unusual symbols, is this intentional?` | Identifier/Name is accepted, but looks unusual. You can verify if you entered it correctly.                                     |
 | Similar name to an existing product | `⚠ Warning: There's a product with a similar name (name: <similar-name>), is this intentional?`                                                 | Possible duplicate by similar name. You can check if the name in the warning message is the same as what you were about to add. |
+
+<div style="height: 30px;"></div>
+
+#### Troubleshooting `editproduct`
+
+Use this section when `editproduct` fails or returns a warning.
+
+<box type="info" seamless>
+
+If you assign a vendor email to a product, the contact **must already exist** in VendorVault. If the contact is later deleted, the product will retain the email but the vendor will be unassociated. To fix this, either re-add the contact or clear the vendor email using `editproduct IDENTIFIER e/`.
+
+</box>
+
+| Scenario                                             | Message shown                                                             | How to fix                                                                               |
+|------------------------------------------------------|---------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| No fields specified to edit                          | `At least one field to edit must be provided.`                            | Include at least one of `id/`, `n/`, `q/`, `th/`, or `e/`.                               |
+| Identifier does not match any active product         | `No product found with the specified identifier.`                         | Ensure the product exists in the active list. Use `listproduct` to check.                |
+| New identifier is already used by another product    | `This product already exists with the same identifier.`                   | Choose a unique identifier.                                                              |
+| Vendor email does not match any existing contact     | `No contact with the specified email was found.`                          | Check that the email matches an existing contact, or add the contact first using `add`.  |
+
+<br>
+
+Common `editproduct` warnings:
+
+| Warning trigger                          | Warning shown                                                                                                        | What it means                                                                                                                              |
+|------------------------------------------|----------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| Edited name is similar to another product | `⚠ Warning: There's a product with a similar name (id: <id>, name: <similar-name>), is this intentional?`           | Possible duplicate by similar name. Check if the flagged product is the same as the one you are editing.                                   |
+| Edited quantity is at or below threshold  | `⚠ Warning: Product stock is below threshold.`                                                                       | The product's stock has fallen to or below its restock threshold. Consider restocking.                                                     |
+
+<box type="tip" seamless>
+
+Tip: Warnings only appear for **fields you are actually editing**. For example, if you edit only the vendor email and the quantity is already below threshold, you will not see a stock warning. This prevents unnecessary alerts for unchanged fields.
+
+</box>
+
+<box type="tip" seamless>
+
+Tip: If multiple warnings apply, VendorVault shows all of them (one per line) together with the success message.
+
+</box>
 
 <div style="height: 30px;"></div>
 
@@ -917,5 +1014,39 @@ Use this section when `deleteproduct` fails.
 |---------------------------------------|---------------------------------------------------|---------------------------------------------------------------------------|
 | No identifier provided                | `Invalid command format! ...`                     | Provide the product identifier: `deleteproduct IDENTIFIER`.               |
 | Identifier does not match any product | `No product found with the specified identifier.` | Ensure the product exists in the active list. Use `listproduct` to check. |
+
+<div style="height: 30px;"></div>
+
+### Why am I seeing warnings?
+
+Warnings are shown when the command succeeds but the provided information do not meet the recommended format. This is to help you catch possible mistakes or unintended data formats. You can choose to ignore the warning if the data is correct as intended.
+
+<panel header="What is the recommended contact name format?" type="seamless" id="contact-name-format">
+
+Name is recommended to meet the following guidelines:
+- It can contain letters, numbers and spaces
+
+You may see a warning if the vendor name includes special characters. This is only a recommendation, you may safely ignore the warning if the name is correct (e.g. `Cytron Technologies Pte. Ltd.`).
+
+</panel>
+
+<panel header="What is the recommended phone number format?" type="seamless" id="contact-phone-format">
+
+Phone number(s) is recommended to meet the following guidelines:
+1. It should contain only digits, spaces, '+' or '-' in the number part.
+2. Multiple phone numbers should be separated by commas.
+Example: 12345678, 62345678
+
+You may see a warning if your phone number contains unusual symbols or format, but you can safely ignore it if you are providing labels for the phone number (e.g. `61234567 (Office)`).
+
+</panel>
+
+<panel header="Why am I seeing warnings for possible duplicates?" type="seamless" id="duplicate-warnings">
+
+**Contact and Product Names** warnings are shown when a new entry **shares words** with an existing one. For example, “Cytron Technologies” and “Cytron T.” is flagged because the first part matches.
+
+**Contact Addresses** warnings appear when one address **fully contains** the other. For example, “123 Main Street” and “123 Main St” are flagged because they point to the same place.
+
+</panel>
 
 <div style="height: 30px;"></div>
