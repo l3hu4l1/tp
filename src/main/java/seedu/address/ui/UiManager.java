@@ -1,5 +1,9 @@
 package seedu.address.ui;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javafx.application.Platform;
@@ -51,6 +55,7 @@ public class UiManager implements Ui {
         primaryStage.getIcons().add(getImage(ICON_APPLICATION));
 
         try {
+            initBrandFonts();
             mainWindow = new MainWindow(primaryStage, logic);
             mainWindow.show(); //This should be called before creating other UI parts
             mainWindow.fillInnerParts();
@@ -73,6 +78,32 @@ public class UiManager implements Ui {
 
         logger.info(String.format("Resolved fonts: ui='%s', semibold='%s', light='%s', mono='%s'",
             uiFont, uiFontSemibold, uiFontLight, monoFont));
+    }
+
+    private void logFontCandidateAvailability() {
+        Set<String> availableFontNamesLower = new HashSet<>();
+        for (String fontName : Font.getFontNames()) {
+            availableFontNamesLower.add(fontName.toLowerCase());
+        }
+
+        logCandidateGroup("UI candidates", availableFontNamesLower,
+            UI_FONT_CANDIDATES);
+        logCandidateGroup("Semibold candidates", availableFontNamesLower,
+            SEMIBOLD_FONT_CANDIDATES);
+        logCandidateGroup("Light candidates", availableFontNamesLower,
+            LIGHT_FONT_CANDIDATES);
+        logCandidateGroup("Monospace candidates", availableFontNamesLower,
+            MONO_FONT_CANDIDATES);
+    }
+
+    private void logCandidateGroup(
+            String groupName, Set<String> availableFontNamesLower, String... candidates) {
+        List<String> statuses = new ArrayList<>();
+        for (String candidate : candidates) {
+            boolean isAvailable = availableFontNamesLower.contains(candidate.toLowerCase());
+            statuses.add(candidate + "=" + (isAvailable ? "available" : "missing"));
+        }
+        logger.info(groupName + ": " + String.join(", ", statuses));
     }
 
     private String resolveFirstAvailableFontName(String... candidates) {
