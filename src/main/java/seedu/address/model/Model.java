@@ -227,7 +227,7 @@ public interface Model {
 
     void restoreProduct(Product product);
 
-    // =========== VendorVaultkVersioning ========================================================================
+    // =========== VendorVaultVersioning ========================================================================
     /**
      * Commits the current state of vendor vault. This should be called after any operation
      * that modifies vendor vault, such as adding, deleting, or editing a person (same as vendor).
@@ -241,20 +241,16 @@ public interface Model {
 
     /**
      * Returns true if there are states in vendor vault that can be undone.
-     *
-     * @return true if there are states in  vendor vault that can be undone, false otherwise.
      */
     boolean canUndoVendorVault();
 
     /**
-     * Redoes the last undone state in the vendor vault, restoring the address book to the state before the undo.
+     * Redoes the last undone state in the vendor vault, restoring the vendor vault to the state before the undo.
      */
     void redoVendorVault();
 
     /**
      * Returns true if there are states in the vendor vault that can be redone.
-     *
-     * @return true if there are states in the vendor vault that can be redone, false otherwise.
      */
     boolean canRedoVendorVault();
 
