@@ -65,22 +65,6 @@ public class ParserUtil {
         return Index.fromOneBased(Integer.parseInt(trimmedIndex));
     }
 
-    private static Optional<String> getNameWarning(String name) throws ParseException {
-        if (name.isBlank()) {
-            throw new ParseException(Name.MESSAGE_CONSTRAINTS);
-        }
-
-        if (name.length() > Name.MAX_LENGTH) {
-            throw new ParseException(Name.MESSAGE_LENGTH_CONSTRAINTS);
-        }
-
-        if (!Name.isValidNameWarn(name)) {
-            return Optional.of(Name.MESSAGE_WARN);
-        }
-
-        return Optional.empty();
-    }
-
     /**
      * Parses a {@code String name} into a {@code Name}.
      * Leading and trailing whitespaces will be trimmed.
@@ -92,18 +76,6 @@ public class ParserUtil {
         String trimmedName = name.trim();
         Optional<String> warnings = getNameWarning(trimmedName);
         return new ParseResult<>(new Name(trimmedName), warnings);
-    }
-
-    private static Optional<String> getPhoneWarning(String phone) throws ParseException {
-        if (phone.isBlank() || !Phone.isValidPhone(phone)) {
-            throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
-        }
-
-        if (!Phone.isValidPhoneWarn(phone)) {
-            return Optional.of(Phone.MESSAGE_WARN);
-        }
-
-        return Optional.empty();
     }
 
     /**
@@ -137,22 +109,6 @@ public class ParserUtil {
         }
 
         return new Address(trimmedAddress);
-    }
-
-    private static Optional<String> getEmailWarning(String email) throws ParseException {
-        if (email.isBlank()) {
-            throw new ParseException(Email.MESSAGE_BLANK);
-        }
-
-        if (!Email.isValidEmail(email)) {
-            throw new ParseException(Email.MESSAGE_CONSTRAINTS);
-        }
-
-        if (!Email.isValidEmailWarn(email)) {
-            return Optional.of(Email.MESSAGE_WARN);
-        }
-
-        return Optional.empty();
     }
 
     /**
@@ -195,22 +151,6 @@ public class ParserUtil {
         return tagSet;
     }
 
-    private static Optional<String> getIdentifierWarning(String identifier) throws ParseException {
-        if (identifier.isBlank()) {
-            throw new ParseException(Identifier.MESSAGE_CONSTRAINTS);
-        }
-
-        if (identifier.length() > Identifier.MAX_LENGTH) {
-            throw new ParseException(Identifier.MESSAGE_LENGTH_CONSTRAINTS);
-        }
-
-        if (!Identifier.isValidIdentifierWarn(identifier)) {
-            return Optional.of(Identifier.MESSAGE_WARN);
-        }
-
-        return Optional.empty();
-    }
-
     /**
      * Parses a product {@code String identifier} into {@code Identifier}.
      * Leading and trailing whitespaces will be trimmed.
@@ -222,22 +162,6 @@ public class ParserUtil {
         String trimmedIdentifier = identifier.trim();
         Optional<String> warning = getIdentifierWarning(trimmedIdentifier);
         return new ParseResult<>(new Identifier(trimmedIdentifier), warning);
-    }
-
-    private static Optional<String> getProductNameWarning(String name) throws ParseException {
-        if (name.isBlank()) {
-            throw new ParseException(seedu.address.model.product.Name.MESSAGE_CONSTRAINTS);
-        }
-
-        if (name.length() > seedu.address.model.product.Name.MAX_LENGTH) {
-            throw new ParseException(seedu.address.model.product.Name.MESSAGE_LENGTH_CONSTRAINTS);
-        }
-
-        if (!seedu.address.model.product.Name.isValidNameWarn(name)) {
-            return Optional.of(seedu.address.model.product.Name.MESSAGE_WARN);
-        }
-
-        return Optional.empty();
     }
 
     /**
@@ -285,5 +209,107 @@ public class ParserUtil {
         }
 
         return new ParseResult<>(new RestockThreshold(trimmedThreshold), Optional.empty());
+    }
+
+    // ============ Helper Functions for Warnings ============
+
+    private static Optional<String> getNameWarning(String name) throws ParseException {
+        return getWarning(
+            name, () -> new ParseException(Name.MESSAGE_CONSTRAINTS), ()
+                        -> new ParseException(Name.MESSAGE_LENGTH_CONSTRAINTS),
+            Name.MAX_LENGTH,
+            Name::isValidNameWarn,
+            Name.MESSAGE_WARN
+        );
+
+    }
+
+    private static Optional<String> getPhoneWarning(String phone) throws ParseException {
+        if (phone.isBlank()) {
+            throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
+        }
+
+        if (!Phone.isValidPhone(phone)) {
+            throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
+        }
+
+        if (!Phone.isValidPhoneWarn(phone)) {
+            return Optional.of(Phone.MESSAGE_WARN);
+        }
+
+        return Optional.empty();
+    }
+
+    private static Optional<String> getEmailWarning(String email) throws ParseException {
+        if (email.isBlank()) {
+            throw new ParseException(Email.MESSAGE_BLANK);
+        }
+
+        if (!Email.isValidEmail(email)) {
+            throw new ParseException(Email.MESSAGE_CONSTRAINTS);
+        }
+
+        if (!Email.isValidEmailWarn(email)) {
+            return Optional.of(Email.MESSAGE_WARN);
+        }
+
+        return Optional.empty();
+    }
+
+    private static Optional<String> getIdentifierWarning(String identifier) throws ParseException {
+        return getWarning(
+                identifier, () -> new ParseException(Identifier.MESSAGE_CONSTRAINTS), ()
+                        -> new ParseException(Identifier.MESSAGE_LENGTH_CONSTRAINTS),
+                Identifier.MAX_LENGTH,
+                Identifier::isValidIdentifierWarn,
+                Identifier.MESSAGE_WARN
+        );
+    }
+
+    private static Optional<String> getProductNameWarning(String name) throws ParseException {
+        return getWarning(
+                name, () -> new ParseException(seedu.address.model.product.Name.MESSAGE_CONSTRAINTS), ()
+                        -> new ParseException(seedu.address.model.product.Name.MESSAGE_LENGTH_CONSTRAINTS),
+                seedu.address.model.product.Name.MAX_LENGTH,
+                seedu.address.model.product.Name::isValidNameWarn,
+                seedu.address.model.product.Name.MESSAGE_WARN
+        );
+    }
+
+    // ============ Generic Warning Helper ============
+    @FunctionalInterface
+    interface WarningValidator {
+        boolean validate(String input);
+    }
+
+    @FunctionalInterface
+    interface ExceptionSupplier {
+        ParseException get();
+    }
+
+    /**
+     * Checks only blank, max length and warnings
+     */
+    private static Optional<String> getWarning(
+            String value,
+            ExceptionSupplier blankException,
+            ExceptionSupplier lengthException,
+            int maxLength,
+            WarningValidator softValidator,
+            String softWarningMessage
+    ) throws ParseException {
+        if (value.isBlank()) {
+            throw blankException.get();
+        }
+
+        if (maxLength > 0 && value.length() > maxLength) {
+            throw lengthException.get();
+        }
+
+        if (softValidator != null && !softValidator.validate(value)) {
+            return Optional.of(softWarningMessage);
+        }
+
+        return Optional.empty();
     }
 }
