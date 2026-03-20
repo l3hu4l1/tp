@@ -104,6 +104,10 @@ public class Person {
     }
 
     private boolean hasSimilarName(Person otherPerson) {
+        if (otherPerson == null) {
+            return false;
+        }
+
         String thisName = normalizeName(this.name.fullName);
         String otherName = normalizeName(otherPerson.getName().fullName);
 

@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_DUPLICATE_PERSON;
+import static seedu.address.logic.commands.CommandUtil.EMPTY_STRING;
 import static seedu.address.logic.commands.CommandUtil.SEPARATOR_NEW_LINE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
@@ -72,7 +73,7 @@ public class EditCommand extends Command {
     private final Email email;
     private final EditPersonDescriptor editPersonDescriptor;
     private final boolean needsConfirmation;
-    private String warnings = "";
+    private final String initialWarnings;
     private PendingConfirmation pendingConfirmation = new PendingConfirmation();
 
     /**
@@ -80,7 +81,7 @@ public class EditCommand extends Command {
      * @param editPersonDescriptor details to edit the person with
      */
     public EditCommand(Email email, EditPersonDescriptor editPersonDescriptor) {
-        this(email, editPersonDescriptor, "", true);
+        this(email, editPersonDescriptor, EMPTY_STRING, true);
     }
 
     /**
@@ -89,7 +90,7 @@ public class EditCommand extends Command {
      * @param needsConfirmation whether this command should prompt before clearing all tags
      */
     public EditCommand(Email email, EditPersonDescriptor editPersonDescriptor, boolean needsConfirmation) {
-        this(email, editPersonDescriptor, "", needsConfirmation);
+        this(email, editPersonDescriptor, EMPTY_STRING, needsConfirmation);
     }
 
     /**
@@ -107,24 +108,68 @@ public class EditCommand extends Command {
      * Full constructor for EditCommand with warnings and confirmation control.
      */
     public EditCommand(Email email, EditPersonDescriptor editPersonDescriptor,
-                       String warnings, boolean needsConfirmation) {
+                       String initialWarnings, boolean needsConfirmation) {
         requireNonNull(email);
         requireNonNull(editPersonDescriptor);
+        requireNonNull(initialWarnings);
 
         this.email = email;
         this.editPersonDescriptor = new EditPersonDescriptor(editPersonDescriptor);
-        this.warnings = warnings;
+        this.initialWarnings = initialWarnings;
         this.needsConfirmation = needsConfirmation;
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
         Person personToEdit = model.findByEmail(email)
                 .orElseThrow(() ->
                         new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_EMAIL));
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
+        validateNoDuplicate(personToEdit, editedPerson, model);
+
+        String allWarnings = buildWarnings(editedPerson, personToEdit, model, initialWarnings);
+
+        if (shouldConfirmTagClear() && needsConfirmation) {
+            return createConfirmationPrompt(model, personToEdit, editedPerson, allWarnings);
+        }
+
+        applyEdit(model, personToEdit, editedPerson);
+
+        return buildCommandResult(editedPerson, allWarnings);
+    }
+
+    private CommandResult buildCommandResult(Person editedPerson, String allWarnings) {
+        String formattedWarnings = allWarnings.isEmpty() ? "" : SEPARATOR_NEW_LINE + allWarnings;
+        String feedbackType = allWarnings.isEmpty()
+                ? CommandResult.FEEDBACK_TYPE_SUCCESS
+                : CommandResult.FEEDBACK_TYPE_WARN;
+
+        return new CommandResult(
+                String.format(MESSAGE_EDIT_PERSON_SUCCESS + formattedWarnings, Messages.format(editedPerson)),
+                feedbackType);
+    }
+
+    private CommandResult createConfirmationPrompt(Model model, Person personToEdit,
+                                                   Person editedPerson, String allWarnings) {
+        pendingConfirmation = new PendingConfirmation(()
+                -> onConfirm(model, personToEdit, editedPerson, allWarnings.toString()), ()
+                -> onCancel(model));
+
+        NameEqualsKeywordsPredicate predicate = new NameEqualsKeywordsPredicate(personToEdit);
+        model.updateFilteredPersonList(predicate);
+        return new CommandResult(CONFIRMATION_CLEAR_TAGS_MESSAGE);
+    }
+
+    private String buildWarnings(Person editedPerson, Person personToEdit, Model model, String originalWarnings) {
+        StringBuilder warningsBuilder = new StringBuilder(originalWarnings);
+        appendSimilarContactWarnings(editedPerson, personToEdit, model, warningsBuilder, editPersonDescriptor);
+        return warningsBuilder.toString();
+    }
+
+    private void validateNoDuplicate(Person personToEdit, Person editedPerson, Model model) throws CommandException {
         for (Person existingPerson : model.getFilteredPersonList()) {
             if (existingPerson.equals(personToEdit)) {
                 continue;
@@ -133,21 +178,6 @@ public class EditCommand extends Command {
                 throw new CommandException(MESSAGE_DUPLICATE_PERSON);
             }
         }
-
-        StringBuilder allWarnings = new StringBuilder(warnings);
-        appendSimilarContactWarnings(editedPerson, personToEdit, model, allWarnings, editPersonDescriptor);
-
-        if (shouldConfirmTagClear() && needsConfirmation) {
-            pendingConfirmation = new PendingConfirmation(()
-                    -> onConfirm(model, personToEdit, editedPerson, allWarnings.toString()), ()
-                    -> onCancel(model));
-
-            NameEqualsKeywordsPredicate predicate = new NameEqualsKeywordsPredicate(personToEdit);
-            model.updateFilteredPersonList(predicate);
-            return new CommandResult(CONFIRMATION_CLEAR_TAGS_MESSAGE);
-        }
-
-        return applyEdit(model, personToEdit, editedPerson, allWarnings.toString());
     }
 
     private boolean shouldConfirmTagClear() {
@@ -158,7 +188,8 @@ public class EditCommand extends Command {
                                               String allWarnings) {
         // all user errors should have already been validated before confirmation
         try {
-            return Optional.of(applyEdit(model, personToEdit, editedPerson, allWarnings));
+            applyEdit(model, personToEdit, editedPerson);
+            return Optional.of(buildCommandResult(editedPerson, allWarnings));
         } catch (CommandException e) {
             throw new AssertionError(MESSAGE_FAILURE, e);
         }
@@ -169,7 +200,7 @@ public class EditCommand extends Command {
         return Optional.of(new CommandResult(MESSAGE_CLEAR_TAGS_CANCELLED));
     }
 
-    private CommandResult applyEdit(Model model, Person personToEdit, Person editedPerson, String allWarnings)
+    private void applyEdit(Model model, Person personToEdit, Person editedPerson)
             throws CommandException {
 
         try {
@@ -187,15 +218,6 @@ public class EditCommand extends Command {
 
         model.updateFilteredPersonList(PREDICATE_SHOW_ACTIVE_PERSONS);
         model.commitVendorVault();
-
-        String formattedWarnings = allWarnings.isEmpty() ? "" : SEPARATOR_NEW_LINE + allWarnings;
-        String feedbackType = allWarnings.isEmpty()
-                ? CommandResult.FEEDBACK_TYPE_SUCCESS
-                : CommandResult.FEEDBACK_TYPE_WARN;
-
-        return new CommandResult(
-                String.format(MESSAGE_EDIT_PERSON_SUCCESS + formattedWarnings, Messages.format(editedPerson)),
-                feedbackType);
     }
 
     @Override

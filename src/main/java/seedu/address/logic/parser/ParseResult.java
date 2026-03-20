@@ -1,5 +1,7 @@
 package seedu.address.logic.parser;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Optional;
 
 /**
@@ -19,6 +21,9 @@ public class ParseResult<T> {
      * @param warning an optional string containing any warnings related to the parsing process.
      */
     public ParseResult(T value, Optional<String> warning) {
+        requireNonNull(value);
+        requireNonNull(warning);
+
         this.value = value;
         this.warning = warning;
     }
@@ -39,5 +44,26 @@ public class ParseResult<T> {
      */
     public Optional<String> getWarning() {
         return warning;
+    }
+
+    @Override
+    public String toString() {
+        return "ParseResult[value=" + value + ", warning=" + warning + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ParseResult<?> other)) {
+            return false;
+        }
+        return value.equals(other.value) && warning.equals(other.warning);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(value, warning);
     }
 }

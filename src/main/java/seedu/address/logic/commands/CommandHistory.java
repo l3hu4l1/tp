@@ -35,23 +35,21 @@ public class CommandHistory {
      *                     when navigating back to the latest position.
      */
     public String getPrevious(String currentInput) {
-        currentInput = Objects.requireNonNullElse(currentInput, "");
+        currentInput = safeInput(currentInput);
 
         if (commandTexts.isEmpty()) {
             return currentInput;
         }
 
-        if (currentIndex == LATEST_POSITION) {
+        if (atLatestPosition()) {
             draftCommandText = currentInput;
             currentIndex = commandTexts.size() - 1;
-            return commandTexts.get(currentIndex);
+            return getCurrentCommandOrDraft();
         }
 
-        if (currentIndex > 0) {
-            currentIndex--;
-        }
+        moveIndexBack();
 
-        return commandTexts.get(currentIndex);
+        return getCurrentCommandOrDraft();
     }
 
     /**
@@ -62,23 +60,50 @@ public class CommandHistory {
      *         or current input if history is empty.
      */
     public String getNext(String currentInput) {
-        currentInput = Objects.requireNonNullElse(currentInput, "");
+        currentInput = safeInput(currentInput);
 
         if (commandTexts.isEmpty()) {
             return currentInput;
         }
 
-        if (currentIndex == LATEST_POSITION) {
-            return draftCommandText;
-        }
+        moveIndexForward();
 
+        return getCurrentCommandOrDraft();
+    }
+
+    private boolean atLatestPosition() {
+        return currentIndex == LATEST_POSITION;
+    }
+
+    private void moveIndexBack() {
+        if (currentIndex > 0) {
+            currentIndex--;
+        }
+    }
+
+    private void moveIndexForward() {
+        if (atLatestPosition()) {
+            return; // already at draft
+        }
         if (currentIndex < commandTexts.size() - 1) {
             currentIndex++;
-            return commandTexts.get(currentIndex);
+        } else {
+            currentIndex = LATEST_POSITION;
         }
+    }
 
-        currentIndex = LATEST_POSITION;
-        return draftCommandText;
+    private String getCurrentCommandOrDraft() {
+        assert currentIndex >= -1 && currentIndex < commandTexts.size()
+                : "currentIndex out of bounds: " + currentIndex;
+
+        if (atLatestPosition()) {
+            return draftCommandText;
+        }
+        return commandTexts.get(currentIndex);
+    }
+
+    private String safeInput(String input) {
+        return Objects.requireNonNullElse(input, "");
     }
 
     /**

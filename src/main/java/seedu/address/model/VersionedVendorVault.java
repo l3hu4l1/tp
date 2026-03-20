@@ -1,5 +1,7 @@
 package seedu.address.model;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class VersionedVendorVault extends VendorVault {
      * Saves a copy of the current VendorVault state to the history.
      */
     public void commit(VendorVault currentState) {
+        requireNonNull(currentState);
         vendorVaultStateList.subList(currentStatePointer + 1, vendorVaultStateList.size()).clear();
 
         vendorVaultStateList.add(new VendorVault(currentState));
@@ -40,6 +43,8 @@ public class VersionedVendorVault extends VendorVault {
      * Restores the previous VendorVault state.
      */
     public void undo(VendorVault currentState) {
+        requireNonNull(currentState);
+
         if (!canUndo()) {
             throw new IllegalStateException(UndoCommand.MESSAGE_FAILURE);
         }
@@ -51,6 +56,8 @@ public class VersionedVendorVault extends VendorVault {
      * Restores the next VendorVault state after an undo.
      */
     public void redo(VendorVault currentState) {
+        requireNonNull(currentState);
+
         if (!canRedo()) {
             throw new IllegalStateException(RedoCommand.MESSAGE_FAILURE);
         }

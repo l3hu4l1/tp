@@ -18,7 +18,7 @@ public class GuiSettings implements Serializable {
     public static final double MIN_HEIGHT = 650;
     public static final double MIN_WIDTH = 900;
 
-    // default to the screen size of the user's device
+    // default to the full screen size of the user's device
     private static final boolean DEFAULT_FULL_SCREEN = true;
     private static final Dimension screenSize;
     static {
@@ -54,6 +54,8 @@ public class GuiSettings implements Serializable {
         this.windowHeight = windowHeight;
         windowCoordinates = new Point(xPosition, yPosition);
 
+        // set full screen true if the window is at least the default width and height
+        // needed to .setMaximised in GUI
         if (windowWidth >= DEFAULT_WIDTH && windowHeight >= DEFAULT_HEIGHT) {
             isFullScreen = true;
         } else {
