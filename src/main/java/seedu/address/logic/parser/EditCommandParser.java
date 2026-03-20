@@ -45,7 +45,7 @@ public class EditCommandParser implements Parser<EditCommand> {
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
 
         Email email;
-        String[] preambleTokens = argMultimap.getPreamble().trim().split("\\s+");
+        String[] preambleTokens = argMultimap.getPreamble().trim().split(ParserUtil.SEPARATOR_SPACE);
         boolean needsConfirmation = !checkConfirmationIndicator(preambleTokens);
         String emailBeforeParsed = removeConfirmationIndicator(preambleTokens);
 
@@ -57,9 +57,23 @@ public class EditCommandParser implements Parser<EditCommand> {
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
 
-        EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
-
         StringBuilder warnings = new StringBuilder();
+        EditPersonDescriptor editPersonDescriptor = parsePerson(argMultimap, warnings);
+
+        if (!editPersonDescriptor.isAnyFieldEdited()) {
+            throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
+        }
+
+        if (!warnings.isEmpty()) {
+            return new EditCommand(email, editPersonDescriptor, warnings.toString(), needsConfirmation);
+        }
+
+        return new EditCommand(email, editPersonDescriptor, needsConfirmation);
+    }
+
+    private EditPersonDescriptor parsePerson(ArgumentMultimap argMultimap, StringBuilder warnings)
+            throws ParseException {
+        EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
 
         if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
             ParseResult<Name> nameResult = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
@@ -81,15 +95,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         }
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
 
-        if (!editPersonDescriptor.isAnyFieldEdited()) {
-            throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
-        }
-
-        if (!warnings.isEmpty()) {
-            return new EditCommand(email, editPersonDescriptor, warnings.toString(), needsConfirmation);
-        }
-
-        return new EditCommand(email, editPersonDescriptor, needsConfirmation);
+        return editPersonDescriptor;
     }
 
     private boolean checkConfirmationIndicator(String[] tokens) throws ParseException {
@@ -114,7 +120,7 @@ public class EditCommandParser implements Parser<EditCommand> {
     private static void appendWarning(StringBuilder warnings, Optional<String> warning) {
         warning.ifPresent(w -> {
             if (!warnings.isEmpty()) {
-                warnings.append("\n");
+                warnings.append(ParserUtil.SEPARATOR_NEW_LINE);
             }
             warnings.append(w);
         });
