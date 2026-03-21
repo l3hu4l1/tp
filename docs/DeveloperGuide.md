@@ -312,12 +312,12 @@ Step 2. The user executes the command `delete support@adafruit.com`. The command
 Step 3. The user presses the UP arrow key to navigate to the previous command. The `CommandHistory#getPrevious()` method is called with the current input (empty in this case). The command box is then updated with the previous command `delete support@adafruit.com`.
 
 The following sequence diagram shows how the `getPrevious` operation works as described:
-<puml src="diagrams/command-history/SequenceDiagram.puml" alt="CommandHistorySequenceDiagram" />
+<puml src="diagrams/command-history/SequenceDiagram.puml" alt="Command History Sequence Diagram" />
 
 <div style="height: 20px;"></div>
 
 The following activity diagram below summarizes how key presses are handled to navigate through the command history:
-<puml src="diagrams/command-history/ActivityDiagram.puml" alt="CommandHistoryActivityDiagram" />
+<puml src="diagrams/command-history/ActivityDiagram.puml" alt="Command History Activity Diagram" />
 
 #### Design Considerations
 
