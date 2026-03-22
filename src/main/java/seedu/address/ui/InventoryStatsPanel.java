@@ -73,16 +73,52 @@ public class InventoryStatsPanel {
     }
 
     private Region buildDonutCard(ObservableList<Product> products) {
+        StockStats stats = computeStats(products);
+
+        PieChart pie = createPieChart(stats);
+        StackPane donut = createDonut(pie, stats);
+        VBox legend = createLegend(stats);
+
+        HBox row = new HBox(12, donut, legend);
+        row.setAlignment(Pos.CENTER);
+
+        return card("Stock Status", row);
+    }
+
+    // =========================
+    // Data
+    // =========================
+
+    private StockStats computeStats(ObservableList<Product> products) {
         long total = products.size();
         long lowStock = products.stream()
                 .filter(p -> p.getQuantity().value <= p.getRestockThreshold().value)
                 .count();
         long inStock = total - lowStock;
 
-        PieChart.Data sliceIn = new PieChart.Data("In stock", Math.max(inStock, 0));
-        PieChart.Data sliceLow = new PieChart.Data("Low stock", Math.max(lowStock, 0));
+        return new StockStats(inStock, lowStock);
+    }
+
+    private static class StockStats {
+        final long inStock;
+        final long lowStock;
+
+        StockStats(long inStock, long lowStock) {
+            this.inStock = Math.max(inStock, 0);
+            this.lowStock = Math.max(lowStock, 0);
+        }
+    }
+
+    // =========================
+    // Pie Chart
+    // =========================
+
+    private PieChart createPieChart(StockStats stats) {
+        PieChart.Data sliceIn = new PieChart.Data("In stock", stats.inStock);
+        PieChart.Data sliceLow = new PieChart.Data("Low stock", stats.lowStock);
 
         PieChart pie = new PieChart(FXCollections.observableArrayList(sliceIn, sliceLow));
+
         pie.setLabelsVisible(false);
         pie.setLegendVisible(false);
         pie.setAnimated(false);
@@ -92,27 +128,41 @@ public class InventoryStatsPanel {
         pie.setMaxSize(PIE_SIZE, PIE_SIZE);
         pie.setMinSize(PIE_SIZE, PIE_SIZE);
 
+        stylePieChart(pie, sliceIn, sliceLow);
+
+        return pie;
+    }
+
+    private void stylePieChart(PieChart pie, PieChart.Data in, PieChart.Data low) {
         pie.setStyle(
                 "-fx-background-color: transparent;"
                 + "CHART_COLOR_1: " + COLOR_GREEN + ";"
                 + "CHART_COLOR_2: " + COLOR_RED + ";");
 
-        sliceIn.nodeProperty().addListener((obs, o, node) -> {
+        in.nodeProperty().addListener((obs, o, node) -> {
             if (node != null) {
                 node.setStyle("-fx-pie-color: " + COLOR_GREEN + ";");
             }
         });
-        sliceLow.nodeProperty().addListener((obs, o, node) -> {
+
+        low.nodeProperty().addListener((obs, o, node) -> {
             if (node != null) {
                 node.setStyle("-fx-pie-color: " + COLOR_RED + ";");
             }
         });
+    }
 
+    // =========================
+    // Donut (center UI)
+    // =========================
+
+    private StackPane createDonut(PieChart pie, StockStats stats) {
         Circle hole = new Circle(HOLE_RADIUS);
         hole.setFill(Color.web(COLOR_BG));
 
-        Label countLbl = new Label(String.valueOf(lowStock));
+        Label countLbl = new Label(String.valueOf(stats.lowStock));
         countLbl.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #ffffff;");
+
         Label subLbl = new Label("low stock");
         subLbl.setStyle("-fx-font-size: 11px; -fx-text-fill: " + COLOR_SUBTEXT + ";");
 
@@ -127,16 +177,26 @@ public class InventoryStatsPanel {
         clip.setArcHeight(PIE_SIZE);
         donutPane.setClip(clip);
 
-        HBox legendIn = legendDot(COLOR_GREEN, "In stock (" + inStock + ")");
-        HBox legendLow = legendDot(COLOR_RED, "Low stock (" + lowStock + ")");
+        return donutPane;
+    }
+
+    // =========================
+    // Legend
+    // =========================
+
+    private VBox createLegend(StockStats stats) {
+        HBox legendIn = legendDot(COLOR_GREEN, "In stock (" + stats.inStock + ")");
+        HBox legendLow = legendDot(COLOR_RED, "Low stock (" + stats.lowStock + ")");
+
         VBox legend = new VBox(6, legendIn, legendLow);
         legend.setAlignment(Pos.CENTER_LEFT);
 
-        HBox row = new HBox(12, donutPane, legend);
-        row.setAlignment(Pos.CENTER);
-
-        return card("Stock Status", row);
+        return legend;
     }
+
+    // =========================
+    // Misc UI
+    // =========================
 
     private Region buildEmptyCard() {
         return card("", new HBox());
@@ -146,14 +206,14 @@ public class InventoryStatsPanel {
         VBox card = new VBox(6);
         card.setPadding(new Insets(10));
         card.setStyle(
-            "-fx-background-color: " + COLOR_BG + ";"
-            + "-fx-background-radius: 8;");
+                "-fx-background-color: " + COLOR_BG + ";"
+                        + "-fx-background-radius: 8;");
 
         if (!title.isEmpty()) {
             Label titleLabel = new Label(title);
             titleLabel.setStyle(
                     "-fx-font-size: 13px; -fx-font-weight: bold;"
-                    + "-fx-text-fill: " + COLOR_SUBTEXT + ";");
+                            + "-fx-text-fill: " + COLOR_SUBTEXT + ";");
             card.getChildren().addAll(titleLabel, content);
         } else {
             card.getChildren().add(content);
@@ -167,8 +227,10 @@ public class InventoryStatsPanel {
     private HBox legendDot(String color, String text) {
         Circle dot = new Circle(5);
         dot.setFill(Color.web(color));
+
         Label lbl = new Label(text);
         lbl.setStyle("-fx-font-size: 12px; -fx-text-fill: " + COLOR_SUBTEXT + ";");
+
         HBox row = new HBox(5, dot, lbl);
         row.setAlignment(Pos.CENTER_LEFT);
         return row;
