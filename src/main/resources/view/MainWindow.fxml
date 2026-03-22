@@ -62,7 +62,8 @@
 
                 <HBox VBox.vgrow="ALWAYS">
 
-                    <VBox HBox.hgrow="ALWAYS">
+                    <VBox HBox.hgrow="ALWAYS"
+                          prefWidth="320">
 
                         <StackPane fx:id="commandBoxPlaceholder"
                                    styleClass="pane-with-border">

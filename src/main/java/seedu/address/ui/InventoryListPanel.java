@@ -10,11 +10,13 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import seedu.address.model.product.Product;
 
 /**
- * Displays the inventory list in the right panel.
+ * Displays the inventory list in the right panel,
+ * with an {@link InventoryStatsPanel} injected at the top.
  */
 public class InventoryListPanel extends UiPart<Region> {
 
@@ -39,11 +41,18 @@ public class InventoryListPanel extends UiPart<Region> {
     @FXML
     private ListView<Product> inventoryListView;
 
+    @FXML
+    private StackPane statsPlaceholder;
+
     /**
      * Creates an InventoryListPanel using real product data.
      */
     public InventoryListPanel(ObservableList<Product> productList) {
         super(FXML);
+
+        // Inject the stats panel into the top placeholder
+        InventoryStatsPanel statsPanel = new InventoryStatsPanel(productList);
+        statsPlaceholder.getChildren().setAll(statsPanel.getRoot());
 
         SortedList<Product> sortedInventory =
                 new SortedList<>(productList, this::compareInventoryItems);
@@ -54,8 +63,7 @@ public class InventoryListPanel extends UiPart<Region> {
     }
 
     /**
-     * Comparator used to sort inventory items.
-     * Low-stock items appear first, then sorted by quantity.
+     * Comparator: low-stock items bubble to the top, then sorted by quantity ascending.
      */
     private int compareInventoryItems(Product a, Product b) {
         int qtyA = a.getQuantity().value;
@@ -69,17 +77,14 @@ public class InventoryListPanel extends UiPart<Region> {
         if (lowA && !lowB) {
             return -1;
         }
-
         if (!lowA && lowB) {
             return 1;
         }
-
         return Integer.compare(qtyA, qtyB);
     }
 
-    /**
-     * Creates a custom cell for displaying inventory rows.
-     */
+    // ── List cell ─────────────────────────────────────────────────────────────
+
     private ListCell<Product> createInventoryCell() {
         return new ListCell<>() {
             @Override
@@ -106,7 +111,7 @@ public class InventoryListPanel extends UiPart<Region> {
                 nameLabel.setTextFill(Color.WHITE);
                 nameLabel.setWrapText(true);
                 nameLabel.setMinWidth(NAME_COLUMN_MIN_WIDTH);
-                nameLabel.setMaxWidth(600);
+                nameLabel.setMaxWidth(Double.MAX_VALUE);
                 HBox.setHgrow(nameLabel, Priority.ALWAYS);
 
                 Label qtyLabel = new Label(String.valueOf(qty));
@@ -135,13 +140,7 @@ public class InventoryListPanel extends UiPart<Region> {
         };
     }
 
-    /**
-     * Returns the correct style depending on stock level.
-     */
     private String getStockStyle(int qty, int threshold) {
-        if (qty <= threshold) {
-            return LOW_STOCK_STYLE;
-        }
-        return NORMAL_STOCK_STYLE;
+        return qty <= threshold ? LOW_STOCK_STYLE : NORMAL_STOCK_STYLE;
     }
 }
