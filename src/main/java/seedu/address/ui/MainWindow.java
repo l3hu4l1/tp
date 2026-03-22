@@ -204,7 +204,6 @@ public class MainWindow extends UiPart<Stage> {
         }
     }
 
-    // Handles the UI effects based on the command result,
     private void handleCommandResultEffects(CommandResult commandResult) {
 
         if (commandResult.isShowHelp()) {

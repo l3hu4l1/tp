@@ -177,14 +177,14 @@ public class Person {
         return false;
     }
 
-    private String[] splitAndCleanPhoneNumbers(String phoneString) {
+    private static String[] splitAndCleanPhoneNumbers(String phoneString) {
         return Arrays.stream(phoneString.split(COMMA_REGEX))
                 .map(String::trim)
                 .map(s -> s.replaceAll(VALIDATION_EXCLUDE_DIGITS_REGEX, ""))
                 .toArray(String[]::new);
     }
 
-    private boolean hasContiguousMatch(String str1, String str2) {
+    private static boolean hasContiguousMatch(String str1, String str2) {
         if (str1.length() < Phone.MIN_LENGTH || str2.length() < Phone.MIN_LENGTH) {
             return false;
         }
@@ -195,7 +195,7 @@ public class Person {
                 .stream().anyMatch(substringOfFirst::contains);
     }
 
-    private Set<String> generatePhoneSubstrings(String input) {
+    private static Set<String> generatePhoneSubstrings(String input) {
         Set<String> substrings = new HashSet<>();
         for (int i = START_INDEX; i <= input.length() - Phone.MIN_LENGTH; i++) {
             substrings.add(input.substring(i, i + Phone.MIN_LENGTH));

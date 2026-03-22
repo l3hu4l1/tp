@@ -9,7 +9,8 @@ import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.product.VendorEmailMatchesContactsPredicate;
 
 /**
- * Finds and lists all persons in address book whose name contains any of the argument keywords.
+ * Finds and lists all persons in address book whose name contains any of the argument keywords
+ * and updates product list to show products associated with the listed contacts.
  * Keyword matching is case insensitive.
  */
 public class FindCommand extends Command {
