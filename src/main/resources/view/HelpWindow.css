@@ -17,3 +17,18 @@
 #helpMessageContainer {
     -fx-background-color: derive(#1d1d1d, 20%);
 }
+
+.sectionHeaderLabel {
+    -fx-font-size: 13pt;
+    -fx-text-fill: white;
+    -fx-padding: 14 0 8 0;
+}
+
+.scroll-pane {
+    -fx-background-color: #282A36;
+    -fx-background: #282A36;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: #282A36;
+}

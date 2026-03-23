@@ -17,7 +17,9 @@ import seedu.address.commons.core.LogsCenter;
 public class HelpWindow extends UiPart<Stage> {
 
     public static final String USERGUIDE_URL = "https://ay2526s2-cs2103t-w08-2.github.io/tp/UserGuide.html";
-    public static final String HELP_MESSAGE = "Refer to the user guide: " + USERGUIDE_URL;
+    public static final String DISPLAY_CONTACT_COMMANDS = "Contact Commands";
+    public static final String DISPLAY_INVENTORY_COMMANDS = "Inventory Commands";
+    public static final String DISPLAY_GENERAL_COMMANDS = "General Commands";
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
     private static final String FXML = "HelpWindow.fxml";
@@ -71,15 +73,24 @@ public class HelpWindow extends UiPart<Stage> {
 
     public void populateCommandsToCommandListContainer() {
         commandListContainer.getChildren().addAll(
+                createSectionHeadingLabel(DISPLAY_CONTACT_COMMANDS),
                 new Label("Command 1"),
                 new Label("Command 2"),
                 new Label("Command 3"),
+                createSectionHeadingLabel(DISPLAY_INVENTORY_COMMANDS),
                 new Label("Command 4"),
                 new Label("Command 5"),
                 new Label("Command 6"),
                 new Label("Command 7"),
+                createSectionHeadingLabel(DISPLAY_GENERAL_COMMANDS),
                 new Label("Command 8")
         );
+    }
+
+    private Label createSectionHeadingLabel(String text) {
+        Label label = new Label(text);
+        label.getStyleClass().add("sectionHeaderLabel");
+        return label;
     }
 
     /**
