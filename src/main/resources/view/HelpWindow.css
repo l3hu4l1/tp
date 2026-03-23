@@ -22,7 +22,7 @@
     -fx-font-size: 13pt;
     -fx-font-family: "__VV_FONT_UI_SEMIBOLD__";
     -fx-text-fill: #E8A020;
-    -fx-padding: 14 0 8 0;
+    -fx-padding: 14 0 8 5;
 }
 
 .scroll-pane {
