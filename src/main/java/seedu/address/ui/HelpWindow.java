@@ -22,9 +22,18 @@ import seedu.address.commons.core.LogsCenter;
 public class HelpWindow extends UiPart<Stage> {
 
     public static final String USERGUIDE_URL = "https://ay2526s2-cs2103t-w08-2.github.io/tp/UserGuide.html";
+
     public static final String DISPLAY_CONTACT_COMMANDS = "Contact Commands";
     public static final String DISPLAY_INVENTORY_COMMANDS = "Inventory Commands";
     public static final String DISPLAY_GENERAL_COMMANDS = "General Commands";
+
+    private static final String LABEL_HEADER_CLASS = "label-help-header";
+    private static final String COMMAND_GROUP_CLASS = "command-group";
+    private static final String COMMAND_SEPARATOR_CLASS = "command-separator";
+    private static final String COMMAND_NAME_CLASS = "command-name";
+    private static final String COMMAND_EXAMPLE_CLASS = "command-example";
+    private static final String COMMAND_DESCRIPTION_CLASS = "command-desc";
+    private static final String COMMAND_ROW_CLASS = "command-row";
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
     private static final String FXML = "HelpWindow.fxml";
@@ -103,43 +112,48 @@ public class HelpWindow extends UiPart<Stage> {
 
     private Label createSectionHeadingLabel(String text) {
         Label label = new Label(text);
-        label.getStyleClass().add("label-help-header");
+        label.getStyleClass().add(LABEL_HEADER_CLASS);
         return label;
     }
 
     private VBox createCommandGroup(List<String[]> commands) {
         VBox group = new VBox(0);
-        group.getStyleClass().add("command-group");
+        group.getStyleClass().add(COMMAND_GROUP_CLASS);
 
         for (int i = 0; i < commands.size(); i++) {
             String[] cmd = commands.get(i);
             group.getChildren().add(createCommandBox(cmd[0], cmd[1], cmd[2]));
             if (i < commands.size() - 1) {
-                Region separator = new Region();
-                separator.getStyleClass().add("command-separator");
-                group.getChildren().add(separator);
+                group.getChildren().add(createSeparator());
             }
         }
 
         return group;
     }
 
+    private Region createSeparator() {
+        Region separator = new Region();
+        separator.getStyleClass().add(COMMAND_SEPARATOR_CLASS);
+        return separator;
+    }
+
     private HBox createCommandBox(String name, String commandEg, String description) {
         Label nameLabel = new Label(name);
-        nameLabel.getStyleClass().add("command-name");
+        nameLabel.getStyleClass().add(COMMAND_NAME_CLASS);
 
         Label commandEgLabel = new Label(commandEg);
-        commandEgLabel.getStyleClass().add("command-example");
+        commandEgLabel.getStyleClass().add(COMMAND_EXAMPLE_CLASS);
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         Label descriptionLabel = new Label(description);
-        descriptionLabel.getStyleClass().add("command-desc");
+        descriptionLabel.getStyleClass().add(COMMAND_DESCRIPTION_CLASS);
 
         HBox row = new HBox(10, nameLabel, commandEgLabel, spacer, descriptionLabel);
         row.setAlignment(Pos.CENTER_LEFT);
-        row.getStyleClass().add("command-row");
+        row.getStyleClass().add(COMMAND_ROW_CLASS);
+
         return row;
     }
 
