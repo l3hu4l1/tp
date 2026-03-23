@@ -24,8 +24,8 @@ public class HelpWindow extends UiPart<Stage> {
     @FXML
     private Button copyButton;
 
-    @FXML
-    private Label helpMessage;
+//    @FXML
+//    private Label helpMessage;
 
     /**
      * Creates a new HelpWindow.
@@ -34,7 +34,7 @@ public class HelpWindow extends UiPart<Stage> {
      */
     public HelpWindow(Stage root) {
         super(FXML, root);
-        helpMessage.setText(HELP_MESSAGE);
+//        helpMessage.setText(HELP_MESSAGE);
     }
 
     /**
