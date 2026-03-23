@@ -32,7 +32,7 @@ public class InventoryStatsPanel extends UiPart<Region> {
     private static final String COLOR_GREEN_HEX = "#4bac80";
     private static final String COLOR_RED_HEX = "#e55d5d";
 
-    // Stat card labels
+    // Stats card labels
     @FXML private Label contactValue;
     @FXML private Label contactTotal;
     @FXML private Label productValue;
@@ -70,12 +70,16 @@ public class InventoryStatsPanel extends UiPart<Region> {
 
     /** Set up the main donut PieChart colours. */
     private void initMainDonut() {
+        pieChart.setAnimated(false);
+        pieChart.setStartAngle(90);
+
         donutHole.setFill(COLOR_BG);
         dotIn.setFill(COLOR_GREEN);
         dotLow.setFill(COLOR_RED);
 
         PieChart.Data sliceIn = new PieChart.Data("In stock", 1);
         PieChart.Data sliceLow = new PieChart.Data("Low stock", 0);
+
         pieChart.setData(FXCollections.observableArrayList(sliceIn, sliceLow));
         pieChart.setStyle("-fx-background-color: transparent;"
                 + "CHART_COLOR_1: " + COLOR_GREEN_HEX + ";"
@@ -83,12 +87,13 @@ public class InventoryStatsPanel extends UiPart<Region> {
 
         sliceIn.nodeProperty().addListener((obs, o, node) -> {
             if (node != null) {
-                node.setStyle("-fx-pie-color: " + COLOR_GREEN_HEX + ";");
+                node.setStyle("-fx-pie-color: " + COLOR_GREEN_HEX + "; -fx-stroke: transparent;");
             }
         });
+
         sliceLow.nodeProperty().addListener((obs, o, node) -> {
             if (node != null) {
-                node.setStyle("-fx-pie-color: " + COLOR_RED_HEX + ";");
+                node.setStyle("-fx-pie-color: " + COLOR_RED_HEX + "; -fx-stroke: transparent;");
             }
         });
     }
@@ -134,6 +139,7 @@ public class InventoryStatsPanel extends UiPart<Region> {
                           ObservableList<Person> activePersons,
                           ObservableList<Person> allPersons,
                           ObservableList<Product> allProducts) {
+
         updateContacts(activePersons, allPersons);
         activePersons.addListener((ListChangeListener<Person>) c ->
                 updateContacts(activePersons, allPersons));
@@ -173,7 +179,8 @@ public class InventoryStatsPanel extends UiPart<Region> {
 
         ObservableList<PieChart.Data> data = pieChart.getData();
         if (data != null && data.size() == 2) {
-            data.get(0).setPieValue(Math.max(in, 0));
+
+            data.get(0).setPieValue(Math.max(in + 0.0001, 0));
             data.get(1).setPieValue(Math.max(low, 0));
         }
 

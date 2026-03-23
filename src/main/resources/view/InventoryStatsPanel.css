@@ -59,8 +59,21 @@
 
 /* ── Remove white stroke from ALL PieChart slices ────────────────────── */
 .chart-pie {
+    -fx-border-color: transparent;
     -fx-stroke: transparent;
     -fx-stroke-width: 0;
+}
+
+.chart-pie-label-line {
+    -fx-stroke: transparent;
+}
+
+.chart-legend-item-symbol {
+    -fx-background-color: transparent;
+}
+
+.chart-content {
+    -fx-background-color: transparent;
 }
 
 .chart-pie-label-line {

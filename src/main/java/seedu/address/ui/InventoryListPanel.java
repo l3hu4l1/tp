@@ -20,6 +20,7 @@ import seedu.address.model.product.Product;
 public class InventoryListPanel extends UiPart<Region> {
 
     private static final String FXML = "InventoryListPanel.fxml";
+    private static final int NAME_COLUMN_MAX_WIDTH = 600;
 
     private static final String LOW_STOCK_STYLE =
             "-fx-background-color: #e55d5d;"
@@ -118,7 +119,7 @@ public class InventoryListPanel extends UiPart<Region> {
                 nameLabel.setTextFill(Color.WHITE);
                 nameLabel.setWrapText(true);
                 nameLabel.setMinWidth(NAME_COLUMN_MIN_WIDTH);
-                nameLabel.setMaxWidth(600);
+                nameLabel.setMaxWidth(NAME_COLUMN_MAX_WIDTH);
                 HBox.setHgrow(nameLabel, Priority.ALWAYS);
 
                 Label qtyLabel = new Label(String.valueOf(qty));
