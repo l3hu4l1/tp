@@ -126,10 +126,10 @@ public class HelpWindow extends UiPart<Stage> {
 
     private HBox createCommandBox(String name, String commandEg, String description) {
         Label nameLabel = new Label(name);
-        nameLabel.getStyleClass().add("success");
+        nameLabel.getStyleClass().add("command-name");
 
         Label commandEgLabel = new Label(commandEg);
-        commandEgLabel.getStyleClass().add("warn");
+        commandEgLabel.getStyleClass().add("command-example");
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);

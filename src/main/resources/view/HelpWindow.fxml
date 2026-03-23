@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
@@ -31,7 +30,7 @@
         <HBox fx:id="helpTitleBar" alignment="CENTER_LEFT" spacing="0"
               style="-fx-padding: 14 18 14 18; -fx-border-color: #444; -fx-border-width: 0 0 1 0;">
           <Label text="VendorVault — Help" styleClass="label-header"
-                 style="-fx-font-size: 18pt;"/>
+                 style="-fx-font-size: 18pt; -fx-padding: 0 18 0 0"/>
           <Region HBox.hgrow="ALWAYS"/>
           <Button fx:id="copyButton" mnemonicParsing="false"
                   onAction="#copyUrl" text="Copy user guide URL"
