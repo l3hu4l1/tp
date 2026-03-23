@@ -76,6 +76,9 @@ public class HelpWindow extends UiPart<Stage> {
         getRoot().centerOnScreen();
     }
 
+    /**
+     * Populate the {@code commandListContainer} with all of VendorVault commands.
+     */
     public void populateCommandsToCommandListContainer() {
         commandListContainer.getChildren().addAll(
                 createSectionHeadingLabel(DISPLAY_CONTACT_COMMANDS),
@@ -125,7 +128,7 @@ public class HelpWindow extends UiPart<Stage> {
         Label nameLabel = new Label(name);
         nameLabel.getStyleClass().add("success");
 
-        Label commandEgLabel= new Label(commandEg);
+        Label commandEgLabel = new Label(commandEg);
         commandEgLabel.getStyleClass().add("warn");
 
         Region spacer = new Region();
