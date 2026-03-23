@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.address.commons.core.LogsCenter;
 
@@ -24,8 +25,8 @@ public class HelpWindow extends UiPart<Stage> {
     @FXML
     private Button copyButton;
 
-//    @FXML
-//    private Label helpMessage;
+    @FXML
+    private VBox commandListContainer;
 
     /**
      * Creates a new HelpWindow.
@@ -34,7 +35,7 @@ public class HelpWindow extends UiPart<Stage> {
      */
     public HelpWindow(Stage root) {
         super(FXML, root);
-//        helpMessage.setText(HELP_MESSAGE);
+        populateCommandsToCommandListContainer();
     }
 
     /**
@@ -66,6 +67,19 @@ public class HelpWindow extends UiPart<Stage> {
         logger.fine("Showing help page about the application.");
         getRoot().show();
         getRoot().centerOnScreen();
+    }
+
+    public void populateCommandsToCommandListContainer() {
+        commandListContainer.getChildren().addAll(
+                new Label("Command 1"),
+                new Label("Command 2"),
+                new Label("Command 3"),
+                new Label("Command 4"),
+                new Label("Command 5"),
+                new Label("Command 6"),
+                new Label("Command 7"),
+                new Label("Command 8")
+        );
     }
 
     /**
