@@ -11,7 +11,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.stage.Stage?>
 
-<fx:root resizable="true" title="Help - VendorVault"
+<fx:root resizable="true" title="Help"
+         minWidth="500"
          type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
   <icons>
     <Image url="@/images/vendor_vault.png"/>
@@ -29,7 +30,7 @@
 
         <HBox fx:id="helpTitleBar" alignment="CENTER_LEFT" spacing="0"
               style="-fx-padding: 14 18 14 18; -fx-border-color: #444; -fx-border-width: 0 0 1 0;">
-          <Label text="VendorVault — Help" styleClass="label-header"
+          <Label text="Command Summary" styleClass="label-header"
                  style="-fx-font-size: 18pt; -fx-padding: 0 18 0 0"/>
           <Region HBox.hgrow="ALWAYS"/>
           <Button fx:id="copyButton" mnemonicParsing="false"
