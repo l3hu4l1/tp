@@ -416,8 +416,8 @@ editproduct IDENTIFIER [id/NEW_IDENTIFIER] [n/NAME] [q/QUANTITY] [th/RESTOCK_THR
 
 Examples:
 
-* `editproduct SKU-1003 id/SKU-1002 n/Arduino Uno R4 q/50`
-* `editproduct SKU-1003 e/support@adafruit.com`
+* `editproduct SKU-288 id/SKU-299 n/HP LaserJet (M140w) q/35`
+* `editproduct DE/5 e/hello@synapse.sg`
 
 <panel header="How do I remove the vendor email from a product?" type="seamless">
 
@@ -452,8 +452,7 @@ archiveproduct IDENTIFIER
 
 Examples:
 
-* `archiveproduct SKU-1003`
-* `archiveproduct SKU-2048`
+* `archiveproduct DE/5`
 
 
 <box type="tip" seamless>
@@ -486,7 +485,7 @@ restoreproduct IDENTIFIER
 Examples:
 
 * `restoreproduct`: shows all archived products.
-* `restoreproduct SKU-1003`
+* `restoreproduct DE/5`
 
 <box type="tip" seamless>
 
@@ -509,7 +508,7 @@ deleteproduct PRODUCT_IDENTIFIER
 
 Examples:
 
-* `deleteproduct SKU-1003`
+* `deleteproduct DE/5`
 
 <div style="height: 30px;"></div>
 
@@ -623,16 +622,16 @@ exit
 
 ### Product Commands
 
-| Action              | Command                                                                                | Example                                                                     | What it does                                                         |
-|---------------------|----------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|----------------------------------------------------------------------|
-| **Add Product**     | `addproduct id/IDENTIFIER n/NAME [q/QUANTITY] [th/RESTOCK_THRESHOLD] [e/VENDOR_EMAIL]` | `addproduct id/SKU-1003 n/Arduino Uno R4 q/50 th/10 e/sales@techsource.com` | Adds a product                                                         |
-| **Edit Product**    | `editproduct IDENTIFIER [id/NEW_IDENTIFIER] [n/NAME] [q/QUANTITY] [th/RESTOCK_THRESHOLD] [e/VENDOR_EMAIL]` | `editproduct SKU-1003 n/Arduino Uno R4 q/50` | Edits a product's details  |
-| **Delete Product**  | `deleteproduct PRODUCT_IDENTIFIER`    | `deleteproduct SKU-1003`  | Deletes a product |
-| **List Products**   | `listproduct`                                                                          |                                                                             | Lists active products                                            |
-| **Find Products**    | `findproduct` _(coming soon)_                                                          |                                                                             |
-| **Archive Product** | `archiveproduct IDENTIFIER`                                                            | `archiveproduct SKU-1003`                                                   | Archives a product                               |
-| **Restore Product** | `restoreproduct [IDENTIFIER]`                                                          | `restoreproduct SKU-1003`                                                   | Restores an archived product; lists all archived if no identifier given |
-| **Clear Products**  | `clearproduct`                                                                         |                                                                             | Clears all products                                       |
+| Action              | Command                                                                                                    | Example                                                                     | What it does                                                            |
+|---------------------|------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| **Add Product**     | `addproduct id/IDENTIFIER n/NAME [q/QUANTITY] [th/RESTOCK_THRESHOLD] [e/VENDOR_EMAIL]`                     | `addproduct id/SKU-1003 n/Arduino Uno R4 q/50 th/10 e/sales@techsource.com` | Adds a product                                                          |
+| **Edit Product**    | `editproduct IDENTIFIER [id/NEW_IDENTIFIER] [n/NAME] [q/QUANTITY] [th/RESTOCK_THRESHOLD] [e/VENDOR_EMAIL]` | `editproduct SKU-1003 n/Arduino Mega q/35`                                  | Edits a product's details                                               |
+| **Delete Product**  | `deleteproduct PRODUCT_IDENTIFIER`                                                                         | `deleteproduct SKU-1003`                                                    | Deletes a product                                                       |
+| **List Products**   | `listproduct`                                                                                              |                                                                             | Lists active products                                                   |
+| **Find Products**   | `findproduct` _(coming soon)_                                                                              |                                                                             |
+| **Archive Product** | `archiveproduct IDENTIFIER`                                                                                | `archiveproduct SKU-1003`                                                   | Archives a product                                                      |
+| **Restore Product** | `restoreproduct [IDENTIFIER]`                                                                              | `restoreproduct SKU-1003`                                                   | Restores an archived product; lists all archived if no identifier given |
+| **Clear Products**  | `clearproduct`                                                                                             |                                                                             | Clears all products                                                     |
 
 <div style="height: 30px;"></div>
 
