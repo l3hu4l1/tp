@@ -102,7 +102,7 @@ If you get a permission error, make the file executable first: `chmod +x vendorv
 </tabs>
 
    VendorVault should start up. Note how the app contains some sample data.<br>
-   ![Ui](images/Ui.png)
+   ![Ui](images/Ui.png =1000x)
 <br><br>
 4. At the top left of the app, you should see a box where you can start typing commands. For more information, you can access the list of available commands with [`help`](#viewing-help-help).
 
