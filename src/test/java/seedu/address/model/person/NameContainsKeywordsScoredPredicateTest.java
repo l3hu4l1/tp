@@ -80,7 +80,7 @@ class NameContainsKeywordsScoredPredicateTest {
     }
 
     @Test
-    void createPersonComparator_ordersByRelevanceThenAlphabeticalThenEmail() {
+    void createPersonComparator_ordersByRelevanceThenAlphabetical() {
         NameContainsKeywordsScoredPredicate predicate =
                 new NameContainsKeywordsScoredPredicate(Collections.singletonList("ali"));
 
@@ -92,7 +92,7 @@ class NameContainsKeywordsScoredPredicateTest {
         List<Person> persons = new ArrayList<>(Arrays.asList(substring, prefix, exactAlpha, exactAlphaEmailTie));
         persons.sort(predicate.createPersonComparator());
 
-        assertEquals(Arrays.asList(exactAlphaEmailTie, exactAlpha, prefix, substring), persons);
+        assertEquals(Arrays.asList(exactAlpha, exactAlphaEmailTie, prefix, substring), persons);
     }
 
     @Test

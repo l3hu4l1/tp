@@ -6,7 +6,6 @@ import static seedu.address.model.person.FindRelevance.SCORE_COMPARATOR;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -66,9 +65,8 @@ public class NameContainsKeywordsScoredPredicate implements Predicate<Person> {
      */
     public Comparator<Person> createPersonComparator() {
         Map<Person, Score> scoreCache = new HashMap<>();
-        return Comparator
-                .comparing((Person person) -> scoreCache.computeIfAbsent(person, this::computeScore), SCORE_COMPARATOR)
-                .thenComparing(person -> person.getEmail().value.toLowerCase(Locale.ROOT));
+        return Comparator.comparing((Person person)
+                -> scoreCache.computeIfAbsent(person, this::computeScore), SCORE_COMPARATOR);
     }
 
     private Score toScore(String token, String keyword, String fullName) {
