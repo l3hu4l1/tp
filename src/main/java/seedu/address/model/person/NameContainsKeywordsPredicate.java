@@ -1,5 +1,7 @@
 package seedu.address.model.person;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -7,7 +9,7 @@ import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.util.ToStringBuilder;
 
 /**
- * Tests that a {@code Person}'s {@code Name} matches any of the keywords given.
+ * Tests that a {@code Person}'s {@code Name} matches any of the full-word keywords given.
  */
 public class NameContainsKeywordsPredicate implements Predicate<Person> {
     private final List<String> keywords;
@@ -15,8 +17,10 @@ public class NameContainsKeywordsPredicate implements Predicate<Person> {
     /**
      * Creates a predicate that matches any full-word keyword in a person's name.
      *
+     * @param keywords cannot be null
      */
     public NameContainsKeywordsPredicate(List<String> keywords) {
+        requireNonNull(keywords);
         this.keywords = List.copyOf(keywords);
     }
 
