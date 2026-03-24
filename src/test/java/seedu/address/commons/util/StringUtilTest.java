@@ -1,5 +1,6 @@
 package seedu.address.commons.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -9,6 +10,10 @@ import java.io.FileNotFoundException;
 import org.junit.jupiter.api.Test;
 
 public class StringUtilTest {
+    private static final String ERROR_SENTENCE_WORD_EMPTY = "Sentence word parameter cannot be empty";
+    private static final String ERROR_WORD_EMPTY = "Word parameter cannot be empty";
+    private static final String ERROR_SENTENCE_WORD_SINGLE = "Sentence word parameter should be a single word";
+    private static final String ERROR_WORD_SINGLE = "Word parameter should be a single word";
 
     //---------------- Tests for isValidInteger ------------------------------------------------
 
@@ -83,15 +88,66 @@ public class StringUtilTest {
         assertThrows(NullPointerException.class, () -> StringUtil.containsWordIgnoreCase("typical sentence", null));
     }
 
+    //---------------- Tests for getWordPartialMatchScoreIgnoreCase --------------------------
+
+    @Test
+    public void getWordPartialMatchScoreIgnoreCase_nullWord_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, ()
+                -> StringUtil.getWordPartialMatchScoreIgnoreCase("typical", null));
+    }
+
+    @Test
+    public void getWordPartialMatchScoreIgnoreCase_nullSentenceWord_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, ()
+                -> StringUtil.getWordPartialMatchScoreIgnoreCase(null, "typical"));
+    }
+
+    @Test
+    public void getWordPartialMatchScoreIgnoreCase_emptyWord_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, ERROR_WORD_EMPTY, ()
+                -> StringUtil.getWordPartialMatchScoreIgnoreCase("typical", "  "));
+    }
+
+    @Test
+    public void getWordPartialMatchScoreIgnoreCase_emptySentenceWord_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, ERROR_SENTENCE_WORD_EMPTY, ()
+                -> StringUtil.getWordPartialMatchScoreIgnoreCase("  ", "typical"));
+    }
+
+    @Test
+    public void getWordPartialMatchScoreIgnoreCase_multipleWords_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, ERROR_WORD_SINGLE, ()
+                -> StringUtil.getWordPartialMatchScoreIgnoreCase("typical", "two words"));
+    }
+
+    @Test
+    public void getWordPartialMatchScoreIgnoreCase_multipleSentenceWords_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+            ERROR_SENTENCE_WORD_SINGLE, () ->
+                        StringUtil.getWordPartialMatchScoreIgnoreCase("two words", "typical"));
+    }
+
+    @Test
+    public void getWordPartialMatchScoreIgnoreCase_validInputs_correctResult() {
+        assertEquals(StringUtil.WORD_MATCH_SCORE_EXACT,
+                StringUtil.getWordPartialMatchScoreIgnoreCase("Alice", "alice"));
+        assertEquals(StringUtil.WORD_MATCH_SCORE_PREFIX,
+                StringUtil.getWordPartialMatchScoreIgnoreCase("Alicia", "ali"));
+        assertEquals(StringUtil.WORD_MATCH_SCORE_SUBSTRING,
+                StringUtil.getWordPartialMatchScoreIgnoreCase("Malice", "ali"));
+        assertEquals(StringUtil.WORD_MATCH_SCORE_NO_MATCH,
+                StringUtil.getWordPartialMatchScoreIgnoreCase("Bob", "ali"));
+    }
+
     @Test
     public void containsWordIgnoreCase_emptyWord_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, "Word parameter cannot be empty", ()
+        assertThrows(IllegalArgumentException.class, ERROR_WORD_EMPTY, ()
             -> StringUtil.containsWordIgnoreCase("typical sentence", "  "));
     }
 
     @Test
     public void containsWordIgnoreCase_multipleWords_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, "Word parameter should be a single word", ()
+        assertThrows(IllegalArgumentException.class, ERROR_WORD_SINGLE, ()
             -> StringUtil.containsWordIgnoreCase("typical sentence", "aaa BBB"));
     }
 

@@ -6,11 +6,22 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
+import java.util.Locale;
 
 /**
  * Helper functions for handling strings.
  */
 public class StringUtil {
+
+    public static final int WORD_MATCH_SCORE_NO_MATCH = 0;
+    public static final int WORD_MATCH_SCORE_SUBSTRING = 1;
+    public static final int WORD_MATCH_SCORE_PREFIX = 2;
+    public static final int WORD_MATCH_SCORE_EXACT = 3;
+
+    private static final String ERROR_SENTENCE_WORD_EMPTY = "Sentence word parameter cannot be empty";
+    private static final String ERROR_WORD_EMPTY = "Word parameter cannot be empty";
+    private static final String ERROR_SENTENCE_WORD_SINGLE = "Sentence word parameter should be a single word";
+    private static final String ERROR_WORD_SINGLE = "Word parameter should be a single word";
 
     private static final int DP_OFFSET = 1;
     private static final int NO_MATCH = 0;
@@ -39,6 +50,43 @@ public class StringUtil {
 
         return Arrays.stream(wordsInPreppedSentence)
                 .anyMatch(preppedWord::equalsIgnoreCase);
+    }
+
+    /**
+     * Returns a token-level partial match score between {@code sentenceWord} and {@code word}, ignoring case.
+     * Score ordering is: exact (3) &gt; prefix (2) &gt; substring (1) &gt; no match (0).
+     *
+     * @param sentenceWord cannot be null, cannot be empty, must be a single word
+     * @param word cannot be null, cannot be empty, must be a single word
+     */
+    public static int getWordPartialMatchScoreIgnoreCase(String sentenceWord, String word) {
+        String preppedSentenceWord = normalizeAndValidateSingleWord(sentenceWord, ERROR_SENTENCE_WORD_EMPTY,
+                ERROR_SENTENCE_WORD_SINGLE);
+        String preppedWord = normalizeAndValidateSingleWord(word, ERROR_WORD_EMPTY, ERROR_WORD_SINGLE);
+
+        String sentenceWordLower = preppedSentenceWord.toLowerCase(Locale.ROOT);
+        String wordLower = preppedWord.toLowerCase(Locale.ROOT);
+
+        if (sentenceWordLower.equals(wordLower)) {
+            return WORD_MATCH_SCORE_EXACT;
+        }
+        if (sentenceWordLower.startsWith(wordLower)) {
+            return WORD_MATCH_SCORE_PREFIX;
+        }
+        if (sentenceWordLower.contains(wordLower)) {
+            return WORD_MATCH_SCORE_SUBSTRING;
+        }
+        return WORD_MATCH_SCORE_NO_MATCH;
+    }
+
+    private static String normalizeAndValidateSingleWord(String value, String emptyMessage, String singleWordMessage) {
+        requireNonNull(value);
+
+        String preppedValue = value.trim();
+        checkArgument(!preppedValue.isEmpty(), emptyMessage);
+        checkArgument(preppedValue.split("\\s+").length == 1, singleWordMessage);
+
+        return preppedValue;
     }
 
     /**
