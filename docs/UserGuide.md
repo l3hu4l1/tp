@@ -522,14 +522,29 @@ The same rules for email that apply to add also apply to edit. For more details 
 
 <div style="height: 30px;"></div>
 
-#### Locating products : `findproduct` _(coming soon)_
+#### Locating products : `findproduct`
+
+Finds products whose name matches the given keyword(s).
+
+Format:
+
+```
+findproduct KEYWORD [MORE_KEYWORDS]
+```
+
+Examples:
+* `findproduct camera`
 
 <box type="info" seamless>
 
 **Expected output:**<br>
 ![findprod](images/v1.4/findprod.png =600x)
 
-`findproduct` will allow you to search for products and view their **full details**, including the associated vendor email — without any text being cut off.
+</box>
+
+<box type="info" seamless>
+
+Matching is partial and case-insensitive. The order of the keywords does not matter.
 
 </box>
 
@@ -771,7 +786,7 @@ exit
 | **Edit Product**    | `editproduct IDENTIFIER [id/NEW_IDENTIFIER] [n/NAME] [q/QUANTITY] [th/RESTOCK_THRESHOLD] [e/VENDOR_EMAIL]` | `editproduct SKU-1003 n/Arduino Mega q/35`                                  | Edits a product's details                                               |
 | **Delete Product**  | `deleteproduct PRODUCT_IDENTIFIER`                                                                         | `deleteproduct SKU-1003`                                                    | Deletes a product                                                       |
 | **List Products**   | `listproduct`                                                                                              | &nbsp;                                                                      | Lists active products                                                   |
-| **Find Products**   | `findproduct` _(coming soon)_                                                                              | &nbsp;                                                                      | &nbsp;                                                                  |
+| **Find Products**   | `findproduct KEYWORD [MORE_KEYWORDS]`                                                                                             | `findproduct uno`                                                           | Lists products whose name matches `KEYWORD`                              |
 | **Archive Product** | `archiveproduct IDENTIFIER`                                                                                | `archiveproduct SKU-1003`                                                   | Archives a product                                                      |
 | **Restore Product** | `restoreproduct [IDENTIFIER]`                                                                              | `restoreproduct SKU-1003`                                                   | Restores an archived product; lists all archived if no identifier given |
 | **Clear Products**  | `clearproduct`                                                                                             | &nbsp;                                                                      | Clears all products                                                     |
