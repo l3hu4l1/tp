@@ -1,7 +1,7 @@
 package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.model.person.FindRelevance.SCORE_COMPARATOR;
+import static seedu.address.model.search.FindRelevance.SCORE_COMPARATOR;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -11,8 +11,8 @@ import java.util.function.Predicate;
 
 import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.util.ToStringBuilder;
-import seedu.address.model.person.FindRelevance.MatchTier;
-import seedu.address.model.person.FindRelevance.Score;
+import seedu.address.model.search.FindRelevance.MatchTier;
+import seedu.address.model.search.FindRelevance.Score;
 
 /**
  * Tests that a {@code Person}'s {@code Name} matches any keyword using token-level partial matching.
