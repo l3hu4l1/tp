@@ -12,6 +12,9 @@ import java.util.Arrays;
  */
 public class StringUtil {
 
+    private static final int DP_OFFSET = 1;
+    private static final int NO_MATCH = 0;
+
     /**
      * Returns true if the {@code sentence} contains the {@code word}.
      *   Ignores case, but a full word match is required.
@@ -93,28 +96,23 @@ public class StringUtil {
         String normalizedA = a.toLowerCase();
         String normalizedB = b.toLowerCase();
 
-        int lengthA = normalizedA.length();
-        int lengthB = normalizedB.length();
-
         // Two rows is enough because each cell depends only on the row above,
-        // keeping memory proportional to input length rather than input area.
-        int[] previousRow = new int[lengthB + 1];
-        int[] currentRow = new int[lengthB + 1];
+        int[] previousRow = new int[normalizedB.length() + DP_OFFSET];
+        int[] currentRow = new int[normalizedB.length() + DP_OFFSET];
 
-        int longestMatch = 0;
+        int longestMatch = NO_MATCH;
 
-        for (int i = 1; i <= lengthA; i++) {
-            for (int j = 1; j <= lengthB; j++) {
-                boolean charsMatch = normalizedA.charAt(i - 1) == normalizedB.charAt(j - 1);
-                currentRow[j] = charsMatch ? previousRow[j - 1] + 1 : 0;
+        for (int i = DP_OFFSET; i <= normalizedA.length(); i++) {
+            for (int j = DP_OFFSET; j <= normalizedB.length(); j++) {
+                boolean charsMatch = normalizedA.charAt(i - DP_OFFSET) == normalizedB.charAt(j - DP_OFFSET);
+                currentRow[j] = charsMatch ? previousRow[j - DP_OFFSET] + DP_OFFSET : NO_MATCH;
                 longestMatch = Math.max(longestMatch, currentRow[j]);
             }
 
-            // Reuse the older row's array for the next iteration rather than allocating a new one
             int[] temp = previousRow;
             previousRow = currentRow;
             currentRow = temp;
-            Arrays.fill(currentRow, 0);
+            Arrays.fill(currentRow, NO_MATCH);
         }
 
         return longestMatch;
