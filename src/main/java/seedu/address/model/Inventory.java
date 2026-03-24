@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 import javafx.collections.ObservableList;
+import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.product.Product;
 import seedu.address.model.product.UniqueProductList;
-import seedu.address.model.util.SimilarityScoringUtil;
 
 /**
  * Wraps all data at the inventory level
@@ -124,7 +124,7 @@ public class Inventory implements ReadOnlyInventory {
         return products.asUnmodifiableObservableList().stream()
                 .filter(p -> !p.equals(exclude))
                 .filter(candidate::isSimilarNameTo)
-                .max(Comparator.comparingInt(p -> SimilarityScoringUtil.longestContiguousMatch(
+                .max(Comparator.comparingInt(p -> StringUtil.longestContiguousMatch(
                         candidate.getName().fullName, p.getName().fullName)));
     }
 

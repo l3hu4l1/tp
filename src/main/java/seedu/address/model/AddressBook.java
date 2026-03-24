@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 import javafx.collections.ObservableList;
+import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.UniquePersonList;
-import seedu.address.model.util.SimilarityScoringUtil;
 
 /**
  * Wraps all data at the address-book level
@@ -127,7 +127,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         return persons.asUnmodifiableObservableList().stream()
                 .filter(p -> !p.equals(exclude))
                 .filter(candidate::isSimilarNameTo)
-                .max(Comparator.comparingInt(p -> SimilarityScoringUtil.longestContiguousMatch(
+                .max(Comparator.comparingInt(p -> StringUtil.longestContiguousMatch(
                         candidate.getName().fullName, p.getName().fullName)));
     }
 
@@ -136,7 +136,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         return persons.asUnmodifiableObservableList().stream()
                 .filter(p -> !p.equals(exclude))
                 .filter(candidate::isSimilarPhoneTo)
-                .max(Comparator.comparingInt(p -> SimilarityScoringUtil.longestContiguousMatch(
+                .max(Comparator.comparingInt(p -> StringUtil.longestContiguousMatch(
                         candidate.getPhone().value, p.getPhone().value)));
     }
 
@@ -145,7 +145,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         return persons.asUnmodifiableObservableList().stream()
                 .filter(p -> !p.equals(exclude))
                 .filter(candidate::isSimilarAddressTo)
-                .max(Comparator.comparingInt(p -> SimilarityScoringUtil.longestContiguousMatch(
+                .max(Comparator.comparingInt(p -> StringUtil.longestContiguousMatch(
                         candidate.getAddress().value, p.getAddress().value)));
     }
 
