@@ -53,9 +53,13 @@ public class NameContainsKeywordsPredicateTest {
         predicate = new NameContainsKeywordsPredicate(Arrays.asList("Alice", "Bob"));
         assertTrue(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
 
-        // Only one matching keyword (substring)
+        // Only one matching keyword (exact)
         predicate = new NameContainsKeywordsPredicate(Arrays.asList("Bob", "Carol"));
         assertTrue(predicate.test(new PersonBuilder().withName("Alice Carol").build()));
+
+        // One partial keyword (substring)
+        predicate = new NameContainsKeywordsPredicate(Collections.singletonList("ali"));
+        assertTrue(predicate.test(new PersonBuilder().withName("Talice").build()));
 
         // Mixed-case keywords
         predicate = new NameContainsKeywordsPredicate(Arrays.asList("aLI", "bOB"));
