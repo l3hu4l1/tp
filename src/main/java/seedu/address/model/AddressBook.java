@@ -2,8 +2,11 @@ package seedu.address.model;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.util.ToStringBuilder;
@@ -125,7 +128,8 @@ public class AddressBook implements ReadOnlyAddressBook {
         return persons.asUnmodifiableObservableList().stream()
                 .filter(p -> !p.equals(exclude))
                 .filter(candidate::isSimilarNameTo)
-                .findFirst();
+                .max(Comparator.comparingInt(p -> countCommonCharsMultiset(
+                        candidate.getName().fullName, p.getName().fullName)));
     }
 
     @Override
@@ -133,7 +137,8 @@ public class AddressBook implements ReadOnlyAddressBook {
         return persons.asUnmodifiableObservableList().stream()
                 .filter(p -> !p.equals(exclude))
                 .filter(candidate::isSimilarPhoneTo)
-                .findFirst();
+                .max(Comparator.comparingInt(p -> countCommonCharsMultiset(
+                        candidate.getPhone().value, p.getPhone().value)));
     }
 
     @Override
@@ -141,7 +146,31 @@ public class AddressBook implements ReadOnlyAddressBook {
         return persons.asUnmodifiableObservableList().stream()
                 .filter(p -> !p.equals(exclude))
                 .filter(candidate::isSimilarAddressTo)
-                .findFirst();
+                .max(Comparator.comparingInt(p -> countCommonCharsMultiset(
+                        candidate.getAddress().value, p.getAddress().value)));
+    }
+
+    /**
+     * Count the number of common characters between two strings, treating them as multisets (i.e. counting duplicates).
+     */
+    private int countCommonCharsMultiset(String a, String b) {
+        Map<Character, Long> freqB = b.toLowerCase()
+                .chars()
+                .mapToObj(c -> (char) c)
+                .collect(Collectors.groupingBy(c -> c, Collectors.counting()));
+
+        return (int) a.toLowerCase()
+                .chars()
+                .mapToObj(c -> (char) c)
+                .filter(c -> {
+                    long count = freqB.getOrDefault(c, 0L);
+                    if (count > 0) {
+                        freqB.put(c, count - 1);
+                        return true;
+                    }
+                    return false;
+                })
+                .count();
     }
 
     //// util methods
