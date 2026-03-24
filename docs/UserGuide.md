@@ -102,7 +102,7 @@ If you get a permission error, make the file executable first: `chmod +x vendorv
 </tabs>
 
    VendorVault should start up. Note how the app contains some sample data.<br>
-   ![Ui](images/Ui.png)
+   ![Ui](images/Ui.png =1000x)
 <br><br>
 4. At the top left of the app, you should see a box where you can start typing commands. For more information, you can access the list of available commands with [`help`](#viewing-help-help).
 
@@ -112,9 +112,9 @@ Some example commands you can try:
 
 * `delete sales@techsource.com` : Deletes `TechSource Electronics`.
 
-* `addproduct id/SKU-1003 n/Arduino Uno R4 q/50 th/10 e/sales@techsource.com`: Adds a product `Arduino Uno`.
+* `addproduct id/SKU-1003 n/Arduino Uno R4 q/50 th/10 e/sales@techsource.com`: Adds a product `Arduino Uno R4`.
 
-* `deleteproduct SKU-1003`: Deletes `Arduino Uno`.
+* `deleteproduct SKU-1003`: Deletes `Arduino Uno R4`.
 
 5\. Refer to the [Features](#features) below for details of each command, or [Command Summary](#command-summary) for a quick summary of all commands.
 
@@ -183,7 +183,15 @@ add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​
 Examples:
 
 * `add n/Adafruit Industries p/64601234 e/support@adafruit.com a/151 Varick St, New York, NY 10013, USA`
-* `add n/Cytron Technologies Pte. Ltd. p/65480668 (Office), 91234567 (Sales) e/sg.sales@cytron.io a/09 Collyer Quay t/electronics t/technology`
+* `add n/Cytron Technologies Pte. Ltd. p/65480668 (Office), 91234567 (Sales) e/sg.sales@cytron.io a/09 Collyer Quay 
+t/electronics t/wholesale`
+
+<box type="info" seamless>
+
+**Expected output:**<br>
+![add](images/v1.4/add.png =600x)
+
+</box>
 
 <box type="tip" seamless>
 
@@ -225,6 +233,13 @@ Format:
 ```
 list
 ```
+
+<box type="info" seamless>
+
+**Expected output:**<br>
+![list](images/v1.4/list.png =600x)
+
+</box>
 
 <div style="height: 30px;"></div>
 
@@ -269,9 +284,29 @@ The same rules for multiple phone numbers and duplicates that apply to `add` als
 
 <div style="height: 30px;"></div>
 
-#### Locating contacts: `find` (coming soon)
+#### Locating contacts: `find`
 
-**This feature is currently in progress** and will be available in a future release. `find` will allow you to view a contact details in **full**.
+Finds contacts whose name matches the given keyword(s).
+
+Format:
+
+```
+find KEYWORD [MORE_KEYWORDS]
+```
+
+Examples:
+* `find syn`
+
+<box type="info" seamless>
+
+**Expected output:**<br>
+![find](images/v1.4/find.png =600x)
+
+</box>
+
+<box type="info" seamless>
+
+Matching is partial and case-insensitive. The order of the keywords does not matter.
 
 </box>
 
@@ -330,6 +365,13 @@ Examples:
 * `restore`: shows all archived contacts.
 * `restore sg.sales@cytron.io`
 
+<box type="info" seamless>
+
+**Expected output:**<br>
+![restore](images/v1.4/restore%20cytron.png =600x)
+
+</box>
+
 <box type="tip" seamless>
 
 If `EMAIL` is omitted or invalid, all archived contacts will be displayed, so you can find what you want to restore.
@@ -358,6 +400,9 @@ Examples:
 **Expected output:** Once confirmed, the contact is permanently removed from the list.
 
 </box>
+
+For more details on possible warnings and errors, refer to the [troubleshooting guide](#troubleshooting-delete-contact) 
+below.
 
 <div style="height: 30px;"></div>
 
@@ -397,6 +442,13 @@ Examples:
 
 <box type="info" seamless>
 
+**Expected output:**<br>
+![addprod](images/v1.4/addprod.png =600x)
+
+</box>
+
+<box type="info" seamless>
+
 If quantity and/or threshold is omitted, it will default to 0.
 If vendor email is omitted, product will not be associated with a vendor.
 
@@ -427,6 +479,13 @@ Format:
 listproduct
 ```
 
+<box type="info" seamless>
+
+**Expected output:**<br>
+![listprod](images/v1.4/listprod.png =600x)
+
+</box>
+
 <box type="tip" seamless>
 
 Long names may be truncated in the list view. Use [`findproduct`](#locating-products-findproduct-coming-soon) to view a product's full details.
@@ -446,8 +505,8 @@ editproduct IDENTIFIER [id/NEW_IDENTIFIER] [n/NAME] [q/QUANTITY] [th/RESTOCK_THR
 
 Examples:
 
-* `editproduct SKU-1003 id/SKU-1002 n/Arduino Uno R4 q/50`
-* `editproduct SKU-1003 e/support@adafruit.com`
+* `editproduct SKU-288 id/SKU-299 n/HP LaserJet (M140w) q/35`
+* `editproduct DE/5 e/hello@synapse.sg`
 
 <box type="info" seamless>
 
@@ -466,13 +525,29 @@ The same rules for email that apply to add also apply to edit. For more details 
 
 <div style="height: 30px;"></div>
 
-#### Locating products : `findproduct` _(coming soon)_
+#### Locating products : `findproduct`
+
+Finds products whose name matches the given keyword(s).
+
+Format:
+
+```
+findproduct KEYWORD [MORE_KEYWORDS]
+```
+
+Examples:
+* `findproduct camera`
 
 <box type="info" seamless>
 
-**This feature is currently in progress** and will be available in a future release.
+**Expected output:**<br>
+![findprod](images/v1.4/findprod.png =600x)
 
-`findproduct` will allow you to search for products and view their **full details**, including the associated vendor email — without any text being cut off.
+</box>
+
+<box type="info" seamless>
+
+Matching is partial and case-insensitive. The order of the keywords does not matter.
 
 </box>
 
@@ -490,8 +565,7 @@ archiveproduct IDENTIFIER
 
 Examples:
 
-* `archiveproduct SKU-1003`
-* `archiveproduct SKU-2048`
+* `archiveproduct DE/5`
 
 <box type="info" seamless>
 
@@ -529,7 +603,7 @@ restoreproduct IDENTIFIER
 Examples:
 
 * `restoreproduct`: shows all archived products.
-* `restoreproduct SKU-1003`
+* `restoreproduct DE/5`
 
 <box type="info" seamless>
 
@@ -558,13 +632,16 @@ deleteproduct PRODUCT_IDENTIFIER
 
 Examples:
 
-* `deleteproduct SKU-1003`
+* `deleteproduct DE/5`
 
 <box type="info" seamless>
 
 **Expected output:** Once confirmed, the product is permanently removed from the list.
 
 </box>
+
+For more details on possible warnings and errors, refer to the [troubleshooting guide](#troubleshooting-deleteproduct) 
+below.
 
 <div style="height: 30px;"></div>
 
@@ -591,7 +668,7 @@ clearproduct
 
 #### Viewing help : `help`
 
-Shows a message (tbd) explaining how to access the help page.
+Opens a window with summary of commands.
 
 Format:
 ```
@@ -612,6 +689,13 @@ alias ORIGINAL_COMMAND ALIAS
 Example:
 * `alias` list all current aliases.
 * `alias list ls` maps `ls` as an alias for the `list` command.
+
+<box type="info" seamless>
+
+**Expected output:**<br>
+![alias](images/v1.4/alias.png =600x)
+
+</box>
 
 <div style="height: 30px;"></div>
 
@@ -637,6 +721,17 @@ Format:
 redo
 ```
 
+<box type="info" seamless>
+
+**Expected output:**<br>
+![undo](images/v1.4/undo.png =500x)
+
+<br>
+
+![redo](images/v1.4/redo.png =500x)
+
+</box>
+
 <div style="height: 30px;"></div>
 
 #### Listing all contacts and products : `listall`
@@ -647,6 +742,13 @@ Format:
 ```
 listall
 ```
+
+<box type="info" seamless>
+
+**Expected output:**<br>
+![listall](images/v1.4/listall.png =600x)
+
+</box>
 
 <div style="height: 30px;"></div>
 
@@ -669,16 +771,16 @@ exit
 
 ### Contact Commands
 
-| Action                | Command                                                                 | Example                                                                                                    | What it does                                                           |
-|-----------------------|-------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-| **Add Contact**       | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`                 | `add n/TechSource Electronics p/61234567 e/sales@techsource.com a/15 Kallang Way, Singapore t/electronics` | Adds a contact                                                         |
-| **Edit Contact**      | `edit EMAIL [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`  | `edit sales@techsource.com n/TechSource p/61234568`                                                        | Edits a contact's details                                              |
-| **Delete Contact**    | `delete EMAIL`                                                          | `delete sales@techsource.com`                                                                              | Deletes a contact                                                      |
-| **List Contacts**     | `list`                                                                  | &nbsp;                                                                                                     | Lists active contacts                                                  |
-| **Find Contacts**     | `find KEYWORD [MORE_KEYWORDS]`                                          | `find TechSource`                                                                                          | Lists all contacts matching `KEYWORD`                                  |
-| **Archive Contact**   | `archive EMAIL`                                                         | `archive sales@techsource.com`                                                                             | Archives a contact                                                     |
-| **Restore Contact**   | `restore [EMAIL]`                                                       | `restore sales@techsource.com`                                                                             | Restores an archived contact; lists all archived if no email given     |
-| **Clear Contacts**    | `clear`                                                                 | &nbsp;                                                                                                     | Clears all contacts                                                    |
+| Action                | Command                                                                 | Example                                                                                                    | What it does                                                       |
+|-----------------------|-------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
+| **Add Contact**       | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`                 | `add n/TechSource Electronics p/61234567 e/sales@techsource.com a/15 Kallang Way, Singapore t/electronics` | Adds a contact                                                     |
+| **Edit Contact**      | `edit EMAIL [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`  | `edit sales@techsource.com n/TechSource p/61234568`                                                        | Edits a contact's details                                          |
+| **Delete Contact**    | `delete EMAIL`                                                          | `delete sales@techsource.com`                                                                              | Deletes a contact                                                  |
+| **List Contacts**     | `list`                                                                  | &nbsp;                                                                                                     | Lists active contacts                                              |
+| **Find Contacts**     | `find KEYWORD [MORE_KEYWORDS]`                                          | `find TechSource`                                                                                          | Lists contacts whose name matches `KEYWORD`                        |
+| **Archive Contact**   | `archive EMAIL`                                                         | `archive sales@techsource.com`                                                                             | Archives a contact                                                 |
+| **Restore Contact**   | `restore [EMAIL]`                                                       | `restore sales@techsource.com`                                                                             | Restores an archived contact; lists all archived if no email given |
+| **Clear Contacts**    | `clear`                                                                 | &nbsp;                                                                                                     | Clears all contacts                                                |
 
 <div style="height: 30px;"></div>
 
@@ -687,10 +789,10 @@ exit
 | Action              | Command                                                                                                    | Example                                                                     | What it does                                                            |
 |---------------------|------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|-------------------------------------------------------------------------|
 | **Add Product**     | `addproduct id/IDENTIFIER n/NAME [q/QUANTITY] [th/RESTOCK_THRESHOLD] [e/VENDOR_EMAIL]`                     | `addproduct id/SKU-1003 n/Arduino Uno R4 q/50 th/10 e/sales@techsource.com` | Adds a product                                                          |
-| **Edit Product**    | `editproduct IDENTIFIER [id/NEW_IDENTIFIER] [n/NAME] [q/QUANTITY] [th/RESTOCK_THRESHOLD] [e/VENDOR_EMAIL]` | `editproduct SKU-1003 n/Arduino Uno R4 q/50`                                | Edits a product's details                                               |
+| **Edit Product**    | `editproduct IDENTIFIER [id/NEW_IDENTIFIER] [n/NAME] [q/QUANTITY] [th/RESTOCK_THRESHOLD] [e/VENDOR_EMAIL]` | `editproduct SKU-1003 n/Arduino Mega q/35`                                  | Edits a product's details                                               |
 | **Delete Product**  | `deleteproduct PRODUCT_IDENTIFIER`                                                                         | `deleteproduct SKU-1003`                                                    | Deletes a product                                                       |
 | **List Products**   | `listproduct`                                                                                              | &nbsp;                                                                      | Lists active products                                                   |
-| **Find Products**   | `findproduct` _(coming soon)_                                                                              | &nbsp;                                                                      | &nbsp;                                                                  |
+| **Find Products**   | `findproduct KEYWORD [MORE_KEYWORDS]`                                                                                             | `findproduct uno`                                                           | Lists products whose name matches `KEYWORD`                              |
 | **Archive Product** | `archiveproduct IDENTIFIER`                                                                                | `archiveproduct SKU-1003`                                                   | Archives a product                                                      |
 | **Restore Product** | `restoreproduct [IDENTIFIER]`                                                                              | `restoreproduct SKU-1003`                                                   | Restores an archived product; lists all archived if no identifier given |
 | **Clear Products**  | `clearproduct`                                                                                             | &nbsp;                                                                      | Clears all products                                                     |
@@ -713,28 +815,6 @@ exit
 <br>
 
 ## FAQ
-
-<panel header="I edited the data file directly and now VendorVault is not working. What should I do?" type="seamless">
-
-If you edited the data file and it caused VendorVault to behave unexpectedly, you can try the following steps:
-
-1. Restore from backup: If you made a backup of the data file before editing, you can restore the original data file by replacing the edited data files in the data folder with the backup.
-2. Start with a new data file: If you do not have a backup, you can delete the existing data file (or move it to a different location for safekeeping) and start VendorVault again. This will create a new, empty data file.
-
-</panel>
-
-<panel header="How do I transfer my data to another computer?" type="seamless">
-
-Follow these steps:
-
-* Install VendorVault on the new computer (see [Quick Start](#quick-start)).
-* On the old computer, open the folder where VendorVault's `.jar` file is located.
-* Look for the `data` folder and copy it to an external/cloud storage.
-* When you launch VendorVault on the new computer, a new `data` folder is created. Replace it with the old
-  computer's folder.
-* Relaunch VendorVault and you should see your data appear exactly as before.
-
-</panel>
 
 <panel header="How do I back up my data?" id="faq-backup-data" type="seamless">
 
@@ -809,6 +889,25 @@ This is the json for aliases:
 ```
 
 </panel>
+
+</panel>
+
+<panel header="I edited the data file directly and now VendorVault is not working. What should I do?" type="seamless">
+
+If you edited the data file and it caused VendorVault to behave unexpectedly, you can try the following steps:
+
+1. Restore from backup: If you made a backup of the data file before editing, you can restore the original data file by replacing the edited data files in the data folder with the backup.
+2. Start with a new data file: If you do not have a backup, you can delete the existing data file (or move it to a different location for safekeeping) and start VendorVault again. This will create a new, empty data file.
+
+</panel>
+
+<panel header="How do I transfer my data to another computer?" type="seamless">
+
+1. [Install VendorVault](#quick-start) on the new computer.
+2. On the old computer, open the folder where VendorVault's `.jar` file is located.
+3. Look for the `data` folder and copy it to an external/cloud storage.
+4. When you launch VendorVault on the new computer, a new `data` folder is created. Replace it with the old computer's version.
+5. Relaunch VendorVault and you should see your data appear exactly as before.
 
 </panel>
 
