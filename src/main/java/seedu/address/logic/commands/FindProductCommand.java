@@ -4,8 +4,8 @@ import static java.util.Objects.requireNonNull;
 
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
-import seedu.address.model.product.ProductNameContainsKeywordsPredicate;
 import seedu.address.model.person.VendorEmailMatchesProductsPredicate;
+import seedu.address.model.product.ProductNameContainsKeywordsScoredPredicate;
 
 /**
  * Finds and lists all products in inventory whose name contains any of the argument keywords.
@@ -23,11 +23,12 @@ public class FindProductCommand extends Command {
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD + " motherboard ssd";
 
-    private final ProductNameContainsKeywordsPredicate predicate;
     public static final String MESSAGE_DISPLAY_CONTACTS = " Contact(s) associated with these products listed on "
             + "the left!";
 
-    public FindProductCommand(ProductNameContainsKeywordsPredicate predicate) {
+    private final ProductNameContainsKeywordsScoredPredicate predicate;
+
+    public FindProductCommand(ProductNameContainsKeywordsScoredPredicate predicate) {
         this.predicate = predicate;
     }
 
