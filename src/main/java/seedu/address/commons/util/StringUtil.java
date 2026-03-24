@@ -82,36 +82,42 @@ public class StringUtil {
     }
 
     /**
-     * Returns the length of the longest contiguous substring common to both strings a and b.
+     * Returns the length of the longest contiguous substring common to both strings,
+     * ignoring case differences.
      *
-     * @param a the first string to compare.
-     * @param b the second string to compare.
-     * @return the length of the longest contiguous substring common to both strings.
+     * @param a The first string to compare.
+     * @param b The second string to compare.
+     * @return The length of the longest common contiguous substring.
      */
     public static int longestContiguousMatch(String a, String b) {
-        String aLower = a.toLowerCase();
-        String bLower = b.toLowerCase();
+        String normalizedA = a.toLowerCase();
+        String normalizedB = b.toLowerCase();
 
-        int[] prev = new int[bLower.length() + 1];
-        int[] curr = new int[bLower.length() + 1];
-        int best = 0;
+        int lengthA = normalizedA.length();
+        int lengthB = normalizedB.length();
 
-        for (int i = 1; i <= aLower.length(); i++) {
-            for (int j = 1; j <= bLower.length(); j++) {
-                if (aLower.charAt(i - 1) == bLower.charAt(j - 1)) {
-                    curr[j] = prev[j - 1] + 1;
-                    best = Math.max(best, curr[j]);
-                } else {
-                    curr[j] = 0;
-                }
+        // Two rows is enough because each cell depends only on the row above,
+        // keeping memory proportional to input length rather than input area.
+        int[] previousRow = new int[lengthB + 1];
+        int[] currentRow = new int[lengthB + 1];
+
+        int longestMatch = 0;
+
+        for (int i = 1; i <= lengthA; i++) {
+            for (int j = 1; j <= lengthB; j++) {
+                boolean charsMatch = normalizedA.charAt(i - 1) == normalizedB.charAt(j - 1);
+                currentRow[j] = charsMatch ? previousRow[j - 1] + 1 : 0;
+                longestMatch = Math.max(longestMatch, currentRow[j]);
             }
-            // Swap and clear for next iteration
-            int[] temp = prev;
-            prev = curr;
-            curr = temp;
-            Arrays.fill(curr, 0);
+
+            // Reuse the older row's array for the next iteration rather than allocating a new one
+            int[] temp = previousRow;
+            previousRow = currentRow;
+            currentRow = temp;
+            Arrays.fill(currentRow, 0);
         }
 
-        return best;
+        return longestMatch;
     }
+
 }
