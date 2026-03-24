@@ -1,5 +1,6 @@
 package seedu.address.commons.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -81,6 +82,57 @@ public class StringUtilTest {
     @Test
     public void containsWordIgnoreCase_nullWord_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> StringUtil.containsWordIgnoreCase("typical sentence", null));
+    }
+
+    //---------------- Tests for getWordPartialMatchScoreIgnoreCase --------------------------
+
+    @Test
+    public void getWordPartialMatchScoreIgnoreCase_nullWord_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, ()
+                -> StringUtil.getWordPartialMatchScoreIgnoreCase("typical", null));
+    }
+
+    @Test
+    public void getWordPartialMatchScoreIgnoreCase_nullSentenceWord_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, ()
+                -> StringUtil.getWordPartialMatchScoreIgnoreCase(null, "typical"));
+    }
+
+    @Test
+    public void getWordPartialMatchScoreIgnoreCase_emptyWord_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, "Word parameter cannot be empty", ()
+                -> StringUtil.getWordPartialMatchScoreIgnoreCase("typical", "  "));
+    }
+
+    @Test
+    public void getWordPartialMatchScoreIgnoreCase_emptySentenceWord_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, "Sentence word parameter cannot be empty", ()
+                -> StringUtil.getWordPartialMatchScoreIgnoreCase("  ", "typical"));
+    }
+
+    @Test
+    public void getWordPartialMatchScoreIgnoreCase_multipleWords_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, "Word parameter should be a single word", ()
+                -> StringUtil.getWordPartialMatchScoreIgnoreCase("typical", "two words"));
+    }
+
+    @Test
+    public void getWordPartialMatchScoreIgnoreCase_multipleSentenceWords_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                "Sentence word parameter should be a single word", () ->
+                        StringUtil.getWordPartialMatchScoreIgnoreCase("two words", "typical"));
+    }
+
+    @Test
+    public void getWordPartialMatchScoreIgnoreCase_validInputs_correctResult() {
+        assertEquals(StringUtil.WORD_MATCH_SCORE_EXACT,
+                StringUtil.getWordPartialMatchScoreIgnoreCase("Alice", "alice"));
+        assertEquals(StringUtil.WORD_MATCH_SCORE_PREFIX,
+                StringUtil.getWordPartialMatchScoreIgnoreCase("Alicia", "ali"));
+        assertEquals(StringUtil.WORD_MATCH_SCORE_SUBSTRING,
+                StringUtil.getWordPartialMatchScoreIgnoreCase("Malice", "ali"));
+        assertEquals(StringUtil.WORD_MATCH_SCORE_NO_MATCH,
+                StringUtil.getWordPartialMatchScoreIgnoreCase("Bob", "ali"));
     }
 
     @Test
