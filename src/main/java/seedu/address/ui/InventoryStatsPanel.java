@@ -21,9 +21,9 @@ import seedu.address.model.product.Product;
  * A UI component that displays inventory-related statistics.
  *
  * This panel contains:
- * - Two stat cards showing active contacts and active products</li>
- * - Mini donut charts for visualising proportions</li>
- * - A main donut chart showing stock status (in stock vs low stock)</li>
+ * - Two stat cards showing active contacts and active products
+ * - Mini donut charts for visualising proportions
+ * - A main donut chart showing stock status (in stock vs low stock)
  *
  * The layout is defined in {@code InventoryStatsPanel.fxml}
  * and styling is handled in {@code InventoryStatsPanel.css}.

@@ -92,7 +92,7 @@ public class InventoryListPanel extends UiPart<Region> {
         headerSpacer = new Region();
         headerSpacer.setMinWidth(0);
 
-        headerVendorEmail = makeHeaderLabel("EMAIL");
+        headerVendorEmail = makeHeaderLabel("VENDOR");
         headerVendorEmail.setMinWidth(EMAIL_MIN);
 
         headerQty = makeHeaderLabel("QUANTITY");
@@ -267,7 +267,6 @@ public class InventoryListPanel extends UiPart<Region> {
             label.setWrapText(true);
             label.setPrefWidth(PRODUCT_MIN_FILTERED);
             label.setMaxWidth(PRODUCT_MIN_FILTERED);
-            label.setMaxWidth(PRODUCT_MIN * 2);
             HBox.setHgrow(label, Priority.NEVER);
         } else {
             label.setWrapText(false);
