@@ -481,12 +481,14 @@ public class ModelManagerTest {
 
     @Test
     public void constructor_filtersArchivedProducts() {
-        ModelManager model = new ModelManager(new VendorVault(), new UserPrefs(), new Aliases());
+        Inventory inventory = new Inventory();
+        Product active = new ProductBuilder().withIdentifier("SKU-ACTIVE").build();
+        Product archived = new ProductBuilder().withIdentifier("SKU-ARCHIVED").build().archive();
+        inventory.addProduct(active);
+        inventory.addProduct(archived);
 
-        Product product = new ProductBuilder().build();
-        model.addProduct(product);
-
-        assertEquals(1, model.getFilteredProductList().size());
+        ModelManager model = new ModelManager(new VendorVault(new AddressBook(), inventory),
+        assertEquals(active, model.getFilteredProductList().get(0));
     }
 
     @Test
