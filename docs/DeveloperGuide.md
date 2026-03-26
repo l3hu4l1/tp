@@ -532,6 +532,10 @@ This diagram shows the structure and dependency of Better Search classes:
 <puml src="diagrams/BetterSearchClass.puml" width="500"/>
 
 #### Usage Scenario
+This diagram shows how Better Search fits in the execution pipeline:
+
+<puml src="diagrams/BetterSearchSequence.puml" width="2000"/>
+
 **Step 1.** User executes `find adafruit`.
 
 **Step 2.** `LogicManager` calls `AddressBookParser#parseCommand`.
