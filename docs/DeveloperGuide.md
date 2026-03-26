@@ -552,7 +552,31 @@ This diagram shows the structure and dependency of Better Search classes:
 
 <div style="height: 10px;"></div>
 
----
+**Aspect: Matching strategy**
+
+* **Option 1 (current choice):** Partial matching 
+  * Pros: Tolerant of incomplete keywords, hence more user-friendly.
+  * Cons: Broader set of results.
+
+* **Option 2:** Exact matching
+  * Pros: Simpler design; Stricter set of results.
+  * Cons: Low usability as users have to remember exact words.
+
+Option 1 was chosen to ensure discoverability and improve user experience.
+
+**Aspect: Ranking strategy**
+TODO
+
+**Aspect: Ranking implementation**
+* **Option 1 (current choice):** Shared contract between contact and product entity.
+  * Pros: Consistent behavior across commands; Reusable implementation.
+  * Cons: Careful abstraction required.
+
+* **Option 2:** Independent logic per entity.
+  * Pros: Each entity can customise the logic. 
+  * Cons: Duplicated logic; Higher risk of behavior drift.
+
+Option 1 was chosen for consistency and maintainability.
 
 <div style="height: 10px;"></div>
 
