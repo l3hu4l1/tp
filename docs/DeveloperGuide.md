@@ -512,6 +512,21 @@ To be added.
 To be added.
 
 #### Implementation
+This feature upgrades contact and product search to use partial matching and return results ranked by relevance. It 
+is implemented through a match predicate and shared ranking contract:
+
+1. `NameContainsKeywordsScoredPredicate` tests if a contact's name matches any keyword using partial matching. The name is split and processed as tokens.
+   * `toScore(String token, String keyword, String fullName)` checks each keyword against each token in the name to determine a score.
+   * `computeScore(Person person)` returns the best score among all keyword-token pairs using `SCORE_COMPARATOR`.
+   * `createPersonComparator()` returns a comparator that ranks contacts by their score.
+
+2. The same applies for `ProductNameContainsKeywordsScoredPredicate`.
+
+3. `FindRelevance` defines the ranking contract.
+   * Keyword-token matches are tiered: `EXACT_TOKEN` > `PREFIX_TOKEN` > `SUBSTRING_TOKEN` > `NO_MATCH`. 
+   * `Score(MatchTier tier, int unmatchedChars, String sortKey)` represents how relevant a match is.
+   * `SCORE_COMPARATOR` implements score comparison.
+
 #### Usage Scenario
 #### Design Considerations
 
