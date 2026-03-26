@@ -532,6 +532,22 @@ This diagram shows the structure and dependency of Better Search classes:
 <puml src="diagrams/BetterSearchClass.puml" width="500"/>
 
 #### Usage Scenario
+**Step 1.** User executes `find adafruit`.
+
+**Step 2.** `LogicManager` calls `AddressBookParser#parseCommand`.
+
+**Step 3.** `AddressBookParser#parseCommand` creates a `FindCommandParser` that calls `parse("adafruit")`.
+
+**Step 4.** `FindCommandParser#parse` creates a `FindCommand` with a `NameContainsKeywordsScoredPredicate`.
+
+**Step 5.** `LogicManager` calls `FindCommand#execute` on a `ModelManager`.
+
+**Step 6.** `FindCommand` executes and calls `ModelManager#updateFilteredPersonList`.
+
+**Step 7.** `FindCommand` then creates a `VendorEmailMatchesContactsPredicate` and calls `ModelManager#updateFilteredProductList`.
+
+**Step 8.** The updates trigger `UI` to refresh both contact and product display.
+
 #### Design Considerations
 
 <div style="height: 10px;"></div>
