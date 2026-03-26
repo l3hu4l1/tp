@@ -509,8 +509,6 @@ To be added.
 <div style="height: 10px;"></div>
 
 ### Better Search Feature
-To be added.
-
 #### Implementation
 This feature upgrades contact and product search to use partial matching and return results ranked by relevance. It 
 is implemented through a match predicate and shared ranking contract:
