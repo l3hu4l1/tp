@@ -562,7 +562,7 @@ The following sequence diagram shows how the user input `ls` is resolved through
 
 **Aspect: Where alias resolution happens**
 
-* **Alternative 1 (current choice)**: Resolves aliases in `AddressBookParser` before dispatching.
+* **Alternative 1 (current choice)**: Resolves aliases in `AddressBookParser` before parsing it to the correct command.
   * Pros: Centralised, as all commands automatically benefit from aliasing without any per-command changes
   * Cons: The parser needs access to the `Model`
 
