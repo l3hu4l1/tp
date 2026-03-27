@@ -467,26 +467,26 @@ These are applied by default so that archived records are hidden from the main d
 
 **Aspect: Representation of archived vendors (`Person`)**
 
-* **Option 1 (current choice):** Use a special `"archived"` tag in the existing `Tag` set.
+* **Alternative 1 (current choice):** Use a special `"archived"` tag in the existing `Tag` set.
     * Pros: No schema change; archived status is persisted through the existing JSON tag serialisation without any additional storage field.
     * Cons: The archived flag is semantically different from user-defined tags; mixing them can be confusing and requires care when displaying or editing tags.
 
-* **Option 2:** Add a dedicated `boolean isArchived` field to `Person` (same approach used by `Product`).
+* **Alternative 2:** Add a dedicated `boolean isArchived` field to `Person` (same approach used by `Product`).
     * Pros: Cleaner semantics; no risk of the user accidentally adding/removing the reserved tag.
     * Cons: Requires a storage migration and changes to `JsonAdaptedPerson`.
 
-Option 1 was chosen for `Person` to minimise changes to the existing architecture. A future refactor may unify both approaches.
+Alternative 1 was chosen for `Person` to minimise changes to the existing architecture. A future refactor may unify both approaches.
 
 **Aspect: Representation of archived products (`Product`)**
 
-* **Option 1 (current choice):** Dedicated `boolean isArchived` field.
+* **Alternative 1 (current choice):** Dedicated `boolean isArchived` field.
     * Pros: Clean separation; the field is explicit in the constructor and persisted via `JsonAdaptedProduct`.
     * Cons: Slightly more verbose constructors.
 
-* **Option 2:** Reuse a tag (same approach as `Person`).
+* **Alternative 2:** Reuse a tag (same approach as `Person`).
     * Cons: Products do not otherwise use tags, so this would be inconsistent.
 
-Option 1 was chosen as `Product` has no pre-existing tag mechanism to reuse.
+Alternative 1 was chosen as `Product` has no pre-existing tag mechanism to reuse.
 
 <div style="height: 10px;"></div>
 
@@ -561,9 +561,11 @@ The following sequence diagram shows how the user input `ls` is resolved through
 #### Design Considerations
 
 **Aspect: Where alias resolution happens**
+
 * **Alternative 1 (current choice)**: Resolves aliases in `AddressBookParser` before dispatching.
   * Pros: Centralised, as all commands automatically benefit from aliasing without any per-command changes
   * Cons: The parser needs access to the `Model`
+
 * **Alternative 2**: Resolve aliases in `LogicManager` before passing the input to the parser.
   * Pros: Keeps parser free of `Model` dependencies.
   * Cons: Require `LogicManager` to be aware of alias resolution logic, making the code more complex.
@@ -571,9 +573,11 @@ The following sequence diagram shows how the user input `ls` is resolved through
 Alternative 1 is preferred as it keeps all parsing logic in one place.
 
 **Aspect: Persistence strategy**
+
 * **Alternative 1 (current choice)**: Store aliases in a separate `aliases.json` file via `AliasStorage`.
   * Pros: Clean separation from contact and product data. Easy to back up or reset independently
   * Cons: Adds another file the user must manage when transferring data.
+
 * **Alternative 2**: Embed alias data inside `addressbook.json`.
   * Pros: Use the same code to embed data as contacts.
   * Cons: Couples unrelated data, making the file harder to read and maintain.
@@ -644,29 +648,30 @@ The usage scenario for `findproduct` is analogous.
 
 **Aspect: Matching strategy**
 
-* **Option 1 (current choice):** Partial matching 
+* **Alternative 1 (current choice):** Partial matching
   * Pros: Tolerant of incomplete keywords, hence more user-friendly.
   * Cons: Broader set of results.
 
-* **Option 2:** Exact matching
+* **Alternative 2:** Exact matching
   * Pros: Simpler design; Stricter set of results.
   * Cons: Low usability as users have to remember exact words.
 
-Option 1 was chosen to ensure discoverability and improve user experience.
+Alternative 1 was chosen to ensure discoverability and improve user experience.
 
 **Aspect: Ranking strategy**
 TODO
 
 **Aspect: Ranking implementation**
-* **Option 1 (current choice):** Shared contract between contact and product entity.
+
+* **Alternative 1 (current choice):** Shared contract between contact and product entity.
   * Pros: Consistent behavior across commands; Reusable implementation.
   * Cons: Careful abstraction required.
 
-* **Option 2:** Independent logic per entity.
+* **Alternative 2:** Independent logic per entity.
   * Pros: Each entity can customise the logic. 
   * Cons: Duplicated logic; Higher risk of behavior drift.
 
-Option 1 was chosen for consistency and maintainability.
+Alternative 1 was chosen for consistency and maintainability.
 
 <div style="height: 10px;"></div>
 
