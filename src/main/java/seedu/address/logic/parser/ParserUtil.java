@@ -290,7 +290,7 @@ public class ParserUtil {
             String warningMessage
     ) throws ParseException {
         // error validation is optional
-        requireAllNonNull(value, blankException, warningValidator, warningMessage);
+        requireAllNonNull(value, blankException, errorValidator, errorException, warningValidator, warningMessage);
 
         if (value.isBlank()) {
             throw blankException.get();
@@ -302,11 +302,8 @@ public class ParserUtil {
             }
         }
 
-        if (errorValidator != null) {
-            requireNonNull(errorException);
-            if (!errorValidator.validate(value)) {
-                throw errorException.get();
-            }
+        if (!errorValidator.validate(value)) {
+            throw errorException.get();
         }
 
         if (!warningValidator.validate(value)) {
