@@ -142,6 +142,7 @@ public class LogicManagerTest {
 
         assertEquals(deleteCommand, logic.getPrevCommandHistory(""));
         assertEquals(addCommand, logic.getPrevCommandHistory(""));
+        assertEquals(deleteCommand, logic.getNextCommandHistory(""));
     }
 
     /**
