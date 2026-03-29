@@ -20,7 +20,6 @@ public class Messages {
             + "prefix(es) is allowed, ";
     public static final String MESSAGE_MISSING_FIELD_FORMAT = "%s (%s)";
     public static final String MESSAGE_ALL_PREFIXES_MISSING = "All required prefixes are missing, ";
-    public static final String MESSAGE_INVALID_PERSON_DISPLAYED_INDEX = "The contact index provided is invalid";
     public static final String MESSAGE_INVALID_PERSON_DISPLAYED_EMAIL = "No contact with"
             + " the specified email was found.";
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d contacts listed!";
@@ -30,11 +29,11 @@ public class Messages {
     public static final String MESSAGE_DUPLICATE_PERSON = "This vendor contact already exists "
             + "with the same email. ";
     public static final String MESSAGE_DUPLICATE_PRODUCT = "This product already exists "
-            + "with the same product identifier. ";
+            + "with the same identifier. ";
     public static final String MESSAGE_DUPLICATE_ALIAS = "This alias already exists "
             + "with the same alias name. ";
     public static final String MESSAGE_ORIGINAL_COMMAND_DOES_NOT_EXISTS = "The original command (%s) does not exists.\n"
-                    + "For the list of commands visit the User Guide.";
+            + "For the list of commands visit the User Guide.";
     public static final String MESSAGE_ALIAS_CANNOT_BE_EMPTY = "The alias should not be empty";
     public static final String MESSAGE_ALIAS_CONTAINS_SPACE = "The alias should not contain any spaces.";
     public static final String MESSAGE_ALIAS_FORMATTED_WRONGLY =
