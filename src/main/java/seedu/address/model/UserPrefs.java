@@ -13,10 +13,13 @@ import seedu.address.commons.core.GuiSettings;
  */
 public class UserPrefs implements ReadOnlyUserPrefs {
 
+    public static final int DEFAULT_RESTOCK_THRESHOLD_VALUE = 0;
+
     private GuiSettings guiSettings = new GuiSettings();
     private Path addressBookFilePath = Paths.get("data" , "addressbook.json");
     private Path productsFilePath = Paths.get("data", "inventory.json");
     private Path aliasFilePath = Paths.get("data", "alias.json");
+    private int defaultRestockThresholdValue = DEFAULT_RESTOCK_THRESHOLD_VALUE;
 
     /**
      * Creates a {@code UserPrefs} with default values.
@@ -40,6 +43,7 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         setAddressBookFilePath(newUserPrefs.getAddressBookFilePath());
         setProductsFilePath(newUserPrefs.getProductsFilePath());
         setAliasFilePath(newUserPrefs.getAliasFilePath());
+        setDefaultRestockThresholdValue(newUserPrefs.getDefaultRestockThresholdValue());
     }
 
     public GuiSettings getGuiSettings() {
@@ -78,6 +82,17 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         this.aliasFilePath = aliasFilePath;
     }
 
+    public int getDefaultRestockThresholdValue() {
+        return defaultRestockThresholdValue;
+    }
+
+    public void setDefaultRestockThresholdValue(int defaultRestockThresholdValue) {
+        if (defaultRestockThresholdValue < 0) {
+            throw new IllegalArgumentException("Default restock threshold must be non-negative.");
+        }
+        this.defaultRestockThresholdValue = defaultRestockThresholdValue;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -93,12 +108,14 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         return guiSettings.equals(otherUserPrefs.guiSettings)
                 && addressBookFilePath.equals(otherUserPrefs.addressBookFilePath)
                 && productsFilePath.equals(otherUserPrefs.productsFilePath)
-                && aliasFilePath.equals(otherUserPrefs.aliasFilePath);
+                && aliasFilePath.equals(otherUserPrefs.aliasFilePath)
+                && defaultRestockThresholdValue == otherUserPrefs.defaultRestockThresholdValue;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(guiSettings, addressBookFilePath);
+        return Objects.hash(guiSettings, addressBookFilePath, productsFilePath, aliasFilePath,
+                defaultRestockThresholdValue);
     }
 
     @Override
@@ -108,6 +125,7 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         sb.append("\nLocal data file location : " + addressBookFilePath);
         sb.append("\nProducts file location: " + productsFilePath);
         sb.append("\nAlias file location: " + aliasFilePath);
+        sb.append("\nDefault restock threshold: " + defaultRestockThresholdValue);
         return sb.toString();
     }
 

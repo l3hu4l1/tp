@@ -16,4 +16,6 @@ public interface ReadOnlyUserPrefs {
     Path getProductsFilePath();
 
     Path getAliasFilePath();
+
+    int getDefaultRestockThresholdValue();
 }

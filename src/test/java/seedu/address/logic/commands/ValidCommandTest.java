@@ -25,6 +25,7 @@ public class ValidCommandTest {
         assertEquals(RedoCommand.COMMAND_WORD, ValidCommand.REDO.commandWord);
         assertEquals(RestoreCommand.COMMAND_WORD, ValidCommand.RESTORE.commandWord);
         assertEquals(RestoreProductCommand.COMMAND_WORD, ValidCommand.RESTOREPRODUCT.commandWord);
+        assertEquals(SetThresholdCommand.COMMAND_WORD, ValidCommand.SETTHRESHOLD.commandWord);
         assertEquals(UndoCommand.COMMAND_WORD, ValidCommand.UNDO.commandWord);
     }
 
