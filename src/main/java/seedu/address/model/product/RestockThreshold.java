@@ -4,25 +4,29 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Product's restock threshold in the inventory.
- * Guarantees: immutable; is valid as declared in {@link #isValidRestockThreshold(String)}
+ * Represents a {@code Product}'s restock threshold.
+ * Guarantees: immutable; is valid as declared in {@link #isValidRestockThreshold(String)}.
  */
 public class RestockThreshold {
 
-    public static final String MESSAGE_CONSTRAINTS =
-            "Restock threshold should be a non-negative valid integer.";
+    public static final String MESSAGE_CONSTRAINTS = "Restock threshold should be a non-negative valid integer.";
 
     public final int value;
 
     /**
-     * Constructs a {@code RestockThreshold}.
-     *
-     * @param restockThreshold A valid restockThreshold.
+     * Constructs a {@code RestockThreshold} from string-represented value.
      */
     public RestockThreshold(String restockThreshold) {
         requireNonNull(restockThreshold);
         checkArgument(isValidRestockThreshold(restockThreshold), MESSAGE_CONSTRAINTS);
         value = Integer.parseInt(restockThreshold);
+    }
+
+    /**
+     * Constructs a {@code RestockThreshold} from integer value.
+     */
+    public RestockThreshold(int restockThreshold) {
+        value = restockThreshold;
     }
 
     /**
