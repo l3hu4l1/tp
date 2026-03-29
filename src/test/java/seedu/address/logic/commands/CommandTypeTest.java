@@ -25,6 +25,7 @@ public class CommandTypeTest {
         assertEquals(RedoCommand.COMMAND_WORD, CommandType.REDO.getCommandWord());
         assertEquals(RestoreCommand.COMMAND_WORD, CommandType.RESTORE.getCommandWord());
         assertEquals(RestoreProductCommand.COMMAND_WORD, CommandType.RESTOREPRODUCT.getCommandWord());
+        assertEquals(SetThresholdCommand.COMMAND_WORD, CommandType.SETTHRESHOLD.getCommandWord());
         assertEquals(UndoCommand.COMMAND_WORD, CommandType.UNDO.getCommandWord());
     }
 
