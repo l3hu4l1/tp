@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +27,7 @@ public class SetThresholdCommandTest {
 
     @Test
     public void getPendingConfirmation_returnsObject() {
-        SetThresholdCommand command = new SetThresholdCommand(new RestockThreshold("3"));
+        SetThresholdCommand command = new SetThresholdCommand(new RestockThreshold("7"));
         PendingConfirmation pendingConfirmation = command.getPendingConfirmation();
 
         assertNotNull(pendingConfirmation);
@@ -37,12 +38,27 @@ public class SetThresholdCommandTest {
     public void equals() {
         SetThresholdCommand firstCommand = new SetThresholdCommand(new RestockThreshold("3"));
         SetThresholdCommand secondCommand = new SetThresholdCommand(new RestockThreshold("3"));
-        SetThresholdCommand thirdCommand = new SetThresholdCommand(new RestockThreshold("4"));
+        SetThresholdCommand thirdCommand = new SetThresholdCommand(new RestockThreshold("9"));
 
         assertEquals(firstCommand, firstCommand);
         assertEquals(firstCommand, secondCommand);
         assertNotEquals(firstCommand, thirdCommand);
         assertNotEquals(firstCommand, null);
         assertNotEquals(firstCommand, 1);
+    }
+
+    @Test
+    public void getThreshold_returnsConfiguredThreshold() {
+        RestockThreshold threshold = new RestockThreshold("7");
+        SetThresholdCommand command = new SetThresholdCommand(threshold);
+
+        assertEquals(threshold, command.getThreshold());
+    }
+
+    @Test
+    public void toString_containsThresholdField() {
+        SetThresholdCommand command = new SetThresholdCommand(new RestockThreshold("7"));
+
+        assertTrue(command.toString().contains("threshold=7"));
     }
 }
