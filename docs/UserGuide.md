@@ -743,7 +743,7 @@ threshold DEFAULT_THRESHOLD
 
 Examples:
 
-* `threshold 10`
+* `threshold 5`
 
 <box type="info" seamless>
 
@@ -855,7 +855,7 @@ exit
 |---------------------------------------|----------------------------------------|----------------------------------------|-----------------------------------------------------------------|
 | **Alias**                             | `alias [ORIGINAL_COMMAND] [ALIAS]`     | `alias list ls`                        | Adds a new alias; lists all aliases if no arguments given       |
 | **Delete Alias**                      | `deletealias [ALIAS]`                  | `deletealias ls`                       | Deletes an existing alias                                       |
-| **Change Default Threshold**          | `threshold DEFAULT_THRESHOLD`          | `threshold 10`                         | Changes the default restock threshold used when adding products |
+| **Change Default Threshold**          | `threshold DEFAULT_THRESHOLD`          | `threshold 5`                          | Changes the default restock threshold used when adding products |
 | **Undo**                              | `undo`                                 | &nbsp;                                 | Undoes previous change                                          |
 | **Redo**                              | `redo`                                 | &nbsp;                                 | Redoes last undone change                                       |
 | **List All**                          | `listall`                              | &nbsp;                                 | Lists all active contacts and products                          |
