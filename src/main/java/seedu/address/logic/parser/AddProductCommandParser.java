@@ -4,6 +4,7 @@ import static seedu.address.logic.Messages.MESSAGE_ALL_PREFIXES_MISSING;
 import static seedu.address.logic.Messages.MESSAGE_MISSING_FIELD_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_MISSING_PREFIX;
 import static seedu.address.logic.Messages.MESSAGE_NON_PREFIX_BEFORE_PREFIX;
+import static seedu.address.logic.commands.AddProductCommand.MESSAGE_USAGE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_IDENTIFIER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
@@ -30,7 +31,7 @@ import seedu.address.model.product.Quantity;
 import seedu.address.model.product.RestockThreshold;
 
 /**
- * Parses input arguments and creates a new AddProductCommand object.
+ * This class parses input arguments and creates a new {@code AddProductCommand} object.
  */
 public class AddProductCommandParser implements Parser<AddProductCommand> {
 
@@ -53,38 +54,42 @@ public class AddProductCommandParser implements Parser<AddProductCommand> {
 
     /**
      * Parses the given {@code String} of arguments in the context of AddProductCommand.
-     * and returns an AddProductCommand object for execution.
      *
+     * @return {@code AddProductCommand} object for execution.
      * @throws ParseException if the user input does not conform to the expected format
      */
     public AddProductCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(
+        ArgumentMultimap map = ArgumentTokenizer.tokenize(
                 args, PREFIX_IDENTIFIER, PREFIX_NAME, PREFIX_QUANTITY, PREFIX_THRESHOLD, PREFIX_EMAIL);
-
-        requireAddProductPrefixes(argMultimap);
-        argMultimap.verifyNoDuplicatePrefixesFor(
+        requireOnlyAddProductPrefixes(map);
+        // From here on, map is guaranteed to contain all required prefixes.
+        map.verifyNoDuplicatePrefixesFor(
                 PREFIX_IDENTIFIER, PREFIX_NAME, PREFIX_QUANTITY, PREFIX_THRESHOLD, PREFIX_EMAIL);
 
         StringBuilder warnings = new StringBuilder();
-        ParseResult<Identifier> identifierResult = ParserUtil
-                .parseIdentifier(argMultimap.getValue(PREFIX_IDENTIFIER).get());
-        ParseResult<Name> nameResult = ParserUtil
-                .parseProductName(argMultimap.getValue(PREFIX_NAME).get());
 
+        ParseResult<Identifier> identifierResult = ParserUtil.parseIdentifier(
+                map.getValue(PREFIX_IDENTIFIER).get());
+        Identifier identifier = identifierResult.getValue();
         appendWarning(warnings, identifierResult.getWarning());
+
+        ParseResult<Name> nameResult = ParserUtil.parseProductName(map.getValue(PREFIX_NAME).get());
+        Name name = nameResult.getValue();
         appendWarning(warnings, nameResult.getWarning());
 
         Quantity quantity;
-        if (argMultimap.getValue(PREFIX_QUANTITY).isPresent()) {
-            quantity = ParserUtil.parseQuantity(argMultimap.getValue(PREFIX_QUANTITY).get()).getValue();
+        Optional<String> quantityString = map.getValue(PREFIX_QUANTITY);
+        if (quantityString.isPresent()) {
+            quantity = ParserUtil.parseQuantity(quantityString.get()).getValue();
         } else {
             quantity = new Quantity(DEFAULT_QUANTITY);
             appendWarning(warnings, Optional.of(MESSAGE_QUANTITY_DEFAULTED));
         }
 
         RestockThreshold threshold;
-        if (argMultimap.getValue(PREFIX_THRESHOLD).isPresent()) {
-            threshold = ParserUtil.parseThreshold(argMultimap.getValue(PREFIX_THRESHOLD).get()).getValue();
+        Optional<String> thresholdString = map.getValue(PREFIX_THRESHOLD);
+        if (thresholdString.isPresent()) {
+            threshold = ParserUtil.parseThreshold(thresholdString.get()).getValue();
         } else {
             int configuredDefaultThreshold = defaultThresholdSupplier.getAsInt();
             threshold = new RestockThreshold(configuredDefaultThreshold);
@@ -93,35 +98,34 @@ public class AddProductCommandParser implements Parser<AddProductCommand> {
         }
 
         Email vendorEmail = null;
-        Optional<String> vendorEmailValue = argMultimap.getValue(PREFIX_EMAIL);
+        Optional<String> vendorEmailValue = map.getValue(PREFIX_EMAIL);
         if (vendorEmailValue.isPresent()) {
             ParseResult<Email> vendorEmailResult = ParserUtil.parseEmail(vendorEmailValue.get());
-            appendWarning(warnings, vendorEmailResult.getWarning());
             vendorEmail = vendorEmailResult.getValue();
+            appendWarning(warnings, vendorEmailResult.getWarning());
         } else {
             appendWarning(warnings, Optional.of(MESSAGE_VENDOR_EMAIL_MISSING));
         }
 
-        Product product = new Product(
-                identifierResult.getValue(), nameResult.getValue(), quantity, threshold, vendorEmail);
-
+        Product product = new Product(identifier, name, quantity, threshold, vendorEmail);
         if (!warnings.isEmpty()) {
             return new AddProductCommand(product, warnings.toString());
         }
-
         return new AddProductCommand(product);
     }
 
     /**
-     * Throws a ParseException if any of the required prefixes are not present in the given
-     * {@code ArgumentMultimap} or non-empty preamble.
+     * Throws a {@code ParseException} if some required prefixes are missing, or if non-prefixes are present.
+     *
+     * @param map {@code ArgumentMultimap} containing the arguments.
      */
-    private void requireAddProductPrefixes(ArgumentMultimap argMultimap) throws ParseException {
-        requirePrefixes(argMultimap,
+    private void requireOnlyAddProductPrefixes(ArgumentMultimap map) throws ParseException {
+        requirePrefixes(map,
                 new RequiredField(PREFIX_IDENTIFIER, FIELD_IDENTIFIER),
                 new RequiredField(PREFIX_NAME, FIELD_PRODUCT_NAME));
-        if (!argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(MESSAGE_NON_PREFIX_BEFORE_PREFIX + AddProductCommand.MESSAGE_USAGE);
+
+        if (!map.getPreamble().isEmpty()) {
+            throw new ParseException(MESSAGE_NON_PREFIX_BEFORE_PREFIX + MESSAGE_USAGE);
         }
     }
 
@@ -134,6 +138,12 @@ public class AddProductCommandParser implements Parser<AddProductCommand> {
         });
     }
 
+    /**
+     * Throws a {@code ParseException} if some required prefixes are missing.
+     *
+     * @param map {@code ArgumentMultimap} containing the arguments.
+     * @param requiredFields One or more {@code RequiredField}(s) to check for.
+     */
     private static void requirePrefixes(ArgumentMultimap map, RequiredField... requiredFields) throws ParseException {
         List<RequiredField> missingFields = Arrays.stream(requiredFields)
                 .filter(field -> map.getValue(field.prefix).isEmpty())
@@ -144,13 +154,12 @@ public class AddProductCommandParser implements Parser<AddProductCommand> {
         }
 
         if (missingFields.size() == requiredFields.length) {
-            throw new ParseException(MESSAGE_ALL_PREFIXES_MISSING + AddProductCommand.MESSAGE_USAGE);
+            throw new ParseException(MESSAGE_ALL_PREFIXES_MISSING + MESSAGE_USAGE);
         }
 
         String missingMessage = missingFields.stream()
                 .map(field -> String.format(MESSAGE_MISSING_FIELD_FORMAT, field.prefix, field.name))
                 .collect(Collectors.joining(SEPARATOR_COMMA));
-
         throw new ParseException(MESSAGE_MISSING_PREFIX + missingMessage);
     }
 }
