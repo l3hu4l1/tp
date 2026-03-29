@@ -42,7 +42,7 @@ import seedu.address.model.alias.Alias;
 import seedu.address.model.alias.exceptions.NoAliasFoundInAliasListException;
 
 /**
- * Parses user input.
+ * The class responsible for parsing user input.
  */
 public class AddressBookParser {
 
@@ -53,11 +53,11 @@ public class AddressBookParser {
     private static final Logger logger = LogsCenter.getLogger(AddressBookParser.class);
 
     /**
-     * Parses user input into command for execution.
+     * Parses user input into a command for execution.
      *
      * @param userInput full user input string
      * @return the command based on the user input
-     * @throws ParseException if the user input does not conform the expected format
+     * @throws ParseException if the user input does not conform with the expected format
      */
     public Command parseCommand(
             String userInput,
@@ -80,9 +80,6 @@ public class AddressBookParser {
 
         final String arguments = matcher.group("arguments");
 
-        // Note to developers: Change the log level in config.json to enable lower level (i.e., FINE, FINER and lower)
-        // log messages such as the one below.
-        // Lower level log messages are used sparingly to minimize noise in the code.
         logger.fine("Command word: " + commandWord + "; Arguments: " + arguments);
 
         if (pendingConfirmation.getNeedConfirmation()) {
