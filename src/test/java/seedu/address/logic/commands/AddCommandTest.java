@@ -596,6 +596,12 @@ public class AddCommandTest {
             requireNonNull(person);
             return this.person.isSamePerson(person);
         }
+
+        @Override
+        public Optional<Person> findByEmail(Email email) {
+            requireNonNull(email);
+            return this.person.getEmail().equals(email) ? Optional.of(this.person) : Optional.empty();
+        }
     }
 
     /**

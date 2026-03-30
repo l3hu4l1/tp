@@ -140,7 +140,8 @@ public class EditCommandTest {
         EditCommand editCommand = new EditCommand(personInFilteredList.getEmail(),
                 new EditPersonDescriptorBuilder(personInList).build());
 
-        assertCommandFailure(editCommand, model, Messages.MESSAGE_DUPLICATE_PERSON);
+        assertCommandFailure(editCommand, model,
+                String.format(Messages.MESSAGE_DUPLICATE_PERSON, personInList.getName(), personInList.getEmail()));
     }
 
     @Test
