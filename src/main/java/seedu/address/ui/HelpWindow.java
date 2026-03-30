@@ -93,6 +93,20 @@ public class HelpWindow extends UiPart<Stage> {
     }
 
     /**
+     * Returns true if the help window is currently minimized.
+     */
+    public boolean isMinimized() {
+        return getRoot().isIconified();
+    }
+
+    /**
+     * Restores the help window from a minimized state.
+     */
+    public void restore() {
+        getRoot().setIconified(false);
+    }
+
+    /**
      * Populate the {@code commandListContainer} with all of VendorVault commands.
      */
     public void populateCommandsToCommandListContainer() {

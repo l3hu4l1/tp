@@ -163,10 +163,13 @@ public class MainWindow extends UiPart<Stage> {
      */
     @FXML
     public void handleHelp() {
-        if (!helpWindow.isShowing()) {
-            helpWindow.show();
-        } else {
+        if (helpWindow.isShowing()) {
+            if (helpWindow.isMinimized()) {
+                helpWindow.restore();
+            }
             helpWindow.focus();
+        } else {
+            helpWindow.show();
         }
     }
 
