@@ -401,12 +401,6 @@ Examples:
 
 * `delete support@adafruit.com`
 
-<box type="info" seamless>
-
-**Expected output:** Once confirmed, the contact is permanently removed from the list.
-
-</box>
-
 For more details on possible warnings and errors, refer to the [troubleshooting guide](#troubleshooting-delete-contact)
 below.
 
@@ -639,12 +633,6 @@ deleteproduct PRODUCT_IDENTIFIER
 Examples:
 
 * `deleteproduct DE/5`
-
-<box type="info" seamless>
-
-**Expected output:** Once confirmed, the product is permanently removed from the list.
-
-</box>
 
 For more details on possible warnings and errors, refer to the [troubleshooting guide](#troubleshooting-deleteproduct)
 below.
