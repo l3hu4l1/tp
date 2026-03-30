@@ -73,7 +73,7 @@ public class RestoreCommand extends Command {
         }
 
         model.restorePerson(personToRestore);
-        String successPart = String.format(MESSAGE_RESTORE_SUCCESS, personToRestore);
+        String successPart = String.format(MESSAGE_RESTORE_SUCCESS, personToRestore.restore());
         model.commitVendorVault(successPart);
 
         return new CommandResult(successPart);
