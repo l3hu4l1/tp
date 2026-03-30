@@ -218,6 +218,28 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void updateFilteredPersonList_rankedPredicate_excludesArchivedPersons() {
+        AddressBook addressBook = new AddressBook();
+        Person archivedMatching = new PersonBuilder()
+                .withName("Ali Archived")
+                .withEmail("archived@example.com")
+                .build()
+                .archive();
+        Person activeMatching = new PersonBuilder()
+                .withName("Ali Active")
+                .withEmail("active@example.com")
+                .build();
+        addressBook.addPerson(archivedMatching);
+        addressBook.addPerson(activeMatching);
+
+        ModelManager model = new ModelManager(new VendorVault(
+                addressBook, new Inventory()), new UserPrefs(), new Aliases());
+        model.updateFilteredPersonList(new StubRankedPersonPredicate("ali"));
+
+        assertEquals(List.of(activeMatching), model.getFilteredPersonList());
+    }
+
+    @Test
     public void hasProduct_nullProduct_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> modelManager.hasProduct(null));
     }
