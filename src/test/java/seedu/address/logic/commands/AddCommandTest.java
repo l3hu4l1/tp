@@ -71,8 +71,8 @@ public class AddCommandTest {
         ModelStub modelStub = new ModelStubWithPerson(validPerson);
 
         assertThrows(CommandException.class,
-                String.format(Messages.MESSAGE_DUPLICATE_PERSON, validPerson.getName(), validPerson.getEmail()),
-                () -> addCommand.execute(modelStub));
+                String.format(Messages.MESSAGE_DUPLICATE_PERSON, validPerson.getName(), validPerson.getEmail()), (
+                ) -> addCommand.execute(modelStub));
     }
 
     @Test
