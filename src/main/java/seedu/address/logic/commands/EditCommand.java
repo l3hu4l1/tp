@@ -169,7 +169,6 @@ public class EditCommand extends Command {
         model.updateFilteredPersonList(predicate);
         return new CommandResult(CONFIRMATION_CLEAR_TAGS_MESSAGE);
     }
-
     private String buildWarnings(Person editedPerson, Person personToEdit, Model model, String originalWarnings) {
         StringBuilder warningsBuilder = new StringBuilder(originalWarnings);
         appendSimilarContactWarnings(editedPerson, personToEdit, model, warningsBuilder, editPersonDescriptor);
@@ -182,7 +181,8 @@ public class EditCommand extends Command {
                 continue;
             }
             if (editedPerson.isSamePerson(existingPerson)) {
-                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+                throw new CommandException(
+                        String.format(MESSAGE_DUPLICATE_PERSON, existingPerson.getName(), existingPerson.getEmail()));
             }
         }
     }
@@ -213,7 +213,7 @@ public class EditCommand extends Command {
         try {
             model.setPerson(personToEdit, editedPerson);
         } catch (DuplicatePersonException e) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+            throw new CommandException(buildDuplicatePersonMessage(model, personToEdit, editedPerson));
         }
 
         Email oldEmail = personToEdit.getEmail();
@@ -225,6 +225,13 @@ public class EditCommand extends Command {
 
         model.updateFilteredPersonList(PREDICATE_SHOW_ACTIVE_PERSONS);
         model.commitVendorVault(formatSuccessPart(editedPerson));
+    }
+
+    private String buildDuplicatePersonMessage(Model model, Person personToEdit, Person editedPerson) {
+        return model.findByEmail(editedPerson.getEmail())
+                .filter(match -> !match.equals(personToEdit))
+                .map(match -> String.format(MESSAGE_DUPLICATE_PERSON, match.getName(), match.getEmail()))
+                .orElse(MESSAGE_DUPLICATE_PERSON);
     }
 
     private String formatSuccessPart(Person editedPerson) {
