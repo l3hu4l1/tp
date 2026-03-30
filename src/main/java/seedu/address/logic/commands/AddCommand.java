@@ -41,10 +41,11 @@ public class AddCommand extends Command {
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "Cytron Technologies Pte. Ltd. "
-            + PREFIX_PHONE + "65480668 "
+            + PREFIX_PHONE + "65480668 (Office), 91234567 (Sales) "
             + PREFIX_EMAIL + "sg.sales@cytron.io "
             + PREFIX_ADDRESS + "09 Collyer Quay "
-            + PREFIX_TAG + "electronics ";
+            + PREFIX_TAG + "electronics "
+            + PREFIX_TAG + "wholesale ";
 
     public static final String MESSAGE_SUCCESS = "New contact added: %1$s";
     public static final String MESSAGE_ACTION_SUMMARY = "addition of contact: %1$s";
@@ -107,7 +108,9 @@ public class AddCommand extends Command {
 
     private void validateNoDuplicate(Model model) throws CommandException {
         if (model.hasPerson(toAdd)) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+            Person duplicate = model.findByEmail(toAdd.getEmail()).orElse(toAdd);
+            throw new CommandException(String.format(MESSAGE_DUPLICATE_PERSON,
+                    duplicate.getName(), duplicate.getEmail()));
         }
     }
 

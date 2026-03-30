@@ -60,9 +60,9 @@ public class EditCommand extends Command {
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_TAG + "TAG]...\n"
-            + "Example: " + COMMAND_WORD + " johndoe@example.com "
-            + PREFIX_PHONE + "91234567 "
-            + PREFIX_EMAIL + "johndoe@example.com";
+            + "Example: " + COMMAND_WORD + " support@adafruit.com "
+            + PREFIX_PHONE + "98196742 "
+            + PREFIX_ADDRESS + "New York, USA";
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Contact: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
@@ -183,7 +183,8 @@ public class EditCommand extends Command {
                 continue;
             }
             if (editedPerson.isSamePerson(existingPerson)) {
-                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+                throw new CommandException(
+                        String.format(MESSAGE_DUPLICATE_PERSON, existingPerson.getName(), existingPerson.getEmail()));
             }
         }
     }
@@ -214,7 +215,7 @@ public class EditCommand extends Command {
         try {
             model.setPerson(personToEdit, editedPerson);
         } catch (DuplicatePersonException e) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+            throw new CommandException(buildDuplicatePersonMessage(model, personToEdit, editedPerson));
         }
 
         Email oldEmail = personToEdit.getEmail();
@@ -226,6 +227,13 @@ public class EditCommand extends Command {
 
         model.updateFilteredPersonList(PREDICATE_SHOW_ACTIVE_PERSONS);
         model.commitVendorVault(String.format(MESSAGE_ACTION_SUMMARY, Messages.format(editedPerson)));
+    }
+
+    private String buildDuplicatePersonMessage(Model model, Person personToEdit, Person editedPerson) {
+        return model.findByEmail(editedPerson.getEmail())
+                .filter(match -> !match.equals(personToEdit))
+                .map(match -> String.format(MESSAGE_DUPLICATE_PERSON, match.getName(), match.getEmail()))
+                .orElse(MESSAGE_DUPLICATE_PERSON);
     }
 
     @Override
