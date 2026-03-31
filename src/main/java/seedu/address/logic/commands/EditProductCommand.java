@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_DUPLICATE_PRODUCT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_QUANTITY;
@@ -103,7 +104,7 @@ public class EditProductCommand extends Command {
 
         if (!productToEdit.getIdentifier().equals(editedProduct.getIdentifier())
                 && model.hasProduct(editedProduct)) {
-            throw new CommandException(Messages.MESSAGE_DUPLICATE_PRODUCT);
+            throw new CommandException(buildDuplicateProductMessage(model, productToEdit, editedProduct));
         }
 
         // ================= WARNINGS =================
@@ -217,6 +218,13 @@ public class EditProductCommand extends Command {
         }
 
         return updatedEmail;
+    }
+
+    private String buildDuplicateProductMessage(Model model, Product productToEdit, Product editedProduct) {
+        return model.findById(editedProduct.getIdentifier().toString())
+                .filter(match -> !match.equals(productToEdit))
+                .map(match -> String.format(MESSAGE_DUPLICATE_PRODUCT, match.getIdentifier(), match.getName()))
+                .orElse(MESSAGE_DUPLICATE_PRODUCT);
     }
 
     /**
