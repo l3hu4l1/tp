@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.parser.ParseResult;
+import seedu.address.logic.parser.ParserUtil;
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.NameEqualsKeywordsPredicate;
@@ -39,6 +42,9 @@ public class DeleteCommand extends Command {
             "Confirm (y) you want to delete the following contact shown below:";
 
     public static final String MESSAGE_DELETE_FAILURE = "Did not delete contact";
+
+    public static final String MESSAGE_INVALID_FORMAT =
+            "Invalid command format!\n" + MESSAGE_USAGE;
 
     public static final String MESSAGE_ACTION_SUMMARY = "deletion of contact: %1$s";
 
