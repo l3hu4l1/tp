@@ -25,8 +25,11 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_3;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_LOWER_DUPLICATE;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_MIXED_CASE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
@@ -48,9 +51,18 @@ import seedu.address.testutil.EditPersonDescriptorBuilder;
 
 public class EditCommandParserTest {
 
-    private static final String TAG_EMPTY = " " + PREFIX_TAG;
+    private static final String SPACE_PREFIX_TAG = " " + PREFIX_TAG;
+    private static final String TAG_EMPTY = SPACE_PREFIX_TAG;
     private static final String TARGET_EMAIL = VALID_EMAIL_BOB;
     private static final Email TARGET_EMAIL_OBJ = new Email(TARGET_EMAIL);
+
+    private static final String EMPTY_INPUT = "";
+    private static final String INVALID_TARGET_EMAIL = "not-an-email";
+    private static final String RANDOM_PREAMBLE = " some random string";
+    private static final String INVALID_PREFIX_PREAMBLE = " i/ string";
+    private static final String SKIP_FLAG = "-y";
+    private static final String ATTACHED_SKIP_FLAG_WITH_TRAILING = " -yabc";
+    private static final String SKIP_FLAG_WITH_SPACE = "-y ";
 
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
@@ -66,19 +78,19 @@ public class EditCommandParserTest {
         assertParseFailure(parser, TARGET_EMAIL, EditCommand.MESSAGE_NOT_EDITED);
 
         // no target email and no field specified
-        assertParseFailure(parser, "", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, EMPTY_INPUT, MESSAGE_INVALID_FORMAT);
     }
 
     @Test
     public void parse_invalidPreamble_failure() {
         // invalid target email
-        assertParseFailure(parser, "not-an-email" + NAME_DESC_AMY, MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, INVALID_TARGET_EMAIL + NAME_DESC_AMY, MESSAGE_INVALID_FORMAT);
 
         // invalid arguments being parsed as preamble
-        assertParseFailure(parser, TARGET_EMAIL + " some random string", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, TARGET_EMAIL + RANDOM_PREAMBLE, MESSAGE_INVALID_FORMAT);
 
         // invalid prefix being parsed as preamble
-        assertParseFailure(parser, TARGET_EMAIL + " i/ string", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, TARGET_EMAIL + INVALID_PREFIX_PREAMBLE, MESSAGE_INVALID_FORMAT);
     }
 
     @Test
@@ -218,15 +230,15 @@ public class EditCommandParserTest {
     @Test
     public void parse_caseInsensitiveDuplicateTags_keepFirstOccurrence() {
         // EP: duplicate tag differing only in case -> first occurrence kept
-        String userInput = TARGET_EMAIL + " " + PREFIX_TAG + "Hi"
-                + " " + PREFIX_TAG + "electronics"
-                + " " + PREFIX_TAG + "hi";
-
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
-                .withTags("Hi", "electronics")
+                .withTags(VALID_TAG_MIXED_CASE, VALID_TAG_3)
                 .build();
 
-        assertParseSuccess(parser, userInput, new EditCommand(TARGET_EMAIL_OBJ, descriptor));
+        assertParseSuccess(parser, TARGET_EMAIL
+                        + SPACE_PREFIX_TAG + VALID_TAG_MIXED_CASE
+                        + SPACE_PREFIX_TAG + VALID_TAG_3
+                        + SPACE_PREFIX_TAG + VALID_TAG_LOWER_DUPLICATE,
+                new EditCommand(TARGET_EMAIL_OBJ, descriptor));
     }
 
     @Test
@@ -252,11 +264,11 @@ public class EditCommandParserTest {
     @Test
     public void parse_wronglyFormedFlagAttached_failure() {
         // EP: flag before target email
-        assertParseFailure(parser, "-y" + TARGET_EMAIL + TAG_EMPTY,
+        assertParseFailure(parser, SKIP_FLAG + TARGET_EMAIL + TAG_EMPTY,
                 EditCommandParser.MESSAGE_WRONGLY_FORMED_FLAG);
 
         // EP: flag attached mid-input with trailing characters
-        assertParseFailure(parser, TARGET_EMAIL + " -yabc" + TAG_EMPTY,
+        assertParseFailure(parser, TARGET_EMAIL + ATTACHED_SKIP_FLAG_WITH_TRAILING + TAG_EMPTY,
                 EditCommandParser.MESSAGE_WRONGLY_FORMED_FLAG);
     }
 
@@ -264,7 +276,7 @@ public class EditCommandParserTest {
     public void parse_resetTagsWithSkipFlag_skipsConfirmationPrompt() {
         // EP: -y flag present -> skips confirmation, tags cleared directly
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTags().build();
-        assertParseSuccess(parser, "-y " + TARGET_EMAIL + TAG_EMPTY,
+        assertParseSuccess(parser, SKIP_FLAG_WITH_SPACE + TARGET_EMAIL + TAG_EMPTY,
                 new EditCommand(TARGET_EMAIL_OBJ, descriptor, true));
     }
 }
