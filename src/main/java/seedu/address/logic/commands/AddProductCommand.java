@@ -117,7 +117,9 @@ public class AddProductCommand extends Command {
 
     private void validateNoDuplicate(Model model) throws CommandException {
         if (model.hasProduct(toAdd)) {
-            throw new CommandException(MESSAGE_DUPLICATE_PRODUCT);
+            Product duplicate = model.findById(toAdd.getIdentifier().toString()).orElse(toAdd);
+            throw new CommandException(String.format(MESSAGE_DUPLICATE_PRODUCT, duplicate.getIdentifier(),
+                    duplicate.getName()));
         }
     }
 
