@@ -14,7 +14,9 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
 
     public static final String CONFIRMATION_INDICATOR = "-y";
 
-    public static final String MESSAGE_NO_EMAIL_PROVIDED = "Email must be provided.";
+    public static final String MESSAGE_NO_EMAIL_PROVIDED =
+            "Email must be provided.\n"
+            + "Example: " + DeleteCommand.COMMAND_WORD + "sales@techsource.ocm";
 
     /**
      * Parses the given {@code String} of arguments in the context of the DeleteCommand
