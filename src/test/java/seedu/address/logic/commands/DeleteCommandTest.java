@@ -50,7 +50,7 @@ public class DeleteCommandTest {
     @Test
     public void execute_validIndexUnfilteredListDeleteOnly_success() {
         Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail(), true);
+        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail().toString(), true);
 
         ModelManager expectedModel = new ModelManager(model.getVendorVault(), new UserPrefs(), new Aliases());
         NameEqualsKeywordsPredicate predicate = new NameEqualsKeywordsPredicate(personToDelete);
@@ -62,7 +62,7 @@ public class DeleteCommandTest {
     @Test
     public void execute_validIndexUnfilteredListDeleteAndConfirm_success() {
         Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail(), true);
+        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail().toString(), true);
 
         ModelManager expectedModel = new ModelManager(model.getVendorVault(), new UserPrefs(), new Aliases());
         NameEqualsKeywordsPredicate predicate = new NameEqualsKeywordsPredicate(personToDelete);
@@ -93,7 +93,7 @@ public class DeleteCommandTest {
     @Test
     public void execute_validIndexUnfilteredListDeleteAndCancel_success() {
         Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail(), true);
+        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail().toString(), true);
 
         ModelManager expectedModel = new ModelManager(model.getVendorVault(), new UserPrefs(), new Aliases());
         NameEqualsKeywordsPredicate predicate = new NameEqualsKeywordsPredicate(personToDelete);
@@ -122,7 +122,7 @@ public class DeleteCommandTest {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
         Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail(), true);
+        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail().toString(), true);
 
         Model expectedModel = new ModelManager(model.getVendorVault(), new UserPrefs(), new Aliases());
         NameEqualsKeywordsPredicate predicate = new NameEqualsKeywordsPredicate(personToDelete);
@@ -153,7 +153,7 @@ public class DeleteCommandTest {
     @Test
     public void execute_validIndexNoConfirmation_deletesPerson() {
         Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail(), false);
+        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail().toString(), false);
 
         CommandResult result;
         try {
@@ -169,7 +169,7 @@ public class DeleteCommandTest {
     @Test
     public void execute_validIndexWithConfirmation_showsConfirmationMessage() {
         Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail(), true);
+        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail().toString(), true);
 
         CommandResult result;
         try {
@@ -184,7 +184,7 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_nonExistentEmail_throwsCommandException() {
-        DeleteCommand deleteCommand = new DeleteCommand(NON_EXISTENT_EMAIL, false);
+        DeleteCommand deleteCommand = new DeleteCommand(NON_EXISTENT_EMAIL.toString(), false);
 
         assertCommandFailure(deleteCommand, model, MESSAGE_INVALID_PERSON_DISPLAYED_EMAIL);
     }
@@ -200,7 +200,7 @@ public class DeleteCommandTest {
 
         model.addProduct(linkedProductOne);
 
-        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail(), false);
+        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail().toString(), false);
         CommandResult result;
         try {
             result = deleteCommand.execute(model);
@@ -228,7 +228,7 @@ public class DeleteCommandTest {
 
         model.addProduct(linkedProduct);
 
-        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail(), true);
+        DeleteCommand deleteCommand = new DeleteCommand(personToDelete.getEmail().toString(), true);
         PendingConfirmation pendingConfirmation;
         try {
             deleteCommand.execute(model);
@@ -256,14 +256,14 @@ public class DeleteCommandTest {
 
     @Test
     public void equals() {
-        DeleteCommand deleteFirstCommand = new DeleteCommand(AMY_EMAIL, true);
-        DeleteCommand deleteSecondCommand = new DeleteCommand(BOB_EMAIL, true);
+        DeleteCommand deleteFirstCommand = new DeleteCommand(AMY_EMAIL.toString(), true);
+        DeleteCommand deleteSecondCommand = new DeleteCommand(BOB_EMAIL.toString(), true);
 
         // same object -> returns true
         assertTrue(deleteFirstCommand.equals(deleteFirstCommand));
 
         // same values -> returns true
-        DeleteCommand deleteFirstCommandCopy = new DeleteCommand(AMY_EMAIL, true);
+        DeleteCommand deleteFirstCommandCopy = new DeleteCommand(AMY_EMAIL.toString(), true);
         assertTrue(deleteFirstCommand.equals(deleteFirstCommandCopy));
 
         // different types -> returns false
@@ -278,7 +278,7 @@ public class DeleteCommandTest {
 
     @Test
     public void toStringMethod() {
-        DeleteCommand deleteCommand = new DeleteCommand(AMY_EMAIL, true);
+        DeleteCommand deleteCommand = new DeleteCommand(AMY_EMAIL.toString(), true);
         String expected = DeleteCommand.class.getCanonicalName() + "{targetEmail=" + VALID_EMAIL_AMY + "}";
         assertEquals(expected, deleteCommand.toString());
     }

@@ -25,17 +25,17 @@ public class DeleteCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsDeleteCommand() {
-        assertParseSuccess(parser, VALID_EMAIL_AMY, new DeleteCommand(VALID_EMAIL, true));
+        assertParseSuccess(parser, VALID_EMAIL_AMY, new DeleteCommand(VALID_EMAIL.toString(), true));
     }
 
     @Test
     public void parse_validArgsWithConfirmationFlag_returnsDeleteCommand() {
-        assertParseSuccess(parser, "-y " + VALID_EMAIL_AMY, new DeleteCommand(VALID_EMAIL, false));
+        assertParseSuccess(parser, "-y " + VALID_EMAIL_AMY, new DeleteCommand(VALID_EMAIL.toString(), false));
     }
 
     @Test
     public void parse_validArgsWithConfirmationFlagAfterIndex_returnsDeleteCommand() {
-        assertParseSuccess(parser, VALID_EMAIL_AMY + " -y", new DeleteCommand(VALID_EMAIL, false));
+        assertParseSuccess(parser, VALID_EMAIL_AMY + " -y", new DeleteCommand(VALID_EMAIL.toString(), false));
     }
 
     @Test

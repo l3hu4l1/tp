@@ -6,7 +6,6 @@ import static seedu.address.logic.parser.ConfirmationFlagIndicator.removeConfirm
 
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.Email;
 
 /**
  * Parses input arguments and creates a new DeleteCommand object
@@ -30,7 +29,7 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
         String[] tokens = argsTrimmed.split("\\s+");
         boolean needsConfirmation = !containsConfirmationFlag(
                 tokens, CONFIRMATION_INDICATOR, MESSAGE_INVALID_CONFIRMATION_FLAG);
-        String email= removeConfirmationFlag(tokens, CONFIRMATION_INDICATOR);
+        String email = removeConfirmationFlag(tokens, CONFIRMATION_INDICATOR);
 
         return new DeleteCommand(email, needsConfirmation);
     }
