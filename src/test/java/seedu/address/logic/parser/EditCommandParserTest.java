@@ -25,8 +25,11 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_3;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_LOWER_DUPLICATE;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_MIXED_CASE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
@@ -218,15 +221,15 @@ public class EditCommandParserTest {
     @Test
     public void parse_caseInsensitiveDuplicateTags_keepFirstOccurrence() {
         // EP: duplicate tag differing only in case -> first occurrence kept
-        String userInput = TARGET_EMAIL + " " + PREFIX_TAG + "Hi"
-                + " " + PREFIX_TAG + "electronics"
-                + " " + PREFIX_TAG + "hi";
-
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
-                .withTags("Hi", "electronics")
+                .withTags(VALID_TAG_MIXED_CASE, VALID_TAG_3)
                 .build();
 
-        assertParseSuccess(parser, userInput, new EditCommand(TARGET_EMAIL_OBJ, descriptor));
+        assertParseSuccess(parser, TARGET_EMAIL
+                        + " " + PREFIX_TAG + VALID_TAG_MIXED_CASE
+                        + " " + PREFIX_TAG + VALID_TAG_3
+                        + " " + PREFIX_TAG + VALID_TAG_LOWER_DUPLICATE,
+                new EditCommand(TARGET_EMAIL_OBJ, descriptor));
     }
 
     @Test
