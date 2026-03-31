@@ -41,8 +41,6 @@ import seedu.address.model.person.Person;
 import seedu.address.model.product.Identifier;
 import seedu.address.model.product.Name;
 import seedu.address.model.product.Product;
-import seedu.address.model.product.Quantity;
-import seedu.address.model.product.RestockThreshold;
 import seedu.address.model.product.warnings.DuplicateProductWarning;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.ProductBuilder;
