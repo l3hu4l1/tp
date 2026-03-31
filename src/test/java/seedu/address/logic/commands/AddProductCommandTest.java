@@ -592,20 +592,4 @@ public class AddProductCommandTest {
             productsAdded.add(product);
         }
     }
-
-    /** Product test double that forces a specific warning result. */
-    private static class ProductWithForcedWarning extends Product {
-        private final DuplicateProductWarning forcedWarning;
-
-        ProductWithForcedWarning(Identifier identifier, Name name, Quantity quantity, RestockThreshold threshold,
-                                 DuplicateProductWarning forcedWarning) {
-            super(identifier, name, quantity, threshold);
-            this.forcedWarning = forcedWarning;
-        }
-
-        @Override
-        public DuplicateProductWarning generateDuplicateWarning(Product otherProduct) {
-            return forcedWarning;
-        }
-    }
 }
