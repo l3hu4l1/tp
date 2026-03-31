@@ -14,6 +14,8 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
 
     public static final String CONFIRMATION_INDICATOR = "-y";
 
+    public static final String MESSAGE_NO_EMAIL_PROVIDED = "Email must be provided.";
+
     /**
      * Parses the given {@code String} of arguments in the context of the DeleteCommand
      * and returns a DeleteCommand object for execution.
@@ -30,6 +32,10 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
         boolean needsConfirmation = !containsConfirmationFlag(
                 tokens, CONFIRMATION_INDICATOR, MESSAGE_INVALID_CONFIRMATION_FLAG);
         String email = removeConfirmationFlag(tokens, CONFIRMATION_INDICATOR);
+
+        if (email.isEmpty()) {
+            throw new ParseException(MESSAGE_NO_EMAIL_PROVIDED);
+        }
 
         return new DeleteCommand(email, needsConfirmation);
     }
