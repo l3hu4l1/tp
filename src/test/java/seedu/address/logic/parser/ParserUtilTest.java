@@ -3,6 +3,9 @@ package seedu.address.logic.parser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_3;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_LOWER_DUPLICATE;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_MIXED_CASE;
 import static seedu.address.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
@@ -55,9 +58,6 @@ public class ParserUtilTest {
     private static final String VALID_EMAIL = "rachel@example.com";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
-    private static final String VALID_TAG_MIXED_CASE = "Hi";
-    private static final String VALID_TAG_LOWER_DUPLICATE = "hi"; // case-insensitive duplicate of VALID_TAG_MIXED_CASE
-    private static final String VALID_TAG_3 = "electronics";
 
     private static final String WARN_PHONE_MULTIPLE_TRAILING_EMPTY = "61234567,";
     private static final String WARN_PHONE_MULTIPLE_MIDDLE_EMPTY = "12345678,,12345679";
