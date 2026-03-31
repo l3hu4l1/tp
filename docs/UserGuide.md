@@ -1069,11 +1069,10 @@ Use this section when `restore` fails.
 
 Use this section when `delete` fails.
 
-| Scenario                               | Message shown                                         | How to fix                                  |
-|----------------------------------------|-------------------------------------------------------|---------------------------------------------|
-| No email provided                      | `Email should not be blank.`                          | Provide the vendor's email: `delete EMAIL`. |
-| Email Format is invalid                | `Email should be of the format local-part@domain ...` | Check the email if its correct.             |
-| Email provided but no matching contact | `No contact with the specified email was found.`      | Check the email if its correct.             |
+| Scenario                               | Message shown                                    | How to fix                                                         |
+|----------------------------------------|--------------------------------------------------|--------------------------------------------------------------------|
+| Email Format is invalid                | `Invalid command format! ...`                    | Provide the vendor's email: `delete EMAIL`.                        |
+| Email provided but no matching contact | `No contact with the specified email was found.` | Ensures the vendor exists in the active list. Use `list` to check. |
 
 <br>
 
