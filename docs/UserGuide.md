@@ -1044,6 +1044,16 @@ Most errors and warnings in `add` also occur in `edit`, except the first three e
 
 <div style="height: 30px;"></div>
 
+#### Troubleshooting `find` contact
+
+Use this section when `find` fails.
+
+| Scenario               | Message shown                 | How to fix          |
+|------------------------|-------------------------------|---------------------|
+| No keyword is provided | `Invalid command format! ...` | Provide keyword(s). |
+
+<div style="height: 30px;"></div>
+
 #### Troubleshooting `archive` contact
 
 Use this section when `archive` fails.
@@ -1155,6 +1165,16 @@ Common `editproduct` warnings:
 **Tip:** If multiple warnings apply, VendorVault shows all of them (one per line) together with the success message.
 
 </box>
+
+<div style="height: 30px;"></div>
+
+#### Troubleshooting `findproduct`
+
+Use this section when `find` fails.
+
+| Scenario               | Message shown                 | How to fix          |
+|------------------------|-------------------------------|---------------------|
+| No keyword is provided | `Invalid command format! ...` | Provide keyword(s). |
 
 <div style="height: 30px;"></div>
 
