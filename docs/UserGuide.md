@@ -981,7 +981,7 @@ Use this section when `add` fails or returns a warning.
 | Email is too long                                              | `Email should be at most 320 characters.`                                 | Shorten the email.                                                           |
 | Address is blank                                               | `Address can take any values, and it should not be blank`                 | Provide a non-empty address after `a/`.                                      |
 | Address is too long                                            | `Address should be at most 500 characters.`                               | Shorten the address.                                                         |
-| Tag is blank                                                   | `Tag names should not be blank`                                           | Provide a non-empty tag name after each`t/`                                  |
+| Tag is blank                                                   | `Tag names should not be blank`                                           | Provide a non-empty tag name after each`t/`.                                  |
 | Tag is too long                                                | `Tag names should be at most 50 characters`                               | Shorten the tags that are too long.                                          |
 | Contact duplicates an existing contact by same email           | `This vendor contact already exists with the same email (name: NAME, email: EMAIL).` | Change the email address, or edit the existing contact instead.              |
 
@@ -1117,7 +1117,7 @@ Use this section when `addproduct` fails or returns a warning.
 | Name is too long                                    | `Name should be at most 120 characters.`                                  | Shorten the name.                                                               |
 | Quantity is invalid                                 | `Quantity should be a non-negative valid integer.`                        | Ensure it is a whole number between 0 and 2,147,483,647.                        |
 | Threshold is invalid                                | `Restock threshold should be a non-negative valid integer.`               | Ensure it is a whole number between 0 and 2,147,483,647.                        |
-| Product is a duplicate                              | `This product already exists with the same identifier (identifier: IDENTIFIER, name: NAME).` | Change the identifier, or edit the existing product instead.             |
+| Product duplicates an existing product by same identifier | `This product already exists with the same identifier (identifier: IDENTIFIER, name: NAME).` | Change the identifier, or edit the existing product instead.             |
 | Product's vendor does not exist                     | `Vendor email EMAIL does not match any existing contact.`                 | Check that the email matches an existing contact's email, or add a new contact. |
 
 <br>
