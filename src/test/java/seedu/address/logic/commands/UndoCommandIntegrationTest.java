@@ -17,7 +17,11 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.VendorVault;
 import seedu.address.model.person.Person;
+import seedu.address.model.product.Product;
+import seedu.address.testutil.EditPersonDescriptorBuilder;
+import seedu.address.testutil.EditProductDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
+import seedu.address.testutil.ProductBuilder;
 
 public class UndoCommandIntegrationTest {
 
@@ -47,6 +51,85 @@ public class UndoCommandIntegrationTest {
 
         String addActionSummary = String.format(AddCommand.MESSAGE_ACTION_SUMMARY, Messages.format(person));
         String expectedUndoMessage = UndoCommand.MESSAGE_SUCCESS + addActionSummary;
+
+        assertCommandSuccess(
+                new UndoCommand(),
+                model,
+                expectedUndoMessage,
+                expectedModel
+        );
+    }
+
+    @Test
+    public void execute_afterAddProduct_undoSuccess() throws CommandException {
+        Product product = new ProductBuilder().build();
+
+        new AddProductCommand(product).execute(model);
+
+        Model expectedModel =
+                new ModelManager(new VendorVault(getTypicalAddressBook(), getTypicalInventory()),
+                        new UserPrefs(), new Aliases());
+
+        String addProductActionSummary = String.format(AddProductCommand.MESSAGE_ACTION_SUMMARY,
+                Messages.formatProduct(product));
+        String expectedUndoMessage = UndoCommand.MESSAGE_SUCCESS + addProductActionSummary;
+
+        assertCommandSuccess(
+                new UndoCommand(),
+                model,
+                expectedUndoMessage,
+                expectedModel
+        );
+    }
+
+    @Test
+    public void execute_afterEdit_undoSuccess() throws CommandException {
+        Person personToEdit = model.getFilteredPersonList().get(0);
+
+        EditCommand.EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withPhone("998")
+                .build();
+
+        Person editedPerson = new PersonBuilder(personToEdit)
+                .withPhone("998")
+                .build();
+
+        new EditCommand(personToEdit.getEmail(), descriptor).execute(model);
+
+        Model expectedModel =
+                new ModelManager(new VendorVault(getTypicalAddressBook(), getTypicalInventory()),
+                        new UserPrefs(), new Aliases());
+
+        String editActionSummary = String.format(EditCommand.MESSAGE_ACTION_SUMMARY, Messages.format(editedPerson));
+        String expectedUndoMessage = UndoCommand.MESSAGE_SUCCESS + editActionSummary;
+
+        assertCommandSuccess(
+                new UndoCommand(),
+                model,
+                expectedUndoMessage,
+                expectedModel
+        );
+    }
+
+    @Test
+    public void execute_afterEditProduct_undoSuccess() throws CommandException {
+        Product productToEdit = model.getFilteredProductList().get(0);
+
+        EditProductCommand.EditProductDescriptor descriptor = new EditProductDescriptorBuilder()
+                .withQuantity("999")
+                .build();
+
+        Product editedProduct = new ProductBuilder(productToEdit).withQuantity("999").build();
+
+        new EditProductCommand(productToEdit.getIdentifier().value, descriptor).execute(model);
+
+        Model expectedModel =
+                new ModelManager(new VendorVault(getTypicalAddressBook(), getTypicalInventory()),
+                        new UserPrefs(), new Aliases());
+
+        String editProductActionSummary = String.format(EditProductCommand.MESSAGE_ACTION_SUMMARY,
+                Messages.formatProduct(editedProduct));
+        String expectedUndoMessage = UndoCommand.MESSAGE_SUCCESS + editProductActionSummary;
 
         assertCommandSuccess(
                 new UndoCommand(),
