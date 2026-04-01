@@ -1,6 +1,6 @@
 package seedu.address.logic.parser;
 
-import static seedu.address.logic.Messages.MESSAGE_ALL_PREFIXES_MISSING;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_MISSING_FIELD_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_MISSING_PREFIX;
 import static seedu.address.logic.Messages.MESSAGE_NON_PREFIX_BEFORE_PREFIX;
@@ -178,7 +178,7 @@ public class AddCommandParserTest {
 
         // all prefixes missing
         assertParseFailure(parser, VALID_NAME_BOB + VALID_PHONE_BOB + VALID_EMAIL_BOB + VALID_ADDRESS_BOB,
-               MESSAGE_ALL_PREFIXES_MISSING + expectedMessage);
+               String.format(MESSAGE_INVALID_COMMAND_FORMAT, expectedMessage));
     }
 
     @Test
