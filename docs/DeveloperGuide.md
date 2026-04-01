@@ -961,9 +961,7 @@ Accessibility:
 
    - Resize the window as desired. Move the window to a different location. Close the window.
 
-   - Re-launch app.<br> Expected: The most recent window size and location is retained.
-
-3. _{ more test cases …​ }_
+   - Re-launch app. Expected: The most recent window size and location is retained.
 
 ### Deleting a contact
 
@@ -985,13 +983,70 @@ Accessibility:
 
 5. _{ more test cases …​ }_
 
+### Finding a contact
+
+1. Prerequisites: There should be a contact named Adafruit Industries
+
+2. Test case: `find`
+   - Expected: `Invalid command format! …` error
+
+3. Test case: `find ada`
+   - Expected: Contact named Adafruit Industries is listed
+
+### Adding a product
+
+1. Prerequisites: There should be a contact with email support@adafruit.com
+
+2. Test case: `addproduct id/SKU-1003 n/Arduino Uno R4 q/50 th/10 e/support@adafruit.com`
+   - Expected: Product with the above details is added
+
+3. Test case: `addproduct id/SKU-288`
+   - Expected: `Missing required field(s): n/ (product name)` error
+
+4. Test case: `addproduct id/SKU-1003 n/HP LaserJet (M428fdw) q/17 th/15 e/support@adafruit.com`
+   - Expected: `This product already exists with the same identifier.` error
+
+5. Test case: `addproduct id/SKU-1004 n/HP LaserJet (M428fdw) q/17 th/15 e/sg.sales@cytron.io`
+   - Expected: `Vendor email sg.sales@cytron.io does not match any existing contact.` error 
+
+### Finding a product
+
+1. Prerequisites: There should be a product named Arduino Uno R4
+
+2. Test case: `findproduct`
+   - Expected: `Invalid command format! …`
+
+3. Test case: `findproduct uno`
+   - Expected: Product named Arduino Uno R4 is listed
+
+### Changing default threshold
+
+1. Prerequisites: None
+
+2. Test case: `threshold`
+   - Expected: `Invalid command format! …`
+
+3. Test case: `threshold 5`
+   - Expected: `Default restock threshold set to: 5` success
+
+4. Test case: `addproduct id/DE/5 n/PlayStation q/0 e/sg.sales@cytron.io`
+   - Expected: Product added with threshold defaulting to 5
+
 ### Saving data
 
-1. Dealing with missing/corrupted data files
+1. Prerequisites: App is running
 
-   - _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+2. Test case: Run a command that modifies data and restart the app
+   - Expected: The modified data is saved
 
-2. _{ more test cases …​ }_
+3. Test case: Delete `/data/addressbook.json` and restart the app
+   - Expected: App initialises sample contact data 
+
+4. Test case: Enter invalid JSON to `/data/inventory.json` and restart the app
+  - Expected: `WARNING: Error reading from jsonFile` is logged to the terminal and app starts with empty inventory
+
+5. Test case: Enter invalid JSON to `/preferences.json` and restart the app
+   - Expected: `WARNING: Error reading from jsonFile file preferences.json` logged to the console and app starts with default preferences 
 
 ## **Appendix: Effort**
 
