@@ -936,10 +936,12 @@ Accessibility:
 
 ### Glossary
 
-* **Mainstream OS**: Windows, Linux, Unix, MacOS
+* **Mainstream OS**: Windows, Linux, MacOS
 * **Contact/Vendor Contact**: A stored record containing a vendor’s name, phone number, email, address, and optional tags.
-* **Inventory Item/Product**: A product entry tracked by the system, identified by a unique product ID, name, and quantity.
-* **Product ID**: A non-negative integer that uniquely identifies a product in the inventory.
+* **Inventory**: The system that holds a set of products
+* **Product**: An entry to the inventory; contains the product's identifier, name, quantity, restock threshold and 
+  email of associated vendor.
+* **Product Identifier**: A string that uniquely identifies a product
 * **Command**: A user input instruction entered into the CLI to perform an action (e.g. add, delete, list).
 * **Prefix**: A keyword used to identify parameters in a command (e.g. n/, p/, e/, q/).
 
