@@ -1057,6 +1057,18 @@ Accessibility:
 
 ## **Appendix: Effort**
 
+### Difficulty & Challenges
+
+1. While AB3 deals with one entity, our app handles and integrates two distinct entities.
+
+### Effort & Achievements
+
+1. Higher implementation effort required from us due to more complex scope; each member contributed about 6k LoC
+
+2. Deepened existing features and created new features that complement them
+
+3. Overcoming integration challenges to keep code and documentation aligned
+
 ## **Appendix: Planned Enhancements**
 
 Team size: 4
