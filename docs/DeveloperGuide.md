@@ -738,7 +738,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | user        | clear all products               | reset my inventory                                                |
 | `* *`    | user        | view inventory statistics        | understand my product quantity levels                             |
 | `* *`    | user        | undo changes I made              | easily revert and correct mistake                                 |
-| `* *`    | user        | redo undone changes I made       | easily reapply changes I accidentally undid                       |
+| `* *`    | user        | redo changes I made              | easily reapply changes I accidentally undid                       |
 | `* *`    | user        | navigate my previous commands    | reuse or correct recent commands without providing them again     |
 | `* *`    | expert user | add alias for commands           | create alias for long commands according to my preferences        |
 | `* *`    | expert user | delete alias for commands        | remove alias for I no longer want to use                          |
@@ -1074,7 +1074,7 @@ Accessibility:
 
 ### Adding a contact
 
-1. Prerequisites: None 
+1. Prerequisites: There should be no contact with email `support@adafruit.com`.
 
 2. Test case: `add n/Adafruit Industries p/64601234 e/support@adafruit.com a/151 Varick St, New York, NY 10013, USA`
    - Expected: Adafruit Industries's Contact is added.
