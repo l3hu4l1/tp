@@ -950,23 +950,23 @@ You can try the following steps:
 
 Use this section when `add` fails or returns a warning.
 
-| Scenario                                                       | Message shown                                                             | How to fix                                                                   |
-|----------------------------------------------------------------|---------------------------------------------------------------------------|------------------------------------------------------------------------------|
-| Missing one or more required prefixes (`n/`, `p/`, `e/`, `a/`) | `Missing required field(s): ...`                                          | Include all required prefixed fields in your command.                        |
-| No prefixes at all                                             | `Invalid command format! add: Adds a vendor contact to VendorVault. ...`  | Use the full prefixed format, e.g. `add n/... p/... e/... a/...`.            |
-| Text appears before the first prefix                           | `No non-prefix characters before prefix(es) is allowed, ...`              | Remove any text before `n/`.                                                 |
-| Same single-value field repeated (e.g. two `n/` or two `e/`)   | `Multiple values specified for the following single-valued field(s): ...` | Keep only one value for each of `n/`, `p/`, `e/`, `a/`.                      |
-| Name is blank                                                  | `Name should not be blank.`                                               | Provide a non-empty name after `n/`.                                         |
-| Name is too long                                               | `Name should be at most 256 characters.`                                  | Shorten the name.                                                            |
-| Phone is blank                                                 | `Phone number should not be blank.`                                       | Ensure each phone entry is not blank.                                        |
-| Phone is too short                                             | `Phone number(s) must be at least 3 digits ...`                           | Ensure each phone entry has at least 3 digits.                               |
-| Email is blank                                                 | `Email should not be blank.`                                              | Provide a non-empty email after `e/`.                                        |
-| Email format is invalid                                        | `Email should be a valid format ...`                                      | Use a [valid email format](#contact-email-format) (e.g. `sales@vendor.com`). |
-| Email is too long                                              | `Email should be at most 320 characters.`                                 | Shorten the email.                                                           |
-| Address is blank                                               | `Address can take any values, and it should not be blank`                 | Provide a non-empty address after `a/`.                                      |
-| Address is too long                                            | `Address should be at most 500 characters.`                               | Shorten the address.                                                         |
-| Tag is blank                                                   | `Tag names should not be blank`                                           | Provide a non-empty tag name after each`t/`.                                  |
-| Tag is too long                                                | `Tag names should be at most 50 characters`                               | Shorten the tags that are too long.                                          |
+| Scenario                                                       | Message shown                                                                        | How to fix                                                                   |
+|----------------------------------------------------------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| Missing one or more required prefixes (`n/`, `p/`, `e/`, `a/`) | `Missing required field(s): ...`                                                     | Include all required prefixed fields in your command.                        |
+| No prefixes at all                                             | `Invalid Command format! ...`                                                        | Use the full prefixed format, e.g. `add n/... p/... e/... a/...`.            |
+| Text appears before the first prefix                           | `No non-prefix characters before prefix(es) is allowed, ...`                         | Remove any text before `n/`.                                                 |
+| Same single-value field repeated (e.g. two `n/` or two `e/`)   | `Multiple values specified for the following single-valued field(s): ...`            | Keep only one value for each of `n/`, `p/`, `e/`, `a/`.                      |
+| Name is blank                                                  | `Name should not be blank.`                                                          | Provide a non-empty name after `n/`.                                         |
+| Name is too long                                               | `Name should be at most 256 characters.`                                             | Shorten the name.                                                            |
+| Phone is blank                                                 | `Phone number should not be blank.`                                                  | Ensure each phone entry is not blank.                                        |
+| Phone is too short                                             | `Phone number(s) must be at least 3 digits ...`                                      | Ensure each phone entry has at least 3 digits.                               |
+| Email is blank                                                 | `Email should not be blank.`                                                         | Provide a non-empty email after `e/`.                                        |
+| Email format is invalid                                        | `Email should be a valid format ...`                                                 | Use a [valid email format](#contact-email-format) (e.g. `sales@vendor.com`). |
+| Email is too long                                              | `Email should be at most 320 characters.`                                            | Shorten the email.                                                           |
+| Address is blank                                               | `Address can take any values, and it should not be blank`                            | Provide a non-empty address after `a/`.                                      |
+| Address is too long                                            | `Address should be at most 500 characters.`                                          | Shorten the address.                                                         |
+| Tag is blank                                                   | `Tag names should not be blank`                                                      | Provide a non-empty tag name after each`t/`.                                  |
+| Tag is too long                                                | `Tag names should be at most 50 characters`                                          | Shorten the tags that are too long.                                          |
 | Contact duplicates an existing contact by same email           | `This vendor contact already exists with the same email (name: NAME, email: EMAIL).` | Change the email address, or edit the existing contact instead.              |
 
 <panel header="What's considered a valid Contact Email?" type="seamless" id="contact-email-format">
@@ -1041,12 +1041,12 @@ Use this section when `find` fails.
 
 Use this section when `archive` fails.
 
-| Scenario                             | Message shown                                                                      | How to fix                                                                                        |
-|--------------------------------------|------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| No email provided                    | `Invalid command format! archive: Archives the vendor...`                          | Provide the vendor's email: `archive EMAIL`.                                                      |
-| Email format is invalid              | `Email should be a valid format (e.g. user@example.com).`                          | Ensure the email is correctly formatted, e.g. `archive sg.sales@cytron.io`.                       |
-| Email does not match any contact     | `No vendor found with the specified email.`                                        | Check the email is correct and that the contact exists in the active list. Use `list` to verify.  |
-| Contact is already archived          | `This vendor is already archived. Did you want to restore it?`                     | Use `restore EMAIL` instead to bring the contact back to the active list.                         |
+| Scenario                             | Message shown                                                  | How to fix                                                                                        |
+|--------------------------------------|----------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
+| No email provided                    | `Invalid Command format! ...`                                  | Provide the vendor's email: `archive EMAIL`.                                                      |
+| Email format is invalid              | `Email should be a valid format (e.g. user@example.com).`      | Ensure the email is correctly formatted, e.g. `archive sg.sales@cytron.io`.                       |
+| Email does not match any contact     | `No vendor found with the specified email.`                    | Check the email is correct and that the contact exists in the active list. Use `list` to verify.  |
+| Contact is already archived          | `This vendor is already archived. Did you want to restore it?` | Use `restore EMAIL` instead to bring the contact back to the active list.                         |
 
 <div style="height: 30px;"></div>
 
@@ -1172,11 +1172,11 @@ Use this section when `find` fails.
 
 Use this section when `archiveproduct` fails.
 
-| Scenario                                 | Message shown                                                                      | How to fix                                                                                              |
-|------------------------------------------|------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
-| No identifier provided                   | `Invalid command format! archiveproduct: Archives the product...`                  | Provide the product identifier: `archiveproduct IDENTIFIER`.                                            |
-| Identifier does not match any product    | `No product found with the specified identifier.`                                  | Check the identifier is correct and that the product exists in the active list. Use `listproduct`.      |
-| Product is already archived              | `This product is already archived. Did you want to restore it?`                    | Use `restoreproduct IDENTIFIER` instead to bring the product back to the active list.                   |
+| Scenario                                 | Message shown                                                   | How to fix                                                                                              |
+|------------------------------------------|-----------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| No identifier provided                   | `Invalid Command format! ...`                                   | Provide the product identifier: `archiveproduct IDENTIFIER`.                                            |
+| Identifier does not match any product    | `No product found with the specified identifier.`               | Check the identifier is correct and that the product exists in the active list. Use `listproduct`.      |
+| Product is already archived              | `This product is already archived. Did you want to restore it?` | Use `restoreproduct IDENTIFIER` instead to bring the product back to the active list.                   |
 
 <div style="height: 30px;"></div>
 
