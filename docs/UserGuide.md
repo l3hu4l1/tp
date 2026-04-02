@@ -827,7 +827,7 @@ exit
 | <div style="width:100px">Action</div> | <div style="width:200px">Command</div> | <div style="width:200px">Example</div> | What it does                                                    |
 |---------------------------------------|----------------------------------------|----------------------------------------|-----------------------------------------------------------------|
 | **Alias**                             | `alias [ORIGINAL_COMMAND] [ALIAS]`     | `alias list ls`                        | Adds a new alias; lists all aliases if no arguments given       |
-| **Delete Alias**                      | `deletealias [ALIAS]`                  | `deletealias ls`                       | Deletes an existing alias                                       |
+| **Delete Alias**                      | `deletealias ALIAS`                    | `deletealias ls`                       | Deletes an existing alias                                       |
 | **Change Default Threshold**          | `threshold DEFAULT_THRESHOLD`          | `threshold 5`                          | Changes the default restock threshold |
 | **Undo**                              | `undo`                                 | &nbsp;                                 | Undoes previous change                                          |
 | **Redo**                              | `redo`                                 | &nbsp;                                 | Redoes last undone change                                       |
