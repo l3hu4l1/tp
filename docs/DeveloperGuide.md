@@ -761,30 +761,36 @@ Use case ends.
 
 **Extensions**
 
-* 1a. Command format is invalid (eg. missing prefixes, incorrect structure)
+* 1a. VV detects invalid command format (eg. missing prefixes, incorrect structure)
     * 1a1. VV rejects the command and displays an error message indicating the correct format with an example.
     * 1a2. User re-enters the corrected command.
+    
+    Steps 1a1–1a2 are repeated until the command format is valid. 
 
-      Use case resumes from step 1.
+    Use case resumes from step 1.
 
-* 1b. Field validation fails (eg. invalid email, blank name)
+* 1b. VV detects error in fields provided (eg. invalid email, blank name)
     * 1b1. VV rejects the command and displays validation error message.
     * 1b2. User re-enters the corrected fields.
 
+      Steps 1b1–1b2 are repeated until the fields are valid. 
+
       Use case resumes from step 1.
 
-* 1c. Duplicate contact detected (eg. same email contact exists)
+* 1c. VV detects duplicate contact (eg. same email contact exists)
     * 1c1. VV rejects the command and displays a duplicate contact error message.
     * 1c2. User re-enters the corrected fields.
+  
+      Steps 1c1–1c2 are repeated until the fields are not a duplicate.
 
       Use case resumes from step 1.
 
-* 1d. Potential duplicate contact detected (eg. contact with similar name exists)
+* 1d. VV detects potential duplicate contact (eg. contact with similar name exists)
     * 1d1. VV accepts the command and displays a warning with details of the similar contact.
 
       Use case resumes from step 2.
 
-* 1e. Potential Input Mistake Warnings (eg. name has unusual symbols, email unusually long)
+* 1e. VV detects potential input mistake (eg. name has unusual symbols, email unusually long)
     * 1e1. VV accepts the command displays a warning indicating the input may be unintended.
 
       Use case resumes from step 2.
@@ -804,8 +810,8 @@ Use case ends.
 
 * *a. All extensions that apply to !!UC1: Add a Vendor Contact!! also apply here. 
   
-* 1f. Edit operation removes all tags
-    * 1f1. VV detects that the edit removes all tags and requests confirmation.
+* 1f. VV detects that the operation removes all tags.
+    * 1f1. VV requests confirmation.
     * 1f2. User confirms the deletion.
 
       Use case resumes from step 2.
@@ -953,7 +959,7 @@ Use case ends.
 
 **Extensions**
 
-* 1a. No undoable actions exist in the current session. 
+* 1a. VV detects no undoable actions exist in the current session. 
   * 1a1. VV displays an error message indicating there is nothing to undo.
   
     Use case ends.
@@ -964,7 +970,7 @@ Use case ends.
 
       Use case ends.
 
-* 3a. No redoable actions exist (e.g. redo history was cleared, or no undo was performed).
+* 3a. VV detects no redoable actions exist (e.g. redo history was cleared, or no undo was performed).
     * 3a1. VV displays an error message indicating there is nothing to redo.
 
       Use case ends.
@@ -987,7 +993,7 @@ Use case ends.
 
 **Extensions**
 
-* *a. No command history exists (no commands have been entered in this session).
+* *a. VV detects that no command history exists (no commands have been entered in this session).
     * *a1. VV does nothing.
 
         Use case ends.
