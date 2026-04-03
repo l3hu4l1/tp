@@ -959,7 +959,7 @@ Use case ends.
 
 **Extensions**
 
-* 1a. VV detects no undoable actions exist in the current session. 
+* 1a. VV detects that no undoable actions exist in the current session. 
   * 1a1. VV displays an error message indicating there is nothing to undo.
   
     Use case ends.
@@ -970,7 +970,7 @@ Use case ends.
 
       Use case ends.
 
-* 3a. VV detects no redoable actions exist (e.g. redo history was cleared, or no undo was performed).
+* 3a. VV detects that no redoable actions exist (e.g. redo history was cleared, or no undo was performed).
     * 3a1. VV displays an error message indicating there is nothing to redo.
 
       Use case ends.
