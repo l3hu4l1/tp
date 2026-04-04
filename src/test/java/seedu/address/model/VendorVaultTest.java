@@ -18,7 +18,6 @@ import seedu.address.testutil.ProductBuilder;
 
 public class VendorVaultTest {
 
-    // TOOD RENAME ALL TO END WITH PERSON
     private static final String NAME_ACME_PERSON = "Acme Supplies";
     private static final String NAME_SIMILAR_PERSON = "Acme Partners";
     private static final String NAME_OTHER_PERSON = "Other";
@@ -117,7 +116,7 @@ public class VendorVaultTest {
 
     @Test
     public void findSimilarNameMatch_matchExists_returnsMatchingPerson() {
-        // EP: candidate name is similar to existing; exclude = null → match returned
+        // EP: candidate name is similar to existing; exclude = null -> match returned
         Person existing = buildPerson(NAME_ACME_PERSON, PHONE_ACME_PERSON, EMAIL_ACME_PERSON, ADDRESS_ACME_PERSON);
         VendorVault vault = createVaultWithPerson(existing);
         Person candidate = buildPerson(NAME_SIMILAR_PERSON,
@@ -128,7 +127,7 @@ public class VendorVaultTest {
 
     @Test
     public void findSimilarNameMatch_matchingPersonExcluded_returnsEmpty() {
-        // EP: candidate name is similar but the matching person is excluded → empty
+        // EP: candidate name is similar but the matching person is excluded -> empty
         Person existing = buildPerson(NAME_ACME_PERSON, PHONE_ACME_PERSON, EMAIL_ACME_PERSON, ADDRESS_ACME_PERSON);
         VendorVault vault = createVaultWithPerson(existing);
         Person candidate = buildPerson(NAME_SIMILAR_PERSON,
@@ -139,7 +138,7 @@ public class VendorVaultTest {
 
     @Test
     public void findSimilarAddressMatch_matchExists_returnsMatchingPerson() {
-        // EP: candidate address partially matches existing address; exclude = null → match returned
+        // EP: candidate address partially matches existing address; exclude = null -> match returned
         Person existing = buildPerson(NAME_ACME_PERSON, PHONE_ACME_PERSON, EMAIL_ACME_PERSON, ADDRESS_ACME_PERSON);
         VendorVault vault = createVaultWithPerson(existing);
         Person candidate = buildPerson(NAME_OTHER_PERSON,
@@ -150,7 +149,7 @@ public class VendorVaultTest {
 
     @Test
     public void findSimilarAddressMatch_matchingPersonExcluded_returnsEmpty() {
-        // EP: candidate address partially matches but the matching person is excluded → empty
+        // EP: candidate address partially matches but the matching person is excluded -> empty
         Person existing = buildPerson(NAME_ACME_PERSON, PHONE_ACME_PERSON, EMAIL_ACME_PERSON, ADDRESS_ACME_PERSON);
         VendorVault vault = createVaultWithPerson(existing);
         Person candidate = buildPerson(NAME_OTHER_PERSON,
@@ -161,7 +160,7 @@ public class VendorVaultTest {
 
     @Test
     public void findSimilarPhoneMatch_matchExists_returnsMatchingPerson() {
-        // EP: candidate phone shares digits with existing; exclude = null → match returned
+        // EP: candidate phone shares digits with existing; exclude = null -> match returned
         Person existing = buildPerson(NAME_ACME_PERSON, PHONE_ACME_PERSON, EMAIL_ACME_PERSON, ADDRESS_ACME_PERSON);
         VendorVault vault = createVaultWithPerson(existing);
         Person candidate = buildPerson(NAME_OTHER_PERSON,
@@ -172,7 +171,7 @@ public class VendorVaultTest {
 
     @Test
     public void findSimilarPhoneMatch_matchingPersonExcluded_returnsEmpty() {
-        // EP: candidate phone shares digits but the matching person is excluded → empty
+        // EP: candidate phone shares digits but the matching person is excluded -> empty
         Person existing = buildPerson(NAME_ACME_PERSON, PHONE_ACME_PERSON, EMAIL_ACME_PERSON, ADDRESS_ACME_PERSON);
         VendorVault vault = createVaultWithPerson(existing);
         Person candidate = buildPerson(NAME_OTHER_PERSON,
@@ -185,7 +184,7 @@ public class VendorVaultTest {
 
     @Test
     public void findSimilarNameMatch_productMatchExists_returnsMatchingProduct() {
-        // EP: candidate product name is similar to existing; exclude = null → match returned
+        // EP: candidate product name is similar to existing; exclude = null -> match returned
         Product existing = buildProduct(SKU_WIRELESS_PRODUCT, NAME_WIRELESS_PRODUCT);
         VendorVault vault = createVaultWithProduct(existing);
         Product candidate = buildProduct(SKU_OTHER_PRODUCT, NAME_SIMILAR_PRODUCT);
@@ -195,7 +194,7 @@ public class VendorVaultTest {
 
     @Test
     public void findSimilarNameMatch_matchingProductExcluded_returnsEmpty() {
-        // EP: candidate product name is similar but the matching product is excluded → empty
+        // EP: candidate product name is similar but the matching product is excluded -> empty
         Product existing = buildProduct(SKU_WIRELESS_PRODUCT, NAME_WIRELESS_PRODUCT);
         VendorVault vault = createVaultWithProduct(existing);
         Product candidate = buildProduct(SKU_OTHER_PRODUCT, NAME_SIMILAR_PRODUCT);
