@@ -266,7 +266,7 @@ The following activity diagram summarizes what happens when a user executes a ne
   * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
   * Cons: We must ensure that the implementation of each individual command and future commands are correct.
 
-Given that VendorVault's data size is expected to remain relatively small (e.g. about 1,000 contacts and 5,000 products) and undoable actions are typicallyoccur in small batches, the memory overhead of storing snapshots is acceptable.
+Given that VendorVault's data size is expected to remain relatively small (e.g. about 1,000 contacts and 5,000 products) and undoable actions are typically occur in small batches, the memory overhead of storing snapshots is acceptable.
 
 **Aspect: Granularity of undo/redo scope:**
 
