@@ -131,7 +131,7 @@ The `Model` component
 * stores the current set of `Person`/`Product` objects as a separate _filtered_ list which is exposed as an unmodifiable `ObservableList<Person>`/`ObservableList<Product>`.
 * stores a `VersionedVendorVault` object that represents the current state of the address book and inventory data, and supports undo/redo operations on it.
 * stores alias data i.e., all `Alias` objects (which are contained in a `AliasList` object).
-* stores a `UserPref` object that represents the user’s preferences. This is exposed as a `ReadOnlyUserPref` object.
+* stores a `UserPref` object that represents the user's preferences. This is exposed as a `ReadOnlyUserPref` object.
 * does not depend on any of the other three components.
 
 **Archived records** are kept in the same data structures rather than moved to a separate list:
@@ -174,10 +174,10 @@ This section describes some noteworthy details on how certain features are imple
 
 The undo/redo mechanism is facilitated by `VersionedVendorVault`. It extends `VendorVault` with an undo/redo history, stored internally as an `vendorVaultStateList`, `stateActionSummaryList` and `currentStatePointer`. Additionally, it implements the following operations:
 
-* `VersionedVendorVault#commit(currentState, actionSummary)` — Saves the current VendorVault state in its history along with a summary of the action that caused the change.
-* `VersionedVendorVault#undo(currentState)` — Restores the previous VendorVault state from its history.
-* `VersionedVendorVault#redo(currentState)` — Restores a previously undone VendorVault state from its history.
-* `VersionedVendorVault#canUndo()` and `VersionedVendorVault#canRedo()` — Checks if undo/redo operations are possible based on the current state of the history.
+* `VersionedVendorVault#commit(currentState, actionSummary)` — Saves the current VendorVault state in its history along with a summary of the action that caused the change.
+* `VersionedVendorVault#undo(currentState)` — Restores the previous VendorVault state from its history.
+* `VersionedVendorVault#redo(currentState)` — Restores a previously undone VendorVault state from its history.
+* `VersionedVendorVault#canUndo()` and `VersionedVendorVault#canRedo()` — Checks if undo/redo operations are possible based on the current state of the history.
 
 <box type="info" seamless>
 
@@ -233,7 +233,7 @@ Similarly, how an undo operation goes through the `Model` component is shown bel
 
 <puml src="diagrams/UndoSequenceDiagram-Model.puml" alt="UndoSequenceDiagram-Model" />
 
-The `redo` command does the opposite — it calls `Model#redoVendorVault()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the VendorVault to that state.
+The `redo` command does the opposite — it calls `Model#redoVendorVault()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the VendorVault to that state.
 
 <box type="info" seamless>
 
@@ -266,7 +266,7 @@ The following activity diagram summarizes what happens when a user executes a ne
   * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
   * Cons: We must ensure that the implementation of each individual command and future commands are correct.
 
-Given that VendorVault’s data size is expected to remain relatively small (e.g. about 1,000 contacts and 5,000 products) and undoable actions are typicallyoccur in small batches, the memory overhead of storing snapshots is acceptable.
+Given that VendorVault's data size is expected to remain relatively small (e.g. about 1,000 contacts and 5,000 products) and undoable actions are typicallyoccur in small batches, the memory overhead of storing snapshots is acceptable.
 
 **Aspect: Granularity of undo/redo scope:**
 
@@ -302,10 +302,10 @@ We chose Alternative 1 to give commands explicit control, avoid unnecessary snap
 
 #### Implementation
 The command history feature is implemented using a `CommandHistory` class that maintains a list of previously executed commands. Each time a command is executed, it is added to the `CommandHistory`. Additionally, it implements the following operations:
-* `CommandHistory#add(String commandText)` — Adds a command as a string to the history.
-* `CommandHistory#getPrevious(String currentInput)` — Returns the previous command in the history.
-* `CommandHistory#getNext(String currentInput)` — Returns the next command in the history.
-* `CommandHistory#resetNavigation()` — Resets the navigation pointer to the end of the history.
+* `CommandHistory#add(String commandText)` — Adds a command as a string to the history.
+* `CommandHistory#getPrevious(String currentInput)` — Returns the previous command in the history.
+* `CommandHistory#getNext(String currentInput)` — Returns the next command in the history.
+* `CommandHistory#resetNavigation()` — Resets the navigation pointer to the end of the history.
 
 These operations are exposed through `Logic#addCommandHistory(String)`, `Logic#getPrevCommandHistory(String)`, and `Logic#getNextCommandHistory(String)`, allowing the UI to navigate command history via the `Logic` API without directly depending on `CommandHistory`.
 
@@ -356,7 +356,7 @@ Since the goal is shell-like navigation, storing only strings is sufficient and 
 
 **Aspect: How navigation handles partially typed input:**
 
-* **Alternative 1 (current choice):** Preserve the current input as a “draft” when the user navigates through history.
+* **Alternative 1 (current choice):** Preserve the current input as a "draft" when the user navigates through history.
     * Pros: More UX-friendly, as user can return to unfinished input after scrolling through history.
     * Cons: Slight increase in code complexity to manage a separate draftCommandText.
 
@@ -518,9 +518,9 @@ The command `alias` feature allows users to define shorthand strings that map to
 When a user enters a command, the input is resolved against the stored `alias` mappings before being parsed and executed.
 
 The core data structures are:
-* `Alias`  — An **immutable** value object holding an `alias` string and its `originalCommand` string.
-* `AliasList`  — Stores a list of `Alias` objects, enforces uniqueness of alias string, and exposes **lookup, add and remove** operations.
-* `Aliases`  — The top level model object that wraps `AliasList`. It implements `ReadOnlyAliases`.
+* `Alias`  — An **immutable** value object holding an `alias` string and its `originalCommand` string.
+* `AliasList`  — Stores a list of `Alias` objects, enforces uniqueness of alias string, and exposes **lookup, add and remove** operations.
+* `Aliases`  — The top level model object that wraps `AliasList`. It implements `ReadOnlyAliases`.
 
 These operations are exposed in `Model` interface as `Model#addAlias()`, `Model#findAlias()`, `Model#removeAlias()`.
 
@@ -874,6 +874,7 @@ Use case ends.
   * 1a1. VV displays an error indicating missing keywords.
 
   Use case ends.
+
 **Use case: UC11 - Archive a Vendor Contact**
 
 **Preconditions: Application is running, user is on the main screen and has added a contact.**
@@ -881,8 +882,7 @@ Use case ends.
 **MSS**
 
 1. User chooses to archive a vendor contact by providing their email.
-2. VV validates the email and archives the contact, removing it from the active contact list.
-3. VV adds the vendor contact into the archived contact list.
+2. VV validates the email and moves the contact from the active to the archived contact list.
 
 Use case ends.
 
@@ -907,8 +907,7 @@ Use case ends.
 1. User runs `restore` without an argument to view all archived contacts.
 2. VV displays the list of archived contacts.
 3. User runs `restore EMAIL` to restore a specific contact.
-4. VV restores the contact and it reappears in the active contact list.
-5. VV removes the contact from the archived contact list.
+4. VV restores the contact, moving it from the archived list to the active contact list.
 
 Use case ends.
 
@@ -970,7 +969,7 @@ Use case ends.
 **MSS**
 
 1. User chooses to edit a product and provides the identifier along with fields to update.
-2. VV validates the identifier and fields, then updates the product and displays the updated product details.
+2. VV validates the identifier and fields, updates the product, and displays the updated product list.
 
 Use case ends.
 
@@ -986,8 +985,24 @@ Use case ends.
 
     Use case ends.
 
-* 1c. VV detects that the provided vendor email does not match any existing contact.
-    * 1c1. VV displays an error indicating no contact with the specified email was found.
+* 1c. VV detects error in the fields provided (e.g. invalid data format).
+    * 1c1. VV displays an appropriate error message indicating the invalid field.
+    * 1c2. User re-provides the corrected data.
+
+    Steps 1c1–1c2 are repeated until all fields are valid.
+
+    Use case resumes from step 2.
+
+* 1d. VV detects that the new identifier already belongs to another existing product.
+    * 1d1. VV displays an error indicating the identifier is already in use.
+    * 1d2. User re-provides a different identifier.
+
+    Steps 1d1–1d2 are repeated until a unique identifier is provided.
+
+    Use case resumes from step 2.
+
+* 1e. VV detects that the provided vendor email does not match any existing contact.
+    * 1e1. VV displays an error indicating no contact with the specified email was found.
 
     Use case ends.
 
@@ -1027,53 +1042,11 @@ Analogous to UC4.
 
 **Use case: UC14 - Archive a Product**
 
-**Preconditions: Application is running, user is on the main screen and has added a product.**
-
-**MSS**
-
-1. User chooses to archive a product by providing its identifier.
-2. VV validates the identifier and archives the product, removing it from the active product list.
-3. VV adds the product into the archived product list.
-
-Use case ends.
-
-**Extensions**
-
-* 1a. VV detects that no product with the given identifier exists.
-    * 1a1. VV displays an error indicating no product was found with that identifier.
-
-    Use case ends.
-
-* 1b. VV detects that the product is already archived.
-    * 1b1. VV displays an error indicating the product is already archived.
-
-    Use case ends.
+Analogous to UC11, except the product's identifier is used instead of the vendor's email.
 
 **Use case: UC15 - Restore an Archived Product**
 
-**Preconditions: Application is running, user is on the main screen and has at least one archived product.**
-
-**MSS**
-
-1. User runs `restoreproduct` without an argument to view all archived products.
-2. VV displays the list of archived products.
-3. User runs `restoreproduct IDENTIFIER` to restore a specific product.
-4. VV restores the product and it reappears in the active product list.
-5. VV removes the product from the archived product list.
-
-Use case ends.
-
-**Extensions**
-
-* 1a. No archived products exist.
-    * 1a1. VV displays a message indicating there are no archived products.
-
-    Use case ends.
-
-* 3a. VV detects that no archived product with the given identifier exists.
-    * 3a1. VV displays the archived product list and an error indicating no archived product was found with that identifier.
-
-    Use case ends.
+Analogous to UC12, except the product's identifier is used instead of the vendor's email.
 
 **Use case: UC9 - Undo/Redo a Change**
 
@@ -1162,7 +1135,7 @@ Documentation:
 1. The system should provide a developer guide for future contributors, code accompanied by Javadoc comments and a user guide for users.
 
 Security:
-1. The system should store data locally on the user’s device and should not transmit data over any network.
+1. The system should store data locally on the user's device and should not transmit data over any network.
 
 Scalability and Capacity:
 1. The system should handle at least 1,000 vendor contacts and 5,000 products (performance beyond these limits is not guaranteed).
@@ -1181,7 +1154,7 @@ Accessibility:
 ### Glossary
 
 * **Mainstream OS**: Windows, Linux, MacOS
-* **Contact/Vendor Contact**: A stored record containing a vendor’s name, phone number, email, address, and optional tags.
+* **Contact/Vendor Contact**: A stored record containing a vendor's name, phone number, email, address, and optional tags.
 * **Inventory**: The system that holds a set of products
 * **Product**: An entry to the inventory; contains the product's identifier, name, quantity, restock threshold and
   email of associated vendor.
@@ -1283,14 +1256,14 @@ Accessibility:
 1. Prerequisites: There should be multiple active contacts. One of them should have email `sg.sales@cytron.io`.
 
 2. Test case: `archive sg.sales@cytron.io`
-   - Expected: Matching contact is archived and removed from the active contact list. Details of the archived contact are shown in the status message.
+   - Expected: Matching contact is archived and removed from the active contact list. Details of the archived contact are shown.
 
 3. Test case: `archive notfound@example.com`
    - Prerequisites: There is no contact with email `notfound@example.com`.
    - Expected: `No vendor found with the specified email` error.
 
-4. Test case: `archive sg.sales@cytron.io` (on an already-archived contact)
-   - Prerequisites: `sg.sales@cytron.io` has already been archived.
+4. Test case: `archive sg.sales@cytron.io` on an already-archived contact
+   - Prerequisites: `sg.sales@cytron.io` has been archived.
    - Expected: `Vendor is already archived. Use restore to restore it instead` error.
 
 ### Restoring an archived contact
@@ -1298,11 +1271,11 @@ Accessibility:
 1. Prerequisites: Archive at least one contact using `archive EMAIL`. Run `restore` (no argument) to list all archived contacts.
 
 2. Test case: `restore` (no argument)
-   - Expected: All archived contacts are listed. Status message indicates archived vendors are shown and prompts user to use `restore EMAIL` to restore one.
+   - Expected: All archived contacts are listed. Indicates archived vendors are shown and prompts user to use `restore EMAIL` to restore one.
 
 3. Test case: `restore sg.sales@cytron.io`
    - Prerequisites: `sg.sales@cytron.io` is currently archived.
-   - Expected: Matching archived contact is restored and reappears in the active contact list. Details of the restored contact are shown in the status message.
+   - Expected: Matching archived contact is restored and reappears in the active contact list. Details of the restored contact are shown.
 
 4. Test case: `restore notfound@example.com`
    - Prerequisites: There is no archived contact with email `notfound@example.com`.
@@ -1346,7 +1319,7 @@ Accessibility:
 1. Prerequisites: Run `listproduct` and verify a product with id `SKU-1001` is in the list.
 
 2. Test case: `editproduct SKU-1001 n/Brown Rice 10kg q/5 th/10`
-   - Expected: The product's name, quantity, and threshold are updated. Details of the edited product are shown in the status message.
+   - Expected: The product's name, quantity, and threshold are updated. Details of the edited product are shown.
 
 3. Test case: `editproduct SKU-1001 e/vendor@email.com`
    - Prerequisites: There is no contact with email `vendor@email.com`.
@@ -1364,14 +1337,14 @@ Accessibility:
 1. Prerequisites: There should be multiple active products. One of them should have identifier `SKU-1001`.
 
 2. Test case: `archiveproduct SKU-1001`
-   - Expected: Matching product is archived and removed from the active product list. Details of the archived product are shown in the status message.
+   - Expected: Matching product is archived and removed from the active product list. Details of the archived product are shown.
 
 3. Test case: `archiveproduct NOTEXIST`
    - Prerequisites: There is no product with identifier `NOTEXIST`.
    - Expected: `No product found with the specified identifier` error.
 
-4. Test case: `archiveproduct SKU-1001` (on an already-archived product)
-   - Prerequisites: `SKU-1001` has already been archived.
+4. Test case: `archiveproduct SKU-1001` on an already-archived product
+   - Prerequisites: `SKU-1001` has been archived.
    - Expected: `Product is already archived` error.
 
 ### Restoring an archived product
@@ -1379,11 +1352,11 @@ Accessibility:
 1. Prerequisites: Archive at least one product using `archiveproduct IDENTIFIER`. Run `restoreproduct` (no argument) to list all archived products.
 
 2. Test case: `restoreproduct` (no argument)
-   - Expected: All archived products are listed. Status message prompts user to use `restoreproduct IDENTIFIER` to restore one.
+   - Expected: All archived products are listed. Prompts user to use `restoreproduct IDENTIFIER` to restore one.
 
 3. Test case: `restoreproduct SKU-1001`
    - Prerequisites: `SKU-1001` is currently archived.
-   - Expected: Matching archived product is restored and reappears in the active product list. Details of the restored product are shown in the status message.
+   - Expected: Matching archived product is restored and reappears in the active product list. Details of the restored product are shown.
 
 4. Test case: `restoreproduct NOTEXIST`
    - Prerequisites: There is no archived product with identifier `NOTEXIST`.
@@ -1504,15 +1477,13 @@ At the end, run `listall` and verify both added contact and product are present 
 
 4. Extensive testing needed due to increased system complexity.
 
-5. Linking contacts and products while ensuring consistent behavior across both domains required careful architectural design.
+5. Maintaining consistency across the application — commands had to behave similarly for both contacts and products, including parsing, validation, and user feedback.
 
-6. Consistently ensuring code is tested before merging added overhead to the development workflow.
+6. Integrating everything together — features could not be built in isolation because changes in one system could affect the other, requiring careful coordination of architecture and data flow.
 
-7. Maintaining consistency across the application — commands had to behave similarly for both contacts and products, including parsing, validation, and user feedback.
+7. Linking contacts and products while ensuring consistent behavior across both domains required careful architectural design.
 
-8. Integrating everything together — features could not be built in isolation because changes in one system could affect the other, requiring careful coordination of architecture and data flow.
-
-
+8. Consistently ensuring code is tested before merging added overhead to the development workflow.
 
 ### Effort & Achievements
 
@@ -1531,3 +1502,5 @@ At the end, run `listall` and verify both added contact and product are present 
 7. Maintained consistent effort both individually and as a team across the entire project timeline
 
 8. Consistently tested each other's code and fixed bugs early before they became larger issues
+
+## **Appendix: Planned Enhancements**
