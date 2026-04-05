@@ -934,7 +934,7 @@ Use case ends.
 
 **Use case: UC8 - Find Product**
 
-Analogous to UC4.
+Analogous to !!UC4 - Find Vendor Contact!!.
 
 **Use case: UC9 - Undo/Redo a Change**
 
