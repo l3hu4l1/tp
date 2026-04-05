@@ -2,10 +2,13 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.function.Predicate;
+
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
-import seedu.address.model.person.NameContainsKeywordsScoredPredicate;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.RankedPersonPredicate;
 import seedu.address.model.product.VendorEmailMatchesContactsPredicate;
 
 /**
@@ -16,20 +19,21 @@ import seedu.address.model.product.VendorEmailMatchesContactsPredicate;
 public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
-    public static final String COMMAND_USAGE = COMMAND_WORD + " KEYWORD [MORE_KEYWORDS]...";
+    public static final String COMMAND_USAGE = COMMAND_WORD + " [-t] KEYWORD [MORE_KEYWORDS]...";
     public static final String COMMAND_DESCRIPTION =
-            "Displays contacts whose names contain any of the given keyword(s)";
+            "Displays contacts with matching name or tag";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": " + COMMAND_DESCRIPTION + "\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " TechSource";
+            + "Parameters: [-t] KEYWORD [MORE_KEYWORDS]...\n"
+            + "Examples: " + COMMAND_WORD + " TechSource\n"
+            + "          " + COMMAND_WORD + " -t electronics";
 
-    private final NameContainsKeywordsScoredPredicate predicate;
+    private final Predicate<Person> predicate;
 
     /**
-     * Creates a find command with the given name-matching predicate.
+     * Creates a find command with the given person-matching predicate.
      */
-    public FindCommand(NameContainsKeywordsScoredPredicate predicate) {
+    public FindCommand(Predicate<Person> predicate) {
         requireNonNull(predicate);
         this.predicate = predicate;
     }
@@ -38,7 +42,11 @@ public class FindCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
 
-        model.updateFilteredPersonList(predicate);
+        if (predicate instanceof RankedPersonPredicate) {
+            model.updateFilteredPersonList(predicate);
+        } else {
+            model.updateFilteredPersonList(person -> !person.isArchived() && predicate.test(person));
+        }
 
         VendorEmailMatchesContactsPredicate productPredicate = new VendorEmailMatchesContactsPredicate(
                 model.getFilteredPersonList());
