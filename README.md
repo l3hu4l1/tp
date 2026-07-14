@@ -4,26 +4,26 @@
 
 ![Ui](docs/images/Ui.png)
 
-This desktop app helps small business owners seamlessly manage vendors and inventory. 
+This desktop app helps small business owners seamlessly manage vendors and inventory.
 
-It combines the 
-speed of typing commands with the simplicity of a visual interface, allowing them to organise vendors' contacts and 
-track their products efficiently. 
+It combines the speed of typing commands with the simplicity of a visual interface, allowing them to organise vendors' contacts and 
+track their products efficiently.
 
 By flagging and sorting low-stock items, owners instantly know what needs restocking and who to contact, enabling 
 timely action without relying on complex or costly inventory tools.
 
 # Quick Start & Features
 
-Refer to our [**User Guide**](UserGuide.html#quick-start).
+Refer to our [**User Guide**](https://ay2526s2-cs2103t-w08-2.github.io/tp/UserGuide.html#quick-start)
 
 # Overview of Design
 
 ![archi-diagram.png](archi-diagram.png)
 
-The app consists of five main components: Main, UI, Logic, Model, and Storage. 
+The app is divided into five main components: Main, UI, Logic, Model, and Storage. 
 
 Each component defines its API in an interface of the same name and implements its functionality using a concrete `{Component Name}Manager` class. For example:
+
 ![img.png](comp-manager.png)
 
 ## Main
@@ -34,9 +34,11 @@ At launch, `MainApp` initializes all other components in the correct sequence. D
 
 ## UI
 
+**API** : [`Ui.java`](https://github.com/AY2526S2-CS2103T-W08-2/tp/blob/master/src/main/java/seedu/address/ui/Ui.java)
+
 ![img.png](img.png)
 
-Each UI component (`CommandBox`, `ResultDisplay`, `InventoryListPanel` etc.) inherit the abstract `UiPart` class, which captures common aspects of the visible GUI.
+Every UI component (`CommandBox`, `ResultDisplay`, `InventoryListPanel` etc.) inherit the abstract `UiPart` class, which captures common aspects of the visible GUI.
 
 These components
 * depend on `Person` and `Product` classes in the `Model` component to display their data.
@@ -46,6 +48,7 @@ These components
 ## Logic
 
 **API** : [`Logic.java`](https://github.com/AY2526S2-CS2103T-W08-2/tp/blob/master/src/main/java/seedu/address/logic/Logic.java)
+
 This component executes commands given by the user, such as `AddCommand`, `EditCommand`, and `FindCommand`.
 
 ![img_1.png](img_1.png)
@@ -71,7 +74,7 @@ This component serves as the single source of truth and does not depend on the o
 
 ![img_3.png](img_3.png)
 
-This component saves vendor, inventory, and user preference data in JSON format using the corresponding `Storage` class. This allows data to be read from and written to the hard disk.
+This component reads app data from and writes it to the hard disk. The `Json...Storage` classes save the corresponding data — vendor, inventory, user preference — in JSON format.
 
 ## Commons
 
@@ -79,8 +82,6 @@ A collection of utility classes used by multiple components.
 
 # Contributing
 
-_VendorVault is a brownfield project based on AddressBook-Level3 created by the [SE-EDU initiative](https://se-education.org)._
+_VendorVault is a brownfield project based on [SE-EDU initiative](https://se-education.org)'s AddressBook-Level3._
 
-If you are interested in contributing to VendorVault, the [**Developer Guide**](DeveloperGuide.html) is a good 
-  place to 
-  start.
+If you are interested in contributing to VendorVault, the [**Developer Guide**](https://ay2526s2-cs2103t-w08-2.github.io/tp/DeveloperGuide.html) is a good place to start.
